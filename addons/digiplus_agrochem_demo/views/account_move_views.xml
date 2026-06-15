@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_account_move_tree" model="ir.ui.view">
+        <field name="name">digiplus.account.move.tree</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <list string="Facturation et Sage Saari">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="invoice_date"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="state"/>
+                <field name="x_sage_saari_export_status"/>
+                <field name="x_sage_saari_reference"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_digiplus_account_move_form" model="ir.ui.view">
+        <field name="name">digiplus.account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <form string="Facture client">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="move_type"/>
+                            <field name="partner_id"/>
+                            <field name="journal_id"/>
+                            <field name="invoice_date"/>
+                            <field name="invoice_date_due"/>
+                        </group>
+                        <group>
+                            <field name="state" readonly="1"/>
+                            <field name="payment_state" readonly="1"/>
+                            <field name="invoice_origin"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lignes">
+                            <field name="invoice_line_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="price_subtotal" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Sage Saari">
+                            <group>
+                                <field name="x_sage_saari_export_status"/>
+                                <field name="x_sage_saari_reference"/>
+                                <field name="x_integration_comment"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

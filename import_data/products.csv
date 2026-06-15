@@ -1,0 +1,4 @@
+default_code,name,list_price,standard_price,x_solution_family,x_demo_axis,x_agrochem_equivalent,x_stock_rotation_category,x_rupture_risk_level
+DPI-WA-001,Credits WhatsApp Business,0,240000,automation,Support,Consommable messaging,fast,high
+DPI-CLD-001,Hebergement cloud manage,0,85000,support,Infrastructure,Infrastructure cloud,medium,medium
+DPI-BI-001,Licences Power BI Pro,0,68000,bi,BI,Licence analytique,medium,critical

@@ -1,0 +1,7 @@
+month,product,zone,opening_stock,sold_qty,closing_stock,rotation_rate
+2026-01-01,DPI-WA-001,Douala,24,9,15,37.5
+2026-01-01,DPI-BI-001,Yaounde,10,4,6,40.0
+2026-02-01,DPI-WA-001,Yaounde,14,6,8,42.8
+2026-02-01,DPI-CLD-001,Douala,48,3,45,6.3
+2026-03-01,DPI-BI-001,Douala,12,5,7,41.6
+2026-03-01,DPI-CLD-001,Yaounde,15,3,12,20.0

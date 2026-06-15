@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="activity_proposal_followup" model="mail.activity.type">
+        <field name="name">Relance proposition commerciale</field>
+        <field name="category">phonecall</field>
+    </record>
+    <record id="activity_priority_account" model="mail.activity.type">
+        <field name="name">Qualification prioritaire</field>
+        <field name="category">default</field>
+    </record>
+    <record id="activity_whatsapp_preparation" model="mail.activity.type">
+        <field name="name">Preparation WhatsApp</field>
+        <field name="category">default</field>
+    </record>
+    <record id="activity_supplier_followup" model="mail.activity.type">
+        <field name="name">Suivi fournisseur critique</field>
+        <field name="category">meeting</field>
+    </record>
+</odoo>

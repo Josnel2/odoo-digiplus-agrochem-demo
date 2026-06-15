@@ -1,0 +1,9 @@
+supplier,month,category,lead_time_days,ordered_value,received_value,service_rate
+Meta Business Partner Africa,2026-01,Cloud & API,6,480000,480000,100
+CloudBridge Managed Services,2026-01,Hosting,14,1020000,1000000,98
+PowerData Analytics,2026-02,Analytics & licences,10,340000,340000,96
+Meta Business Partner Africa,2026-02,Cloud & API,7,520000,500000,96
+CloudBridge Managed Services,2026-03,Hosting,13,1020000,1010000,99
+PowerData Analytics,2026-03,Analytics & licences,9,408000,408000,97
+Meta Business Partner Africa,2026-04,Cloud & API,6,600000,600000,100
+CloudBridge Managed Services,2026-04,Hosting,12,1020000,1005000,98

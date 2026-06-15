@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_crm_lead_list" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.list</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <list string="Pipeline CRM DigiPlus" decoration-danger="activity_state == 'overdue' or x_missing_next_action">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="stage_id"/>
+                <field name="expected_revenue" sum="Total"/>
+                <field name="probability"/>
+                <field name="x_service_requested"/>
+                <field name="x_priority_level"/>
+                <field name="x_next_action_date"/>
+                <field name="user_id"/>
+                <field name="source_id"/>
+                <field name="activity_state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_digiplus_crm_lead_kanban_v2" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.kanban.v2</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <kanban
+                default_group_by="stage_id"
+                default_order="priority desc, expected_revenue desc, id desc"
+                class="o_kanban_small_column dp_crm_pipeline_kanban"
+                records_draggable="true"
+                quick_create="false"
+            >
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="partner_name"/>
+                <field name="contact_name"/>
+                <field name="expected_revenue"/>
+                <field name="probability"/>
+                <field name="x_service_requested"/>
+                <field name="x_priority_level"/>
+                <field name="x_next_action_date"/>
+                <field name="user_id"/>
+                <field name="activity_state"/>
+                <field name="x_missing_next_action"/>
+                <field name="activity_date_deadline"/>
+                <field name="activity_summary"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click o_kanban_record dp_crm_kanban_card">
+                            <div class="dp_crm_kanban_header">
+                                <div class="dp_crm_kanban_title_block">
+                                    <strong class="dp_crm_kanban_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div class="dp_crm_kanban_partner text-muted">
+                                        <t t-if="record.partner_id.raw_value">
+                                            <field name="partner_id"/>
+                                        </t>
+                                        <t t-elif="record.partner_name.raw_value">
+                                            <t t-out="record.partner_name.value"/>
+                                        </t>
+                                        <t t-elif="record.contact_name.raw_value">
+                                            <t t-out="record.contact_name.value"/>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="dp_crm_kanban_amount">
+                                    <field name="expected_revenue"/>
+                                </div>
+                            </div>
+
+                            <div class="dp_crm_kanban_meta">
+                                <div class="dp_crm_kanban_meta_row">
+                                    <span class="dp_crm_kanban_label">Activité prévue</span>
+                                    <span class="dp_crm_kanban_value">
+                                        <t t-if="record.activity_summary.raw_value">
+                                            <field name="activity_summary"/>
+                                        </t>
+                                        <t t-else="">Aucune activité</t>
+                                    </span>
+                                </div>
+                                <div class="dp_crm_kanban_meta_row">
+                                    <span class="dp_crm_kanban_label">Échéance</span>
+                                    <span t-att-class="'dp_crm_kanban_value text-danger' if record.activity_state.raw_value == 'overdue' else 'dp_crm_kanban_value'">
+                                        <field name="x_next_action_date"/>
+                                    </span>
+                                </div>
+                                <div class="dp_crm_kanban_meta_row">
+                                    <span class="dp_crm_kanban_label">Commercial</span>
+                                    <span class="dp_crm_kanban_value">
+                                        <field name="user_id"/>
+                                    </span>
+                                </div>
+                                <div class="dp_crm_kanban_meta_row">
+                                    <span class="dp_crm_kanban_label">Probabilité</span>
+                                    <span class="dp_crm_kanban_value">
+                                        <field name="probability"/>%
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="dp_crm_kanban_footer">
+                                <div class="dp_crm_kanban_tags">
+                                    <t t-if="record.x_service_requested.raw_value">
+                                        <span class="badge rounded-pill text-bg-light dp_crm_service_badge">
+                                            <field name="x_service_requested"/>
+                                        </span>
+                                    </t>
+                                    <t t-if="record.x_priority_level.raw_value">
+                                        <span class="badge rounded-pill dp_crm_priority_badge">
+                                            <field name="x_priority_level"/>
+                                        </span>
+                                    </t>
+                                </div>
+                                <div class="dp_crm_kanban_alerts">
+                                    <t t-if="record.activity_state.raw_value == 'overdue'">
+                                        <span class="badge rounded-pill text-bg-danger">Relance en retard</span>
+                                    </t>
+                                    <t t-if="record.x_missing_next_action.raw_value">
+                                        <span class="badge rounded-pill text-bg-warning">Sans prochaine action</span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_digiplus_crm_lead_form" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.form</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <form string="Fiche prospect / client DigiPlus">
+                <header>
+                    <button name="action_prepare_won_conversion" type="object" string="Préparer le devis" class="btn-primary"/>
+                    <field name="stage_id" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Ex. : CRM commercial - Horizon Distribution"/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group string="Informations principales">
+                                        <field name="type" invisible="1"/>
+                                        <field name="partner_id" options="{'no_create_edit': False}"/>
+                                        <field name="partner_name" placeholder="Nom de l'entreprise si la fiche client n'existe pas encore"/>
+                                        <field name="contact_name" placeholder="Nom du contact principal"/>
+                                        <field name="user_id"/>
+                                        <field name="source_id"/>
+                        </group>
+                        <group string="Coordonnées">
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="email_from"/>
+                            <field name="website"/>
+                            <field name="x_contact_language"/>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="Qualification">
+                            <field name="x_service_requested"/>
+                            <field name="x_need_type"/>
+                            <field name="x_business_sector"/>
+                            <field name="x_priority_level"/>
+                            <field name="probability"/>
+                            <field name="expected_revenue"/>
+                        </group>
+                        <group string="Suivi commercial">
+                            <field name="date_deadline"/>
+                            <field name="x_next_action_date" readonly="1"/>
+                            <field name="x_missing_next_action" readonly="1"/>
+                            <field name="activity_state" readonly="1"/>
+                            <field name="activity_date_deadline" readonly="1"/>
+                            <field name="activity_summary" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes internes">
+                            <group>
+                                <group>
+                                    <field name="tag_ids" widget="many2many_tags"/>
+                                </group>
+                                <group>
+                                    <field name="x_loss_reason" placeholder="À renseigner uniquement si l'opportunité est perdue."/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="description" placeholder="Contexte, besoin, enjeux et informations à conserver."/>
+                                <field name="x_strategic_comment" placeholder="Synthèse commerciale interne, points de vigilance et prochaines hypothèses."/>
+                            </group>
+                        </page>
+                        <page string="Historique commercial">
+                            <group>
+                                <group>
+                                    <div class="o_form_label">Le suivi détaillé, les pièces jointes, les emails, les notes internes et les activités sont disponibles dans le chatter ci-dessous.</div>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_crm_lead_form_digiplus_standard_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.digiplus.standard.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='opportunity_partner']" position="after">
+                <group string="Qualification DigiPlus" invisible="type == 'lead'">
+                    <field name="x_service_requested"/>
+                    <field name="x_need_type"/>
+                    <field name="x_business_sector"/>
+                    <field name="x_priority_level"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+zone,sector,revenue,cost,margin,margin_rate
+Douala,Distribution,4800000,2810000,1990000,41.5
+Douala,Services,8100000,4730000,3370000,41.6
+Douala,Health,3320000,1990000,1330000,40.1
+Yaounde,Industry,2650000,1580000,1070000,40.4
+Yaounde,Technology,3010000,1810000,1200000,39.9
+Bafoussam,Education,1880000,1140000,740000,39.4
+Kribi,Hospitality,2540000,1510000,1030000,40.6

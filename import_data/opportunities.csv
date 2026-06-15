@@ -1,0 +1,8 @@
+name,partner_name,expected_revenue,stage,source,zone,interest,score
+Vision Retail Group - Deploiement ERP & BI multisite,Vision Retail Group,14500000,stage_proposal_sent,utm_source_visit,Douala,hot,91
+Nova Manufacturing - Structuration CRM & automatisation devis,Nova Manufacturing Cameroon,8200000,stage_qualified_need,utm_source_linkedin,Yaounde,warm,73
+Horizon Health Services - Reporting executif & gouvernance des donnees,Horizon Health Services,6900000,stage_negotiation,utm_source_referral,Douala,hot,89
+Campus Plus Academy - CRM admissions & nurturing,Campus Plus Academy,4200000,stage_proposal_prepare,utm_source_email,Bafoussam,warm,70
+GreenPath Logistics - Contrat de support & SLA,GreenPath Logistics,3600000,stage_won,utm_source_inbound,Douala,hot,95
+Tekno Retail Cameroon - Application mobile terrain,Tekno Retail Cameroon,9300000,stage_demo_planned,utm_source_event,Yaounde,hot,84
+BlueWave Hospitality - Refonte web & automatisation leads,BlueWave Hospitality,5100000,stage_new_prospect,utm_source_linkedin,Kribi,cold,52

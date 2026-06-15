@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_crm_lead_tree" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.list.demo</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="digiplus_crm.view_digiplus_crm_lead_list"/>
+        <field name="arch" type="xml">
+            <field name="x_priority_level" position="after">
+                <field name="x_interest_level"/>
+                <field name="x_demo_sector"/>
+                <field name="x_geographic_zone"/>
+                <field name="x_demo_score"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_digiplus_crm_lead_form" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.form.demo</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="digiplus_crm.view_digiplus_crm_lead_form"/>
+        <field name="arch" type="xml">
+            <field name="x_contact_language" position="after">
+                <field name="x_entry_channel"/>
+            </field>
+
+            <field name="x_business_sector" position="after">
+                <field name="x_demo_sector"/>
+                <field name="x_geographic_zone"/>
+                <field name="x_interest_level"/>
+                <field name="x_marketing_segment"/>
+                <field name="x_demo_score"/>
+                <field name="x_expected_demo_value"/>
+            </field>
+
+            <field name="activity_summary" position="after">
+                <field name="x_whatsapp_followup"/>
+            </field>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Qualification avancée">
+                    <group>
+                        <group>
+                            <field name="x_business_need"/>
+                            <field name="x_recommended_solution"/>
+                            <field name="x_demo_use_case"/>
+                            <field name="x_next_decision_step"/>
+                        </group>
+                        <group>
+                            <field name="x_sage_saari_context"/>
+                            <field name="x_agrochem_projection"/>
+                            <field name="x_stock_impact"/>
+                            <field name="x_purchase_impact"/>
+                            <field name="x_bi_priority"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

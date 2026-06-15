@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+*.bak
+*.swp
+backups/
+.env
+backup_*.sql
+digiplus_project_*.log*

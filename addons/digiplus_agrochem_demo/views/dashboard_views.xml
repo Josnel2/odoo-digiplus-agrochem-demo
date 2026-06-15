@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_dashboard_metric_tree" model="ir.ui.view">
+        <field name="name">digiplus.dashboard.metric.tree</field>
+        <field name="model">digiplus.dashboard.metric</field>
+        <field name="arch" type="xml">
+            <list string="Dashboard metrics">
+                <field name="name"/>
+                <field name="metric_type"/>
+                <field name="value_float"/>
+                <field name="value_integer"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="currency_value" widget="monetary"/>
+                <field name="zone"/>
+                <field name="sector"/>
+                <field name="period"/>
+                <field name="trend"/>
+                <field name="risk_level"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_digiplus_dashboard_metric_form" model="ir.ui.view">
+        <field name="name">digiplus.dashboard.metric.form</field>
+        <field name="model">digiplus.dashboard.metric</field>
+        <field name="arch" type="xml">
+            <form string="Metric">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="metric_type"/>
+                            <field name="period"/>
+                            <field name="trend"/>
+                        </group>
+                        <group>
+                            <field name="value_float"/>
+                            <field name="value_integer"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="currency_value" widget="monetary"/>
+                            <field name="risk_level"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="zone"/>
+                        <field name="sector"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_digiplus_dashboard_metric_graph" model="ir.ui.view">
+        <field name="name">digiplus.dashboard.metric.graph</field>
+        <field name="model">digiplus.dashboard.metric</field>
+        <field name="arch" type="xml">
+            <graph string="Dashboard graph" type="bar">
+                <field name="metric_type" type="row"/>
+                <field name="zone" type="col"/>
+                <field name="currency_value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_digiplus_dashboard_metric_pivot" model="ir.ui.view">
+        <field name="name">digiplus.dashboard.metric.pivot</field>
+        <field name="model">digiplus.dashboard.metric</field>
+        <field name="arch" type="xml">
+            <pivot string="Dashboard pivot">
+                <field name="metric_type" type="row"/>
+                <field name="zone" type="row"/>
+                <field name="period" type="col"/>
+                <field name="currency_value" type="measure"/>
+                <field name="value_integer" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_digiplus_dashboard_metric_search" model="ir.ui.view">
+        <field name="name">digiplus.dashboard.metric.search</field>
+        <field name="model">digiplus.dashboard.metric</field>
+        <field name="arch" type="xml">
+            <search string="Dashboard metrics">
+                <field name="name"/>
+                <field name="metric_type"/>
+                <field name="zone"/>
+                <field name="sector"/>
+                <filter name="group_metric" string="Type" context="{'group_by':'metric_type'}"/>
+                <filter name="group_zone" string="Zone" context="{'group_by':'zone'}"/>
+                <filter name="risk_high" string="Risque eleve" domain="[('risk_level','in',['high','critical'])]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

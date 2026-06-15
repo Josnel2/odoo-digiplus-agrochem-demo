@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="dashboard_metric_pipeline" model="digiplus.dashboard.metric">
+        <field name="name">Pipeline qualifie Q2</field>
+        <field name="metric_type">crm</field>
+        <field name="value_float">14.0</field>
+        <field name="value_integer">14</field>
+        <field name="currency_value">18500000</field>
+        <field name="zone">National</field>
+        <field name="sector">CRM</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">up</field>
+        <field name="risk_level">low</field>
+        <field name="description">Valeur consolidee des opportunites actives actuellement qualifiees.</field>
+    </record>
+    <record id="dashboard_metric_workshops" model="digiplus.dashboard.metric">
+        <field name="name">Ateliers de cadrage planifies</field>
+        <field name="metric_type">crm</field>
+        <field name="value_float">5.0</field>
+        <field name="value_integer">5</field>
+        <field name="currency_value">9300000</field>
+        <field name="zone">Douala</field>
+        <field name="sector">ERP / Odoo</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">up</field>
+        <field name="risk_level">medium</field>
+        <field name="description">Opportunites entrant dans une phase de cadrage ou de validation metier.</field>
+    </record>
+    <record id="dashboard_metric_quotes" model="digiplus.dashboard.metric">
+        <field name="name">Propositions en attente de validation</field>
+        <field name="metric_type">sales</field>
+        <field name="value_float">4.0</field>
+        <field name="value_integer">4</field>
+        <field name="currency_value">12150000</field>
+        <field name="zone">National</field>
+        <field name="sector">Commercial</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">up</field>
+        <field name="risk_level">medium</field>
+        <field name="description">Montant cumule des propositions ouvertes et diffusees aux clients.</field>
+    </record>
+    <record id="dashboard_metric_recurring" model="digiplus.dashboard.metric">
+        <field name="name">Revenu recurrent support</field>
+        <field name="metric_type">sales</field>
+        <field name="value_float">3.0</field>
+        <field name="value_integer">3</field>
+        <field name="currency_value">4200000</field>
+        <field name="zone">Douala</field>
+        <field name="sector">Support</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">up</field>
+        <field name="risk_level">low</field>
+        <field name="description">Portefeuille des contrats de maintenance et support signables sur le trimestre.</field>
+    </record>
+    <record id="dashboard_metric_nurturing" model="digiplus.dashboard.metric">
+        <field name="name">Leads avec suivi WhatsApp</field>
+        <field name="metric_type">marketing</field>
+        <field name="value_float">7.0</field>
+        <field name="value_integer">7</field>
+        <field name="currency_value">5400000</field>
+        <field name="zone">National</field>
+        <field name="sector">Marketing digital</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">up</field>
+        <field name="risk_level">medium</field>
+        <field name="description">Comptes suivis par une combinaison email et WhatsApp sur le cycle de conversion.</field>
+    </record>
+    <record id="dashboard_metric_campaigns" model="digiplus.dashboard.metric">
+        <field name="name">Campagnes actives</field>
+        <field name="metric_type">marketing</field>
+        <field name="value_float">5.0</field>
+        <field name="value_integer">5</field>
+        <field name="currency_value">0</field>
+        <field name="zone">National</field>
+        <field name="sector">Marketing</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">stable</field>
+        <field name="risk_level">low</field>
+        <field name="description">Campagnes actuellement diffusees ou pretes a etre activees.</field>
+    </record>
+    <record id="dashboard_metric_bi_priority" model="digiplus.dashboard.metric">
+        <field name="name">Projets BI prioritaires</field>
+        <field name="metric_type">projection</field>
+        <field name="value_float">3.0</field>
+        <field name="value_integer">3</field>
+        <field name="currency_value">11300000</field>
+        <field name="zone">Douala / Yaounde</field>
+        <field name="sector">Business Intelligence</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">up</field>
+        <field name="risk_level">high</field>
+        <field name="description">Dossiers pour lesquels la direction demande un reporting cible et une gouvernance de donnees renforcee.</field>
+    </record>
+    <record id="dashboard_metric_partner_service" model="digiplus.dashboard.metric">
+        <field name="name">Taux de service partenaires</field>
+        <field name="metric_type">purchase</field>
+        <field name="value_float">94.0</field>
+        <field name="value_integer">3</field>
+        <field name="currency_value">824000</field>
+        <field name="zone">Douala / Yaounde</field>
+        <field name="sector">Achats</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">stable</field>
+        <field name="risk_level">medium</field>
+        <field name="description">Niveau de service observe chez les fournisseurs cloud, licences et messaging.</field>
+    </record>
+    <record id="dashboard_metric_license_cover" model="digiplus.dashboard.metric">
+        <field name="name">Couverture licences &amp; credits</field>
+        <field name="metric_type">stock</field>
+        <field name="value_float">21.0</field>
+        <field name="value_integer">21</field>
+        <field name="currency_value">580000</field>
+        <field name="zone">Operations internes</field>
+        <field name="sector">Support</field>
+        <field name="period">2026-Q2</field>
+        <field name="trend">down</field>
+        <field name="risk_level">high</field>
+        <field name="description">Nombre de jours de couverture estime pour credits WhatsApp, cloud et licences analytiques.</field>
+    </record>
+</odoo>

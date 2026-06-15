@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="sale_order_vision_retail" model="sale.order">
+        <field name="name">DP-QUO-2026-001</field>
+        <field name="partner_id" ref="partner_vision_retail_group"/>
+        <field name="partner_invoice_id" ref="partner_vision_retail_group"/>
+        <field name="partner_shipping_id" ref="partner_vision_retail_group"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="date_order">2026-05-15 09:00:00</field>
+        <field name="validity_date">2026-06-14</field>
+        <field name="state">sent</field>
+        <field name="x_demo_proposal_type">rollout</field>
+        <field name="x_related_demo_axis">ERP, CRM et reporting multisite</field>
+        <field name="x_agrochem_projection">Feuille de route de transformation en trois jalons pour harmoniser ventes, pilotage et BI.</field>
+        <field name="x_decision_status">sent</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Implementation Odoo ERP', 'product_id': ref('product_service_odoo_erp'), 'product_uom_qty': 1, 'price_unit': 4200000}),
+            (0, 0, {'name': 'Structuration CRM &amp; pipeline', 'product_id': ref('product_service_crm'), 'product_uom_qty': 1, 'price_unit': 2200000}),
+            (0, 0, {'name': 'Tableaux de bord Power BI', 'product_id': ref('product_service_bi'), 'product_uom_qty': 1, 'price_unit': 1800000}),
+            (0, 0, {'name': 'Formation utilisateurs Odoo', 'product_id': ref('product_service_training'), 'product_uom_qty': 1, 'price_unit': 650000})
+        ]"/>
+    </record>
+    <record id="sale_order_horizon_health" model="sale.order">
+        <field name="name">DP-QUO-2026-002</field>
+        <field name="partner_id" ref="partner_horizon_health"/>
+        <field name="partner_invoice_id" ref="partner_horizon_health"/>
+        <field name="partner_shipping_id" ref="partner_horizon_health"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="date_order">2026-05-16 10:00:00</field>
+        <field name="validity_date">2026-06-16</field>
+        <field name="state">sale</field>
+        <field name="x_demo_proposal_type">modular</field>
+        <field name="x_related_demo_axis">BI, qualite de donnees et support</field>
+        <field name="x_agrochem_projection">Mise en place d'un cockpit executif, d'un referentiel fiabilise et d'un support post-lancement.</field>
+        <field name="x_decision_status">approved</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Tableaux de bord Power BI', 'product_id': ref('product_service_bi'), 'product_uom_qty': 1, 'price_unit': 1800000}),
+            (0, 0, {'name': 'Migration et qualite de donnees', 'product_id': ref('product_service_data_quality'), 'product_uom_qty': 1, 'price_unit': 1450000}),
+            (0, 0, {'name': 'Maintenance et support applicatif', 'product_id': ref('product_service_support'), 'product_uom_qty': 6, 'price_unit': 950000})
+        ]"/>
+    </record>
+    <record id="sale_order_campus_plus" model="sale.order">
+        <field name="name">DP-QUO-2026-003</field>
+        <field name="partner_id" ref="partner_campus_plus"/>
+        <field name="partner_invoice_id" ref="partner_campus_plus"/>
+        <field name="partner_shipping_id" ref="partner_campus_plus"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="date_order">2026-05-17 11:00:00</field>
+        <field name="validity_date">2026-06-17</field>
+        <field name="state">draft</field>
+        <field name="x_demo_proposal_type">pilot</field>
+        <field name="x_related_demo_axis">CRM admissions &amp; marketing</field>
+        <field name="x_agrochem_projection">Piloter les demandes, automatiser les relances et former l'equipe admissions sur une base commune.</field>
+        <field name="x_decision_status">in_review</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Structuration CRM &amp; pipeline', 'product_id': ref('product_service_crm'), 'product_uom_qty': 1, 'price_unit': 2200000}),
+            (0, 0, {'name': 'Marketing digital &amp; nurturing', 'product_id': ref('product_service_marketing'), 'product_uom_qty': 1, 'price_unit': 950000}),
+            (0, 0, {'name': 'Formation utilisateurs Odoo', 'product_id': ref('product_service_training'), 'product_uom_qty': 1, 'price_unit': 650000})
+        ]"/>
+    </record>
+    <record id="sale_order_orbit_finance" model="sale.order">
+        <field name="name">DP-QUO-2026-004</field>
+        <field name="partner_id" ref="partner_orbit_finance"/>
+        <field name="partner_invoice_id" ref="partner_orbit_finance"/>
+        <field name="partner_shipping_id" ref="partner_orbit_finance"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="date_order">2026-05-18 09:30:00</field>
+        <field name="validity_date">2026-06-18</field>
+        <field name="state">sale</field>
+        <field name="x_demo_proposal_type">modular</field>
+        <field name="x_related_demo_axis">Support recurrent &amp; reporting executif</field>
+        <field name="x_agrochem_projection">Contrat mensuel de support avec supervision, automatisation des escalades et pilotage de direction.</field>
+        <field name="x_decision_status">won</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Maintenance et support applicatif', 'product_id': ref('product_service_support'), 'product_uom_qty': 12, 'price_unit': 950000}),
+            (0, 0, {'name': 'Tableaux de bord Power BI', 'product_id': ref('product_service_bi'), 'product_uom_qty': 1, 'price_unit': 1800000}),
+            (0, 0, {'name': 'Automatisation des processus', 'product_id': ref('product_service_automation'), 'product_uom_qty': 1, 'price_unit': 1850000})
+        ]"/>
+    </record>
+</odoo>

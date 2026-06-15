@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_crm_dashboard_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="payload" t-value="o._get_dashboard_report_payload()"/>
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Rapport d'analyses CRM DigiPlus</h2>
+                        <p>
+                            <strong>Periode :</strong>
+                            <span t-esc="payload['period_label']"/>
+                            (<span t-esc="payload['date_from']"/> - <span t-esc="payload['date_to']"/>)
+                        </p>
+                        <p>
+                            <strong>Commercial :</strong>
+                            <span t-esc="payload['salesperson_label']"/>
+                        </p>
+                        <p>
+                            <strong>Genere le :</strong>
+                            <span t-esc="payload['generated_at']"/>
+                        </p>
+
+                        <h3>Synthese</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Indicateur</th>
+                                    <th>Valeur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CA previsionnel</td>
+                                    <td><span t-esc="o._format_currency(payload['summary']['forecast_amount'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Opportunites</td>
+                                    <td><span t-esc="payload['summary']['opportunity_count']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Taux de conversion</td>
+                                    <td><span t-esc="'%.0f%%' % payload['summary']['conversion_rate']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Relances en retard</td>
+                                    <td><span t-esc="payload['summary']['overdue_activity_count']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Sans prochaine action</td>
+                                    <td><span t-esc="payload['summary']['missing_next_action_count']"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Pipeline commercial</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Etape</th>
+                                    <th>Opportunites</th>
+                                    <th>Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="payload['stage_rows']" t-as="row">
+                                    <td><span t-esc="row['label']"/></td>
+                                    <td><span t-esc="row['count']"/></td>
+                                    <td><span t-esc="o._format_currency(row['amount'])"/></td>
+                                </tr>
+                                <tr t-if="not payload['stage_rows']">
+                                    <td colspan="3">Aucune donnee disponible.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Origine des opportunites</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>Opportunites</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="payload['source_rows']" t-as="row">
+                                    <td><span t-esc="row['label']"/></td>
+                                    <td><span t-esc="row['count']"/></td>
+                                </tr>
+                                <tr t-if="not payload['source_rows']">
+                                    <td colspan="2">Aucune donnee disponible.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Performance commerciale</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Commercial</th>
+                                    <th>Opportunites</th>
+                                    <th>Montant estime</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="payload['user_rows']" t-as="row">
+                                    <td><span t-esc="row['label']"/></td>
+                                    <td><span t-esc="row['count']"/></td>
+                                    <td><span t-esc="o._format_currency(row['amount'])"/></td>
+                                </tr>
+                                <tr t-if="not payload['user_rows']">
+                                    <td colspan="3">Aucune donnee disponible.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Relances en retard</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Opportunite</th>
+                                    <th>Client</th>
+                                    <th>Commercial</th>
+                                    <th>Date</th>
+                                    <th>Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="payload['overdue_rows']" t-as="row">
+                                    <td><span t-esc="row['opportunity']"/></td>
+                                    <td><span t-esc="row['client']"/></td>
+                                    <td><span t-esc="row['salesperson']"/></td>
+                                    <td><span t-esc="row['date']"/></td>
+                                    <td><span t-esc="row['detail']"/></td>
+                                </tr>
+                                <tr t-if="not payload['overdue_rows']">
+                                    <td colspan="5">Aucune relance en retard.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Opportunites sans prochaine action</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Opportunite</th>
+                                    <th>Client</th>
+                                    <th>Commercial</th>
+                                    <th>Date</th>
+                                    <th>Priorite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="payload['missing_rows']" t-as="row">
+                                    <td><span t-esc="row['opportunity']"/></td>
+                                    <td><span t-esc="row['client']"/></td>
+                                    <td><span t-esc="row['salesperson']"/></td>
+                                    <td><span t-esc="row['date']"/></td>
+                                    <td><span t-esc="row['detail']"/></td>
+                                </tr>
+                                <tr t-if="not payload['missing_rows']">
+                                    <td colspan="5">Aucune opportunite en attente.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_crm_dashboard" model="ir.actions.report">
+        <field name="name">Rapport d'analyses CRM</field>
+        <field name="model">digiplus.crm.dashboard.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">digiplus_crm.report_crm_dashboard_document</field>
+        <field name="report_file">digiplus_crm.report_crm_dashboard_document</field>
+        <field name="binding_model_id" ref="model_digiplus_crm_dashboard_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Rapport_Analyses_CRM_%s' % (object.updated_at_display or 'DigiPlus')</field>
+    </record>
+</odoo>

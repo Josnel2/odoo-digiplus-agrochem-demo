@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="source_recommendation" model="utm.source">
+        <field name="name">Recommandation</field>
+    </record>
+    <record id="source_social_network" model="utm.source">
+        <field name="name">Reseau social</field>
+    </record>
+    <record id="source_inbound_call" model="utm.source">
+        <field name="name">Appel entrant</field>
+    </record>
+    <record id="source_web_form" model="utm.source">
+        <field name="name">Formulaire web</field>
+    </record>
+    <record id="source_event" model="utm.source">
+        <field name="name">Evenement</field>
+    </record>
+</odoo>

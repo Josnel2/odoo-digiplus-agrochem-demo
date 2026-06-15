@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_digiplus_crm_dashboard_user,digiplus.crm.dashboard.wizard,model_digiplus_crm_dashboard_wizard,base.group_user,1,1,1,1
+access_digiplus_crm_contact_import_wizard_user,digiplus.crm.contact.import.wizard,model_digiplus_crm_contact_import_wizard,base.group_user,1,1,1,1
+access_digiplus_crm_contact_import_line_user,digiplus.crm.contact.import.line,model_digiplus_crm_contact_import_line,base.group_user,1,1,1,1

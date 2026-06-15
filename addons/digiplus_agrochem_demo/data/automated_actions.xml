@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="server_action_crm_followup" model="ir.actions.server">
+        <field name="name">Creer relance proposition commerciale</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">records.action_create_followup_activity()</field>
+    </record>
+    <record id="server_action_crm_priority" model="ir.actions.server">
+        <field name="name">Creer activite lead chaud</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">records.action_create_priority_activity()</field>
+    </record>
+    <record id="server_action_crm_whatsapp" model="ir.actions.server">
+        <field name="name">Preparer message WhatsApp de suivi</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">records.action_prepare_whatsapp_draft()</field>
+    </record>
+    <record id="server_action_product_rupture" model="ir.actions.server">
+        <field name="name">Creer metrique risque rupture</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">records.action_create_rupture_metric()</field>
+    </record>
+    <record id="server_action_purchase_comment" model="ir.actions.server">
+        <field name="name">Mettre a jour contexte achat</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="state">code</field>
+        <field name="code">records.action_update_supply_comment()</field>
+    </record>
+    <record id="cron_refresh_demo_metrics" model="ir.cron">
+        <field name="name">Refresh DigiPlus operational metrics</field>
+        <field name="model_id" ref="model_digiplus_dashboard_metric"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_refresh_operational_metrics()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="priority">5</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_product_tree" model="ir.ui.view">
+        <field name="name">digiplus.product.tree</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <list string="Offres et articles">
+                <field name="name"/>
+                <field name="default_code"/>
+                <field name="list_price"/>
+                <field name="x_solution_family"/>
+                <field name="x_demo_axis"/>
+                <field name="x_is_demo_service"/>
+                <field name="x_stock_rotation_category"/>
+                <field name="x_rupture_risk_level"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_digiplus_product_form" model="ir.ui.view">
+        <field name="name">digiplus.product.form</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <form string="Produit ou service">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="default_code"/>
+                            <field name="type"/>
+                            <field name="categ_id"/>
+                        </group>
+                        <group>
+                            <field name="list_price"/>
+                            <field name="standard_price"/>
+                            <field name="sale_ok"/>
+                            <field name="purchase_ok"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Positionnement de l'offre">
+                            <group>
+                                <field name="x_solution_family"/>
+                                <field name="x_demo_axis"/>
+                                <field name="x_business_value"/>
+                                <field name="x_target_module"/>
+                                <field name="x_is_demo_service"/>
+                                <field name="x_agrochem_equivalent"/>
+                                <field name="x_stock_rotation_category"/>
+                                <field name="x_rupture_risk_level"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

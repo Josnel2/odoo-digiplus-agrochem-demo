@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="partner_vision_retail_group" model="res.partner">
+        <field name="name">Vision Retail Group</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110101</field>
+        <field name="mobile">+237690110101</field>
+        <field name="email">fatima.ndzi@visionretail.cm</field>
+        <field name="city">Douala</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">distribution</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_client_type">prospect</field>
+        <field name="x_preferred_channel">whatsapp</field>
+        <field name="x_account_potential">strategic</field>
+        <field name="x_priority_level">critical</field>
+        <field name="x_last_business_interaction">2026-05-18</field>
+        <field name="x_business_context">Reseau de points de vente multisites, besoin d'unifier CRM, devis et reporting.</field>
+        <field name="x_agrochem_equivalent_segment">Distribution multisite</field>
+    </record>
+    <record id="partner_nova_manufacturing" model="res.partner">
+        <field name="name">Nova Manufacturing Cameroon</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110102</field>
+        <field name="mobile">+237690110102</field>
+        <field name="email">serge.ekani@nova-mfg.cm</field>
+        <field name="city">Yaounde</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">industry</field>
+        <field name="x_geographic_zone">Yaounde</field>
+        <field name="x_client_type">prospect</field>
+        <field name="x_preferred_channel">phone</field>
+        <field name="x_account_potential">high</field>
+        <field name="x_priority_level">high</field>
+        <field name="x_last_business_interaction">2026-05-17</field>
+        <field name="x_business_context">Cycle commercial B2B long, validation multi-acteurs et besoin d'automatiser devis et relances.</field>
+        <field name="x_agrochem_equivalent_segment">Industrie B2B</field>
+    </record>
+    <record id="partner_orbit_finance" model="res.partner">
+        <field name="name">Orbit Finance Advisory</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110103</field>
+        <field name="mobile">+237690110103</field>
+        <field name="email">nadia.mbappe@orbitfinance.cm</field>
+        <field name="city">Douala</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">services</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_client_type">client</field>
+        <field name="x_preferred_channel">email</field>
+        <field name="x_account_potential">high</field>
+        <field name="x_priority_level">high</field>
+        <field name="x_last_business_interaction">2026-05-14</field>
+        <field name="x_business_context">Client recurrent pour maintenance applicative, reporting executif et optimisation des processus internes.</field>
+        <field name="x_agrochem_equivalent_segment">Services financiers</field>
+    </record>
+    <record id="partner_horizon_health" model="res.partner">
+        <field name="name">Horizon Health Services</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110104</field>
+        <field name="mobile">+237690110104</field>
+        <field name="email">dr.mebenga@horizonhealth.cm</field>
+        <field name="city">Douala</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">health</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_client_type">prospect</field>
+        <field name="x_preferred_channel">email</field>
+        <field name="x_account_potential">high</field>
+        <field name="x_priority_level">high</field>
+        <field name="x_last_business_interaction">2026-05-16</field>
+        <field name="x_business_context">Besoin d'un pilotage centralise des contrats, du support client et des tableaux de bord de service.</field>
+        <field name="x_agrochem_equivalent_segment">Sante &amp; services</field>
+    </record>
+    <record id="partner_campus_plus" model="res.partner">
+        <field name="name">Campus Plus Academy</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110105</field>
+        <field name="mobile">+237690110105</field>
+        <field name="email">julien.tchouta@campusplus.cm</field>
+        <field name="city">Bafoussam</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">education</field>
+        <field name="x_geographic_zone">Bafoussam</field>
+        <field name="x_client_type">prospect</field>
+        <field name="x_preferred_channel">email</field>
+        <field name="x_account_potential">medium</field>
+        <field name="x_priority_level">medium</field>
+        <field name="x_last_business_interaction">2026-05-13</field>
+        <field name="x_business_context">Structurer le recrutement, les campagnes email et le suivi des apprenants dans un CRM centralise.</field>
+        <field name="x_agrochem_equivalent_segment">Education &amp; formation</field>
+    </record>
+    <record id="partner_bluewave_hospitality" model="res.partner">
+        <field name="name">BlueWave Hospitality</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110106</field>
+        <field name="mobile">+237690110106</field>
+        <field name="email">clarisse.kotto@bluewave.cm</field>
+        <field name="city">Kribi</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">hospitality</field>
+        <field name="x_geographic_zone">Kribi</field>
+        <field name="x_client_type">prospect</field>
+        <field name="x_preferred_channel">whatsapp</field>
+        <field name="x_account_potential">high</field>
+        <field name="x_priority_level">high</field>
+        <field name="x_last_business_interaction">2026-05-12</field>
+        <field name="x_business_context">Refonte web, parcours client mobile et automatisation des relances commerciales.</field>
+        <field name="x_agrochem_equivalent_segment">Hotellerie &amp; experience client</field>
+    </record>
+    <record id="partner_greenpath_logistics" model="res.partner">
+        <field name="name">GreenPath Logistics</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110107</field>
+        <field name="mobile">+237690110107</field>
+        <field name="email">andre.nsom@greenpath.cm</field>
+        <field name="city">Douala</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">services</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_client_type">client</field>
+        <field name="x_preferred_channel">phone</field>
+        <field name="x_account_potential">high</field>
+        <field name="x_priority_level">high</field>
+        <field name="x_last_business_interaction">2026-05-19</field>
+        <field name="x_business_context">Contrat recurrent de support Odoo, SLA et tableaux de bord d'exploitation.</field>
+        <field name="x_agrochem_equivalent_segment">Operations &amp; support</field>
+    </record>
+    <record id="partner_tekno_retail" model="res.partner">
+        <field name="name">Tekno Retail Cameroon</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690110108</field>
+        <field name="mobile">+237690110108</field>
+        <field name="email">maurice.bikoi@teknoretail.cm</field>
+        <field name="city">Yaounde</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="customer_rank">1</field>
+        <field name="x_company_sector">technology</field>
+        <field name="x_geographic_zone">Yaounde</field>
+        <field name="x_client_type">prospect</field>
+        <field name="x_preferred_channel">linkedin</field>
+        <field name="x_account_potential">high</field>
+        <field name="x_priority_level">high</field>
+        <field name="x_last_business_interaction">2026-05-15</field>
+        <field name="x_business_context">Application mobile terrain pour forces commerciales et synchronisation avec le CRM.</field>
+        <field name="x_agrochem_equivalent_segment">Retail tech</field>
+    </record>
+    <record id="supplier_meta_business_africa" model="res.partner">
+        <field name="name">Meta Business Partner Africa</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690210101</field>
+        <field name="email">accounts@metabusiness.africa</field>
+        <field name="city">Douala</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="supplier_rank">1</field>
+        <field name="x_company_sector">technology</field>
+        <field name="x_geographic_zone">Afrique centrale</field>
+        <field name="x_client_type">supplier</field>
+        <field name="x_preferred_channel">email</field>
+        <field name="x_account_potential">medium</field>
+        <field name="x_priority_level">medium</field>
+        <field name="x_last_business_interaction">2026-05-18</field>
+        <field name="x_business_context">Credits et accompagnement pour WhatsApp Business.</field>
+        <field name="x_agrochem_equivalent_segment">API &amp; messaging</field>
+    </record>
+    <record id="supplier_cloudbridge_managed" model="res.partner">
+        <field name="name">CloudBridge Managed Services</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690210102</field>
+        <field name="email">billing@cloudbridge.cm</field>
+        <field name="city">Douala</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="supplier_rank">1</field>
+        <field name="x_company_sector">technology</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_client_type">supplier</field>
+        <field name="x_preferred_channel">email</field>
+        <field name="x_account_potential">medium</field>
+        <field name="x_priority_level">medium</field>
+        <field name="x_last_business_interaction">2026-05-11</field>
+        <field name="x_business_context">Hebergement cloud, supervision et sauvegarde des environnements clients.</field>
+        <field name="x_agrochem_equivalent_segment">Cloud &amp; hosting</field>
+    </record>
+    <record id="supplier_powerdata_analytics" model="res.partner">
+        <field name="name">PowerData Analytics</field>
+        <field name="company_type">company</field>
+        <field name="is_company">True</field>
+        <field name="phone">+237690210103</field>
+        <field name="email">sales@powerdata.cm</field>
+        <field name="city">Yaounde</field>
+        <field name="country_id" ref="base.cm"/>
+        <field name="supplier_rank">1</field>
+        <field name="x_company_sector">technology</field>
+        <field name="x_geographic_zone">Yaounde</field>
+        <field name="x_client_type">supplier</field>
+        <field name="x_preferred_channel">phone</field>
+        <field name="x_account_potential">medium</field>
+        <field name="x_priority_level">medium</field>
+        <field name="x_last_business_interaction">2026-05-10</field>
+        <field name="x_business_context">Licences analytiques, support Power BI et transfert de competences.</field>
+        <field name="x_agrochem_equivalent_segment">Analytics &amp; licences</field>
+    </record>
+</odoo>

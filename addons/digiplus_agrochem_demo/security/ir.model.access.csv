@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_digiplus_whatsapp_user,digiplus.whatsapp.user,model_digiplus_whatsapp_message,base.group_user,1,1,1,0
+access_digiplus_whatsapp_manager,digiplus.whatsapp.manager,model_digiplus_whatsapp_message,base.group_system,1,1,1,1
+access_digiplus_dashboard_user,digiplus.dashboard.user,model_digiplus_dashboard_metric,base.group_user,1,1,1,0
+access_digiplus_dashboard_manager,digiplus.dashboard.manager,model_digiplus_dashboard_metric,base.group_system,1,1,1,1
+access_digiplus_marketing_user,digiplus.marketing.user,model_digiplus_marketing_campaign,base.group_user,1,1,1,0
+access_digiplus_marketing_manager,digiplus.marketing.manager,model_digiplus_marketing_campaign,base.group_system,1,1,1,1

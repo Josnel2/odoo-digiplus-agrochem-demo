@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="whatsapp_message_vision_retail" model="digiplus.whatsapp.message">
+        <field name="name">Suivi WhatsApp - Vision Retail Group</field>
+        <field name="partner_id" ref="partner_vision_retail_group"/>
+        <field name="crm_lead_id" ref="lead_vision_retail_erp"/>
+        <field name="phone_number">+237690110101</field>
+        <field name="message_type">followup</field>
+        <field name="message_body">Bonjour, nous revenons vers vous avec le calendrier detaille du lot CRM / BI et les jalons de validation.</field>
+        <field name="status">sent</field>
+        <field name="sent_date">2026-05-19 09:30:00</field>
+        <field name="api_reference">WA-DP-0001</field>
+    </record>
+    <record id="whatsapp_message_horizon_health" model="digiplus.whatsapp.message">
+        <field name="name">Suivi WhatsApp - Horizon Health Services</field>
+        <field name="partner_id" ref="partner_horizon_health"/>
+        <field name="crm_lead_id" ref="lead_horizon_bi"/>
+        <field name="phone_number">+237690110104</field>
+        <field name="message_type">proposal</field>
+        <field name="message_body">Bonjour, vous trouverez ci-joint le recapitulatif des KPI retenus et la proposition de gouvernance des donnees.</field>
+        <field name="status">replied</field>
+        <field name="sent_date">2026-05-19 10:00:00</field>
+        <field name="response_date">2026-05-19 11:15:00</field>
+        <field name="response_summary">Accord de principe sur le perimetre BI, attente de validation budgetaire.</field>
+        <field name="api_reference">WA-DP-0002</field>
+    </record>
+    <record id="whatsapp_message_greenpath" model="digiplus.whatsapp.message">
+        <field name="name">Suivi WhatsApp - GreenPath Logistics</field>
+        <field name="partner_id" ref="partner_greenpath_logistics"/>
+        <field name="crm_lead_id" ref="lead_greenpath_support"/>
+        <field name="phone_number">+237690110107</field>
+        <field name="message_type">reminder</field>
+        <field name="message_body">Bonjour, le recap SLA et la proposition de reporting mensuel sont prets pour signature.</field>
+        <field name="status">delivered</field>
+        <field name="sent_date">2026-05-19 08:45:00</field>
+        <field name="api_reference">WA-DP-0003</field>
+    </record>
+    <record id="whatsapp_message_tekno" model="digiplus.whatsapp.message">
+        <field name="name">Suivi WhatsApp - Tekno Retail Cameroon</field>
+        <field name="partner_id" ref="partner_tekno_retail"/>
+        <field name="crm_lead_id" ref="lead_tekno_mobile"/>
+        <field name="phone_number">+237690110108</field>
+        <field name="message_type">followup</field>
+        <field name="message_body">Bonjour, nous vous partageons les points ouverts avant l'atelier UX de l'application mobile terrain.</field>
+        <field name="status">ready</field>
+        <field name="api_reference">WA-DP-0004</field>
+    </record>
+</odoo>

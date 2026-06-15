@@ -1,0 +1,5 @@
+id,crm_lead_id,status,phone_number,message_type
+WA-DP-0001,lead_vision_retail_erp,sent,+237690110101,followup
+WA-DP-0002,lead_horizon_bi,replied,+237690110104,proposal
+WA-DP-0003,lead_greenpath_support,delivered,+237690110107,reminder
+WA-DP-0004,lead_tekno_mobile,ready,+237690110108,followup

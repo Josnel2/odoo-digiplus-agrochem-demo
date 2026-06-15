@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_partner_form_digiplus_projects" model="ir.ui.view">
+        <field name="name">res.partner.form.digiplus.projects</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_digiplus_projects"
+                    icon="fa-folder-open"
+                    invisible="digiplus_project_count == 0"
+                >
+                    <field name="digiplus_project_count" widget="statinfo" string="Projects"/>
+                </button>
+            </div>
+            <xpath expr="//notebook" position="inside">
+                <page string="Projets DigiPlus">
+                    <field name="project_ids" nolabel="1" context="{'default_partner_id': id}"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

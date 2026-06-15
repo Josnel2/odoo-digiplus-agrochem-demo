@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="crm_tag_strategic_account" model="crm.tag">
+        <field name="name">Compte strategique</field>
+        <field name="color">1</field>
+    </record>
+    <record id="crm_tag_odoo_crm" model="crm.tag">
+        <field name="name">Odoo CRM</field>
+        <field name="color">2</field>
+    </record>
+    <record id="crm_tag_marketing" model="crm.tag">
+        <field name="name">Automatisation marketing</field>
+        <field name="color">3</field>
+    </record>
+    <record id="crm_tag_bi" model="crm.tag">
+        <field name="name">Business Intelligence</field>
+        <field name="color">4</field>
+    </record>
+    <record id="crm_tag_b2b" model="crm.tag">
+        <field name="name">B2B</field>
+        <field name="color">5</field>
+    </record>
+    <record id="crm_tag_whatsapp" model="crm.tag">
+        <field name="name">WhatsApp API</field>
+        <field name="color">6</field>
+    </record>
+    <record id="crm_tag_sage" model="crm.tag">
+        <field name="name">Sage Saari</field>
+        <field name="color">7</field>
+    </record>
+    <record id="crm_tag_support" model="crm.tag">
+        <field name="name">Support recurrent</field>
+        <field name="color">8</field>
+    </record>
+
+    <record id="utm_source_visit" model="utm.source">
+        <field name="name">Atelier diagnostic</field>
+    </record>
+    <record id="utm_source_referral" model="utm.source">
+        <field name="name">Recommandation client</field>
+    </record>
+    <record id="utm_source_linkedin" model="utm.source">
+        <field name="name">LinkedIn</field>
+    </record>
+    <record id="utm_source_event" model="utm.source">
+        <field name="name">Webinar DigiPlus</field>
+    </record>
+    <record id="utm_source_email" model="utm.source">
+        <field name="name">Campagne email</field>
+    </record>
+    <record id="utm_source_inbound" model="utm.source">
+        <field name="name">Appel entrant</field>
+    </record>
+</odoo>

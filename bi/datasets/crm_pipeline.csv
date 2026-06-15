@@ -1,0 +1,13 @@
+month,stage,sector,zone,opportunities,expected_revenue,win_probability
+2026-01,Nouveau prospect,Distribution,Douala,6,5600000,22
+2026-01,Besoin qualifie,Industry,Yaounde,4,4300000,35
+2026-01,Atelier de cadrage,Technology,Yaounde,3,3900000,46
+2026-01,Proposition envoyee,Services,Douala,2,2800000,68
+2026-02,Nouveau prospect,Hospitality,Kribi,5,4700000,20
+2026-02,Besoin qualifie,Education,Bafoussam,4,3600000,34
+2026-02,Atelier de cadrage,Distribution,Douala,3,5200000,48
+2026-02,Negociation,Health,Douala,2,4100000,74
+2026-03,Nouveau prospect,Technology,Yaounde,5,5300000,24
+2026-03,Besoin qualifie,Services,Douala,4,3800000,37
+2026-03,Proposition envoyee,Distribution,Douala,3,6100000,69
+2026-03,Negociation,Industry,Yaounde,2,4500000,78

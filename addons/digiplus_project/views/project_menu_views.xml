@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_digiplus_project_templates" model="ir.actions.act_window">
+        <field name="name">Modeles de projets</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">kanban,list,form,calendar</field>
+        <field name="domain">[('digiplus_is_template', '=', True)]</field>
+        <field name="context">{'default_digiplus_is_template': True}</field>
+        <field name="search_view_id" ref="project.view_project_project_filter"/>
+    </record>
+
+    <record id="action_digiplus_project_templates_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project.project_view_kanban"/>
+        <field name="act_window_id" ref="action_digiplus_project_templates"/>
+    </record>
+
+    <record id="action_digiplus_project_templates_list" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="project.view_project"/>
+        <field name="act_window_id" ref="action_digiplus_project_templates"/>
+    </record>
+
+    <menuitem
+        id="menu_digiplus_project_templates"
+        name="Modeles de projets"
+        parent="project.menu_main_pm"
+        action="action_digiplus_project_templates"
+        sequence="3"
+    />
+
+    <menuitem
+        id="menu_digiplus_project_planning"
+        name="Planning des charges"
+        parent="project.menu_project_management"
+        action="action_digiplus_task_planning"
+        sequence="3"
+    />
+</odoo>

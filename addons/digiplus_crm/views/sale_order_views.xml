@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">digiplus.sale.order.form.inherit.crm</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='opportunity_id']" position="after">
+                <field name="x_service_requested"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

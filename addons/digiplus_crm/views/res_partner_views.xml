@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_partner_form_inherit" model="ir.ui.view">
+        <field name="name">digiplus.partner.form.inherit.crm</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="CRM DigiPlus">
+                    <group>
+                        <group>
+                            <field name="x_partner_business_sector"/>
+                            <field name="x_partner_priority_level"/>
+                            <field name="x_preferred_service_requested"/>
+                        </group>
+                        <group>
+                            <field name="lang"/>
+                            <field name="x_contact_language"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="x_partner_account_notes" placeholder="Contexte commercial, historique utile et points de vigilance."/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_digiplus_project_progress_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="payload" t-value="o._get_digiplus_progress_report_payload()"/>
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Rapport d'avancement projet DigiPlus</h2>
+                        <p>
+                            <strong>Projet :</strong>
+                            <span t-esc="payload['project_name']"/>
+                        </p>
+                        <p>
+                            <strong>Client :</strong>
+                            <span t-esc="payload['customer_name']"/>
+                        </p>
+                        <p>
+                            <strong>Chef de projet :</strong>
+                            <span t-esc="payload['manager_name']"/>
+                        </p>
+                        <p>
+                            <strong>Service :</strong>
+                            <span t-esc="payload['service_label']"/>
+                        </p>
+                        <p>
+                            <strong>Genere le :</strong>
+                            <span t-esc="payload['generated_at']"/>
+                        </p>
+
+                        <h3>Synthese executive</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Indicateur</th>
+                                    <th>Valeur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Completion du projet</td>
+                                    <td><span t-esc="payload['completion_rate']"/>%</td>
+                                </tr>
+                                <tr>
+                                    <td>Taches total</td>
+                                    <td><span t-esc="payload['total_tasks']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Taches terminees</td>
+                                    <td><span t-esc="payload['completed_tasks']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Taches en retard</td>
+                                    <td><span t-esc="payload['overdue_count']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Taches sous 48h</td>
+                                    <td><span t-esc="payload['upcoming_count']"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Budget et charge</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Mesure</th>
+                                    <th>Valeur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Budget heures</td>
+                                    <td><span t-esc="payload['budget_hours']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Heures reelles</td>
+                                    <td><span t-esc="payload['actual_hours']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Heures facturables</td>
+                                    <td><span t-esc="payload['billable_hours']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Charge restante estimee</td>
+                                    <td><span t-esc="payload['remaining_hours']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Ecart budget</td>
+                                    <td><span t-esc="payload['variance_hours']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Consommation budget</td>
+                                    <td><span t-esc="payload['consumption_rate']"/>%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Taches ouvertes a piloter</h3>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tache</th>
+                                    <th>Responsable</th>
+                                    <th>Echeance</th>
+                                    <th>Priorite</th>
+                                    <th>Statut</th>
+                                    <th>Charge prevue</th>
+                                    <th>Charge restante</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="payload['task_rows']" t-as="row">
+                                    <td><span t-esc="row['name']"/></td>
+                                    <td><span t-esc="row['assignees']"/></td>
+                                    <td><span t-esc="row['deadline']"/></td>
+                                    <td><span t-esc="row['priority']"/></td>
+                                    <td><span t-esc="row['status']"/></td>
+                                    <td><span t-esc="row['allocated_hours']"/></td>
+                                    <td><span t-esc="row['remaining_hours']"/></td>
+                                </tr>
+                                <tr t-if="not payload['task_rows']">
+                                    <td colspan="7">Aucune tache ouverte a piloter.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_digiplus_project_progress" model="ir.actions.report">
+        <field name="name">Rapport d'avancement projet DigiPlus</field>
+        <field name="model">project.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">digiplus_project.report_digiplus_project_progress_document</field>
+        <field name="report_file">digiplus_project.report_digiplus_project_progress_document</field>
+        <field name="binding_model_id" ref="project.model_project_project"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Rapport_Projet_DigiPlus_%s' % (object.display_name or 'Projet')</field>
+    </record>
+</odoo>

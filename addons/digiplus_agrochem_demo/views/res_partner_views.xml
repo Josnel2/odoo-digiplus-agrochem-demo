@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_partner_tree" model="ir.ui.view">
+        <field name="name">digiplus.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Contacts B2B">
+                <field name="name"/>
+                <field name="city"/>
+                <field name="x_company_sector"/>
+                <field name="x_geographic_zone"/>
+                <field name="x_client_type"/>
+                <field name="x_preferred_channel"/>
+                <field name="x_account_potential"/>
+                <field name="x_priority_level"/>
+                <field name="x_last_business_interaction"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_digiplus_partner_form" model="ir.ui.view">
+        <field name="name">digiplus.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form string="Contact B2B">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_type"/>
+                            <field name="parent_id"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="city"/>
+                            <field name="country_id"/>
+                            <field name="customer_rank"/>
+                            <field name="supplier_rank"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Profil B2B">
+                            <group>
+                                <field name="x_company_sector"/>
+                                <field name="x_geographic_zone"/>
+                                <field name="x_client_type"/>
+                                <field name="x_preferred_channel"/>
+                                <field name="x_account_potential"/>
+                                <field name="x_priority_level"/>
+                                <field name="x_last_business_interaction"/>
+                                <field name="x_business_context"/>
+                                <field name="x_agrochem_equivalent_segment"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,4 @@
+po_ref,supplier,product_code,qty,priority
+DP-PO-2026-001,Meta Business Partner Africa,DPI-WA-001,2,high
+DP-PO-2026-002,CloudBridge Managed Services,DPI-CLD-001,12,medium
+DP-PO-2026-003,PowerData Analytics,DPI-BI-001,5,medium

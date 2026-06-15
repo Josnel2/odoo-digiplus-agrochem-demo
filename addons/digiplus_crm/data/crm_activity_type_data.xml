@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="activity_phonecall" model="mail.activity.type">
+        <field name="name">Appel commercial</field>
+        <field name="category">phonecall</field>
+    </record>
+    <record id="activity_email_followup" model="mail.activity.type">
+        <field name="name">Email de relance</field>
+        <field name="category">default</field>
+    </record>
+    <record id="activity_meeting" model="mail.activity.type">
+        <field name="name">Réunion commerciale</field>
+        <field name="category">meeting</field>
+    </record>
+    <record id="activity_followup_reminder" model="mail.activity.type">
+        <field name="name">Rappel commercial</field>
+        <field name="category">default</field>
+    </record>
+    <record id="activity_deadline_alert" model="mail.activity.type">
+        <field name="name">Échéance commerciale</field>
+        <field name="category">default</field>
+    </record>
+</odoo>

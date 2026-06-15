@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_crm_lead_search" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.search</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <search string="Recherche CRM DigiPlus">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="stage_id"/>
+                <field name="user_id"/>
+                <field name="source_id"/>
+                <field name="x_service_requested"/>
+                <field name="x_priority_level"/>
+                <field name="x_business_sector"/>
+                <field name="date_deadline"/>
+
+                <filter name="my_today_followups" string="Mes relances du jour" domain="[('user_id', '=', uid), ('activity_date_deadline', '=', context_today())]"/>
+                <filter name="overdue_followups" string="Relances en retard" domain="[('activity_state', '=', 'overdue')]"/>
+                <filter name="missing_next_action" string="Opportunités sans prochaine action" domain="[('x_missing_next_action', '=', True)]"/>
+                <filter name="hot_opportunities" string="Opportunités chaudes" domain="[('x_priority_level', 'in', ['high', 'critical'])]"/>
+                <filter name="proposal_sent" string="Propositions envoyées" domain="[('x_is_stage_proposal_sent', '=', True)]"/>
+                <filter name="negotiation" string="Négociation" domain="[('x_is_stage_negotiation', '=', True)]"/>
+                <filter
+                    name="won_this_month"
+                    string="Gagnées ce mois"
+                    domain="[('x_is_stage_won', '=', True), ('write_date', '&gt;=', context_today().strftime('%Y-%m-01 00:00:00'))]"
+                />
+                <filter name="lost_opportunities" string="Perdues" domain="[('x_is_stage_lost', '=', True)]"/>
+                <separator/>
+                <filter name="group_stage" string="Étape" context="{'group_by': 'stage_id'}"/>
+                <filter name="group_salesperson" string="Commercial" context="{'group_by': 'user_id'}"/>
+                <filter name="group_source" string="Source" context="{'group_by': 'source_id'}"/>
+                <filter name="group_service" string="Service" context="{'group_by': 'x_service_requested'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>

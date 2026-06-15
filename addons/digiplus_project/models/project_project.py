@@ -1,0 +1,245 @@
+from odoo import Command, _, api, fields, models
+
+from odoo.addons.digiplus_crm.models.selections import SERVICE_SELECTION
+
+from .project_task import CLOSED_TASK_STATES
+
+
+class ProjectProject(models.Model):
+    _inherit = "project.project"
+
+    digiplus_is_template = fields.Boolean(string="Modele de projet", default=False, tracking=True, copy=False)
+    origin_opportunity_id = fields.Many2one("crm.lead", string="Opportunite source", tracking=True, copy=False)
+    service_requested = fields.Selection(SERVICE_SELECTION, string="Service demande", tracking=True)
+    digiplus_total_task_count = fields.Integer(string="Taches total", compute="_compute_digiplus_metrics")
+    digiplus_completed_task_count = fields.Integer(string="Taches terminees", compute="_compute_digiplus_metrics")
+    digiplus_overdue_task_count = fields.Integer(string="Taches en retard", compute="_compute_digiplus_metrics")
+    digiplus_upcoming_task_count = fields.Integer(string="Taches sous 48h", compute="_compute_digiplus_metrics")
+    digiplus_completion_rate = fields.Float(string="Completion (%)", compute="_compute_digiplus_metrics")
+    digiplus_effective_hours = fields.Float(string="Heures reelles", compute="_compute_digiplus_metrics")
+    digiplus_billable_hours = fields.Float(string="Heures facturables", compute="_compute_digiplus_metrics")
+    digiplus_remaining_estimated_hours = fields.Float(
+        string="Charge restante estimee", compute="_compute_digiplus_metrics"
+    )
+    digiplus_budget_variance_hours = fields.Float(string="Ecart budget (h)", compute="_compute_digiplus_metrics")
+    digiplus_budget_consumption_rate = fields.Float(
+        string="Consommation budget (%)", compute="_compute_digiplus_metrics"
+    )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        projects = super().create(vals_list)
+        projects.filtered(lambda project: not project.type_ids)._create_digiplus_default_task_stages()
+        return projects
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        default.setdefault("origin_opportunity_id", False)
+        default.setdefault("digiplus_is_template", False)
+        project = super().copy(default)
+        self._clone_digiplus_task_stages_to_project(project)
+        return project
+
+    def write(self, vals):
+        old_partner_map = {project.id: project.partner_id.id for project in self}
+        result = super().write(vals)
+        if "partner_id" in vals:
+            for project in self:
+                old_partner_id = old_partner_map.get(project.id)
+                tasks_to_update = project.tasks.filtered(
+                    lambda task: not task.partner_id or task.partner_id.id == old_partner_id
+                )
+                tasks_to_update.write({"partner_id": project.partner_id.id or False})
+        return result
+
+    def _get_digiplus_default_stage_blueprint(self):
+        return [
+            {"name": _("Backlog"), "sequence": 10, "fold": False},
+            {"name": _("En cours"), "sequence": 20, "fold": False},
+            {"name": _("En revision"), "sequence": 30, "fold": False},
+            {"name": _("Livre"), "sequence": 40, "fold": True},
+        ]
+
+    def _create_digiplus_default_task_stages(self):
+        TaskStage = self.env["project.task.type"].sudo()
+        for project in self:
+            if project.type_ids:
+                continue
+            created_stages = self.env["project.task.type"]
+            for stage_vals in project._get_digiplus_default_stage_blueprint():
+                created_stages |= TaskStage.with_context(default_project_id=project.id).create(stage_vals)
+            project.type_ids = [Command.set(created_stages.ids)]
+
+    def _clone_digiplus_task_stages_to_project(self, new_project):
+        self.ensure_one()
+        TaskStage = self.env["project.task.type"].sudo()
+        stage_mapping = {}
+        new_stage_ids = self.env["project.task.type"]
+        source_stages = self.type_ids.sorted(lambda stage: (stage.sequence, stage.id))
+        for source_stage in source_stages:
+            stage_vals = {
+                "name": source_stage.name,
+                "sequence": source_stage.sequence,
+                "fold": source_stage.fold,
+            }
+            for field_name in ("description", "mail_template_id", "rating_template_id", "auto_validation_state"):
+                if field_name not in source_stage._fields:
+                    continue
+                field_value = source_stage[field_name]
+                if source_stage._fields[field_name].type == "many2one":
+                    stage_vals[field_name] = field_value.id
+                else:
+                    stage_vals[field_name] = field_value
+            copied_stage = TaskStage.with_context(default_project_id=new_project.id).create(stage_vals)
+            stage_mapping[source_stage.id] = copied_stage.id
+            new_stage_ids |= copied_stage
+        if new_stage_ids:
+            new_project.type_ids = [Command.set(new_stage_ids.ids)]
+            tasks_to_update = new_project.tasks.filtered(lambda task: task.stage_id.id in stage_mapping)
+            for task in tasks_to_update:
+                task.stage_id = stage_mapping[task.stage_id.id]
+
+    @api.depends(
+        "tasks.state",
+        "tasks.date_deadline",
+        "tasks.user_ids",
+        "tasks.allocated_hours",
+        "tasks.remaining_hours",
+        "tasks.digiplus_is_overdue",
+        "tasks.digiplus_is_due_soon",
+        "timesheet_ids.unit_amount",
+        "timesheet_ids.so_line",
+        "allocated_hours",
+    )
+    def _compute_digiplus_metrics(self):
+        for project in self:
+            tasks = project.tasks.filtered("display_in_project")
+            open_tasks = tasks.filtered(lambda task: task.state not in CLOSED_TASK_STATES)
+            leaf_open_tasks = open_tasks.filtered(lambda task: not task.child_ids)
+            actual_hours = sum(project.timesheet_ids.mapped("unit_amount"))
+            billable_hours = sum(project.timesheet_ids.filtered("so_line").mapped("unit_amount"))
+            if project.allocated_hours:
+                remaining_hours = max(project.allocated_hours - actual_hours, 0.0)
+                variance_hours = project.allocated_hours - actual_hours
+                consumption_rate = (actual_hours / project.allocated_hours) * 100.0
+            else:
+                remaining_hours = sum(
+                    max(task.remaining_hours, 0.0) for task in leaf_open_tasks if "remaining_hours" in task._fields
+                )
+                variance_hours = -actual_hours
+                consumption_rate = 0.0
+            total_tasks = len(tasks)
+            completed_tasks = len(tasks.filtered(lambda task: task.state in CLOSED_TASK_STATES))
+            project.digiplus_total_task_count = total_tasks
+            project.digiplus_completed_task_count = completed_tasks
+            project.digiplus_overdue_task_count = len(open_tasks.filtered("digiplus_is_overdue"))
+            project.digiplus_upcoming_task_count = len(open_tasks.filtered("digiplus_is_due_soon"))
+            project.digiplus_completion_rate = round((completed_tasks / total_tasks) * 100.0, 2) if total_tasks else 0.0
+            project.digiplus_effective_hours = actual_hours
+            project.digiplus_billable_hours = billable_hours
+            project.digiplus_remaining_estimated_hours = remaining_hours
+            project.digiplus_budget_variance_hours = variance_hours
+            project.digiplus_budget_consumption_rate = consumption_rate
+
+    def _format_digiplus_datetime(self, value):
+        self.ensure_one()
+        if not value:
+            return "-"
+        localized_value = fields.Datetime.context_timestamp(self, value)
+        return localized_value.strftime("%d/%m/%Y %H:%M")
+
+    def _format_digiplus_hours(self, value):
+        return f"{value:.2f} h"
+
+    def _get_digiplus_service_label(self):
+        self.ensure_one()
+        if not self.service_requested:
+            return "-"
+        return dict(self._fields["service_requested"].selection).get(self.service_requested, self.service_requested)
+
+    def _get_digiplus_progress_report_payload(self):
+        self.ensure_one()
+        open_tasks = self.tasks.filtered(lambda task: task.display_in_project and task.state not in CLOSED_TASK_STATES)
+        task_rows = []
+        for task in open_tasks.sorted(key=lambda task: task.date_deadline or fields.Datetime.now()):
+            task_rows.append(
+                {
+                    "name": task.display_name,
+                    "assignees": ", ".join(task.user_ids.mapped("name")) or "-",
+                    "deadline": self._format_digiplus_datetime(task.date_deadline),
+                    "priority": dict(task._fields["digiplus_priority_level"].selection).get(
+                        task.digiplus_priority_level, "-"
+                    ),
+                    "status": dict(task._fields["digiplus_deadline_status"].selection).get(
+                        task.digiplus_deadline_status, "-"
+                    ),
+                    "allocated_hours": self._format_digiplus_hours(task.allocated_hours or 0.0),
+                    "remaining_hours": self._format_digiplus_hours(getattr(task, "remaining_hours", 0.0)),
+                }
+            )
+        return {
+            "project_name": self.display_name,
+            "customer_name": self.partner_id.display_name or "-",
+            "manager_name": self.user_id.display_name or "-",
+            "service_label": self._get_digiplus_service_label(),
+            "completion_rate": round(self.digiplus_completion_rate, 2),
+            "overdue_count": self.digiplus_overdue_task_count,
+            "upcoming_count": self.digiplus_upcoming_task_count,
+            "total_tasks": self.digiplus_total_task_count,
+            "completed_tasks": self.digiplus_completed_task_count,
+            "budget_hours": self._format_digiplus_hours(self.allocated_hours or 0.0),
+            "actual_hours": self._format_digiplus_hours(self.digiplus_effective_hours or 0.0),
+            "billable_hours": self._format_digiplus_hours(self.digiplus_billable_hours or 0.0),
+            "remaining_hours": self._format_digiplus_hours(self.digiplus_remaining_estimated_hours or 0.0),
+            "variance_hours": self._format_digiplus_hours(self.digiplus_budget_variance_hours or 0.0),
+            "consumption_rate": round(self.digiplus_budget_consumption_rate, 2),
+            "generated_at": self._format_digiplus_datetime(fields.Datetime.now()),
+            "task_rows": task_rows,
+        }
+
+    def action_view_digiplus_progress_report(self):
+        self.ensure_one()
+        report = self.env.ref("digiplus_project.action_report_digiplus_project_progress")
+        return report.report_action(self)
+
+    def action_create_project_from_template(self):
+        self.ensure_one()
+        new_project = self.copy(
+            {
+                "name": _("%s - Nouveau projet") % self.name,
+                "partner_id": False,
+                "origin_opportunity_id": False,
+                "allow_billable": False,
+                "digiplus_is_template": False,
+            }
+        )
+        new_project.tasks.write({"partner_id": False})
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Projet duplique"),
+            "res_model": "project.project",
+            "view_mode": "form",
+            "res_id": new_project.id,
+            "views": [(self.env.ref("project.edit_project").id, "form")],
+        }
+
+    def action_view_origin_opportunity(self):
+        self.ensure_one()
+        if not self.origin_opportunity_id:
+            return False
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Opportunite source"),
+            "res_model": "crm.lead",
+            "view_mode": "form",
+            "res_id": self.origin_opportunity_id.id,
+        }
+
+    def action_open_digiplus_task_stages(self):
+        self.ensure_one()
+        action = self.env["ir.actions.act_window"]._for_xml_id("project.open_task_type_form_domain")
+        action["context"] = {
+            "project_id": self.id,
+            "default_project_id": self.id,
+        }
+        return action

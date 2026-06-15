@@ -1,0 +1,11 @@
+default_code,name,list_price,standard_price,x_solution_family,x_demo_axis,x_business_value,x_target_module,x_is_demo_service
+DPS-ERP-001,Implementation Odoo ERP,4200000,1250000,erp,ERP,Pilotage complet du projet,sale_management,True
+DPS-CRM-001,Structuration CRM & pipeline,2200000,680000,crm,CRM,Qualification et relances,crm,True
+DPS-WEB-001,Developpement web metier,2800000,940000,web,Web,Portail et parcours digitaux,website,True
+DPS-MOB-001,Developpement mobile terrain,3600000,1180000,mobile,Mobile,Collecte terrain et synchronisation,crm,True
+DPS-AUT-001,Automatisation des processus,1850000,540000,automation,Automatisation,Workflows et alertes,mail,True
+DPS-BI-001,Tableaux de bord Power BI,1800000,620000,bi,BI,KPI executifs et marge,crm,True
+DPS-TRN-001,Formation utilisateurs Odoo,650000,180000,training,Formation,Adoption et transfert de competences,crm,True
+DPS-SUP-001,Maintenance et support applicatif,950000,280000,support,Support,SLA et support post-lancement,base,True
+DPS-MKT-001,Marketing digital & nurturing,950000,290000,marketing,Marketing,Acquisition et conversion,mass_mailing,True
+DPS-DAT-001,Migration et qualite de donnees,1450000,460000,integration,Data,Reprise et fiabilisation des donnees,contacts,True

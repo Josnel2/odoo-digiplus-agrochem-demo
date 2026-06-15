@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="mailing_list_executive" model="mailing.list">
+        <field name="name">Directions commerciales et direction generale</field>
+    </record>
+    <record id="mailing_list_operations" model="mailing.list">
+        <field name="name">PME multisites et operations</field>
+    </record>
+    <record id="mailing_list_support" model="mailing.list">
+        <field name="name">Clients support et adoption</field>
+    </record>
+
+    <record id="marketing_campaign_crm_bi" model="digiplus.marketing.campaign">
+        <field name="name">Campagne CRM &amp; BI pour directions commerciales</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain">[('x_marketing_segment','=','executive_pipeline')]</field>
+        <field name="mailing_list_id" ref="mailing_list_executive"/>
+        <field name="template_id" ref="email_template_workshop_invitation"/>
+        <field name="state">active</field>
+        <field name="x_target_sector">Directions commerciales</field>
+        <field name="x_campaign_axis">CRM &amp; BI</field>
+        <field name="x_expected_roi">18.5</field>
+        <field name="x_demo_projection">Positionner DigiPlus sur les enjeux de pilotage commercial et d'aide a la decision.</field>
+    </record>
+    <record id="marketing_campaign_erp_rollout" model="digiplus.marketing.campaign">
+        <field name="name">Campagne ERP &amp; conduite du changement</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain">[('x_marketing_segment','=','erp_rollout')]</field>
+        <field name="mailing_list_id" ref="mailing_list_operations"/>
+        <field name="template_id" ref="email_template_technical_summary"/>
+        <field name="state">ready</field>
+        <field name="x_target_sector">PME multisites</field>
+        <field name="x_campaign_axis">ERP &amp; adoption</field>
+        <field name="x_expected_roi">20.0</field>
+        <field name="x_demo_projection">Mettre en avant une feuille de route claire, gouvernee par jalons et formation.</field>
+    </record>
+    <record id="marketing_campaign_data_governance" model="digiplus.marketing.campaign">
+        <field name="name">Campagne gouvernance des donnees &amp; reporting</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain">[('x_marketing_segment','=','data_governance')]</field>
+        <field name="mailing_list_id" ref="mailing_list_executive"/>
+        <field name="template_id" ref="email_template_decision_followup"/>
+        <field name="state">active</field>
+        <field name="x_target_sector">Directions generales</field>
+        <field name="x_campaign_axis">Data &amp; BI</field>
+        <field name="x_expected_roi">22.0</field>
+        <field name="x_demo_projection">Accent sur la fiabilisation des donnees, les KPI et l'export Sage Saari.</field>
+    </record>
+    <record id="marketing_campaign_field_mobility" model="digiplus.marketing.campaign">
+        <field name="name">Campagne web, mobile &amp; experience client</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain">[('x_marketing_segment','=','field_mobility')]</field>
+        <field name="mailing_list_id" ref="mailing_list_operations"/>
+        <field name="template_id" ref="email_template_workshop_followup"/>
+        <field name="state">active</field>
+        <field name="x_target_sector">Retail tech et services</field>
+        <field name="x_campaign_axis">Web &amp; mobile</field>
+        <field name="x_expected_roi">16.0</field>
+        <field name="x_demo_projection">Positionner DigiPlus sur la mobilite terrain et la conversion digitale.</field>
+    </record>
+    <record id="marketing_campaign_support" model="digiplus.marketing.campaign">
+        <field name="name">Campagne support recurrent &amp; adoption</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain">[('x_marketing_segment','=','support_recurring')]</field>
+        <field name="mailing_list_id" ref="mailing_list_support"/>
+        <field name="template_id" ref="email_template_support_nurturing"/>
+        <field name="state">ready</field>
+        <field name="x_target_sector">Clients actifs</field>
+        <field name="x_campaign_axis">Support &amp; MCO</field>
+        <field name="x_expected_roi">14.0</field>
+        <field name="x_demo_projection">Mettre en avant la valeur des SLA, de l'adoption continue et du reporting de service.</field>
+    </record>
+</odoo>

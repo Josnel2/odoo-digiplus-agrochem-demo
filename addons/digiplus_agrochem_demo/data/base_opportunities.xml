@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="lead_vision_retail_erp" model="crm.lead">
+        <field name="name">Vision Retail Group - Deploiement ERP &amp; BI multisite</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_vision_retail_group"/>
+        <field name="contact_name">Fatima NDZI</field>
+        <field name="email_from">fatima.ndzi@visionretail.cm</field>
+        <field name="phone">+237690110101</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="stage_proposal_sent"/>
+        <field name="source_id" ref="utm_source_visit"/>
+        <field name="expected_revenue">14500000</field>
+        <field name="probability">72</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_strategic_account'), ref('crm_tag_odoo_crm'), ref('crm_tag_bi'), ref('crm_tag_b2b')])]"/>
+        <field name="x_demo_sector">distribution</field>
+        <field name="x_business_need">Centraliser les opportunites, les devis et les KPI sur 12 points de vente.</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_entry_channel">onsite</field>
+        <field name="x_interest_level">hot</field>
+        <field name="x_recommended_solution">Deploiement Odoo ERP, CRM, tableaux de bord BI et plan de formation.</field>
+        <field name="x_sage_saari_context">Sage Saari reste la reference comptable a court terme avec besoin d'un export fiable.</field>
+        <field name="x_bi_priority">critical</field>
+        <field name="x_whatsapp_followup">True</field>
+        <field name="x_demo_score">91</field>
+        <field name="x_expected_demo_value">14500000</field>
+        <field name="x_next_decision_step">Valider le planning de cadrage, la gouvernance projet et le budget final.</field>
+        <field name="x_demo_use_case">Deploiement progressif CRM, ventes, reporting et pilotage multisite.</field>
+        <field name="x_agrochem_projection">Feuille de route en trois phases pour CRM, ventes, BI et transfert de competences.</field>
+        <field name="x_stock_impact">Besoin de suivre les licences, les equipements de formation et la disponibilite des ressources projet.</field>
+        <field name="x_purchase_impact">Anticiper les achats cloud, les licences analytiques et les credits WhatsApp pour l'accompagnement commercial.</field>
+        <field name="x_marketing_segment">erp_rollout</field>
+    </record>
+    <record id="lead_nova_automation" model="crm.lead">
+        <field name="name">Nova Manufacturing - Structuration CRM &amp; automatisation devis</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_nova_manufacturing"/>
+        <field name="contact_name">Serge EKANI</field>
+        <field name="email_from">serge.ekani@nova-mfg.cm</field>
+        <field name="phone">+237690110102</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="stage_qualified_need"/>
+        <field name="source_id" ref="utm_source_linkedin"/>
+        <field name="expected_revenue">8200000</field>
+        <field name="probability">38</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_odoo_crm'), ref('crm_tag_b2b'), ref('crm_tag_marketing')])]"/>
+        <field name="x_demo_sector">industry</field>
+        <field name="x_business_need">Automatiser les relances, harmoniser les devis et fiabiliser les donnees commerciales.</field>
+        <field name="x_geographic_zone">Yaounde</field>
+        <field name="x_entry_channel">linkedin</field>
+        <field name="x_interest_level">warm</field>
+        <field name="x_recommended_solution">Structuration CRM, automatisations de relance et migration des historiques commerciaux.</field>
+        <field name="x_sage_saari_context">Besoin de conserver Sage Saari pour la finance tout en fiabilisant les exports.</field>
+        <field name="x_bi_priority">high</field>
+        <field name="x_whatsapp_followup">False</field>
+        <field name="x_demo_score">73</field>
+        <field name="x_expected_demo_value">8200000</field>
+        <field name="x_next_decision_step">Organiser l'atelier de processus et identifier les irritants de relance commerciale.</field>
+        <field name="x_demo_use_case">Refonte du pipeline, devis standardises et suivi automatique des actions.</field>
+        <field name="x_agrochem_projection">Vision cible autour d'un CRM unifie, d'automatisations et d'indicateurs de performance.</field>
+        <field name="x_stock_impact">Impact limite aux consommables internes et a la disponibilite de l'equipe projet.</field>
+        <field name="x_purchase_impact">Prevoir un lot de licences analytiques pour le pilotage des ventes.</field>
+        <field name="x_marketing_segment">executive_pipeline</field>
+    </record>
+    <record id="lead_horizon_bi" model="crm.lead">
+        <field name="name">Horizon Health Services - Reporting executif &amp; gouvernance des donnees</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_horizon_health"/>
+        <field name="contact_name">Dr. MEBENGA</field>
+        <field name="email_from">dr.mebenga@horizonhealth.cm</field>
+        <field name="phone">+237690110104</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="stage_negotiation"/>
+        <field name="source_id" ref="utm_source_referral"/>
+        <field name="expected_revenue">6900000</field>
+        <field name="probability">82</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_bi'), ref('crm_tag_sage'), ref('crm_tag_b2b')])]"/>
+        <field name="x_demo_sector">health</field>
+        <field name="x_business_need">Consolider les KPIs service, les contrats et les donnees de direction dans un meme cockpit.</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_entry_channel">referral</field>
+        <field name="x_interest_level">hot</field>
+        <field name="x_recommended_solution">Pack BI, qualite de donnees, connecteurs Sage Saari et support post-lancement.</field>
+        <field name="x_sage_saari_context">La direction souhaite fiabiliser les extractions avant toute evolution comptable.</field>
+        <field name="x_bi_priority">critical</field>
+        <field name="x_whatsapp_followup">True</field>
+        <field name="x_demo_score">89</field>
+        <field name="x_expected_demo_value">6900000</field>
+        <field name="x_next_decision_step">Partager la maquette du dashboard executif et valider les donnees sources.</field>
+        <field name="x_demo_use_case">Cockpit de direction, marge par contrat et alertes de suivi des prestations.</field>
+        <field name="x_agrochem_projection">Objectif d'une lecture temps reel des revenus, couts et engagements de service.</field>
+        <field name="x_stock_impact">Surveillance des licences BI et de la capacite d'hebergement des tableaux de bord.</field>
+        <field name="x_purchase_impact">Renouveler les licences analytiques et les services cloud associes.</field>
+        <field name="x_marketing_segment">data_governance</field>
+    </record>
+    <record id="lead_campus_marketing" model="crm.lead">
+        <field name="name">Campus Plus Academy - CRM admissions &amp; nurturing</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_campus_plus"/>
+        <field name="contact_name">Julien TCHOUTA</field>
+        <field name="email_from">julien.tchouta@campusplus.cm</field>
+        <field name="phone">+237690110105</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="stage_proposal_prepare"/>
+        <field name="source_id" ref="utm_source_email"/>
+        <field name="expected_revenue">4200000</field>
+        <field name="probability">55</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_marketing'), ref('crm_tag_odoo_crm'), ref('crm_tag_b2b')])]"/>
+        <field name="x_demo_sector">education</field>
+        <field name="x_business_need">Piloter les admissions, les campagnes email et la relance des prospects formation.</field>
+        <field name="x_geographic_zone">Bafoussam</field>
+        <field name="x_entry_channel">email</field>
+        <field name="x_interest_level">warm</field>
+        <field name="x_recommended_solution">CRM admissions, marketing digital, WhatsApp et formation des equipes internes.</field>
+        <field name="x_bi_priority">medium</field>
+        <field name="x_whatsapp_followup">False</field>
+        <field name="x_demo_score">70</field>
+        <field name="x_expected_demo_value">4200000</field>
+        <field name="x_next_decision_step">Finaliser la proposition et cadrer les parcours de suivi des apprenants.</field>
+        <field name="x_demo_use_case">Prospect, relance, inscription et tableau de suivi des admissions.</field>
+        <field name="x_agrochem_projection">Vision cible sur la conversion des demandes et l'automatisation des relances.</field>
+        <field name="x_marketing_segment">executive_pipeline</field>
+    </record>
+    <record id="lead_greenpath_support" model="crm.lead">
+        <field name="name">GreenPath Logistics - Contrat de support &amp; SLA</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_greenpath_logistics"/>
+        <field name="contact_name">Andre NSOM</field>
+        <field name="email_from">andre.nsom@greenpath.cm</field>
+        <field name="phone">+237690110107</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="stage_won"/>
+        <field name="source_id" ref="utm_source_inbound"/>
+        <field name="expected_revenue">3600000</field>
+        <field name="probability">100</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_support'), ref('crm_tag_b2b'), ref('crm_tag_sage')])]"/>
+        <field name="x_demo_sector">services</field>
+        <field name="x_business_need">Encadrer le support applicatif, les escalades et la supervision des KPI de service.</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_entry_channel">phone</field>
+        <field name="x_interest_level">hot</field>
+        <field name="x_recommended_solution">Contrat de support recurrent, dashboards SLA et gouvernance des incidents.</field>
+        <field name="x_sage_saari_context">Exports financiers mensuels pour la valorisation des prestations.</field>
+        <field name="x_bi_priority">high</field>
+        <field name="x_whatsapp_followup">True</field>
+        <field name="x_demo_score">95</field>
+        <field name="x_expected_demo_value">3600000</field>
+        <field name="x_next_decision_step">Signer l'avenant SLA et cadrer les indicateurs de suivi mensuels.</field>
+        <field name="x_demo_use_case">Support continu, relances incidents et suivi des engagements contractuels.</field>
+        <field name="x_agrochem_projection">Passage a un support gouverne par priorites, alertes et indicateurs mensuels.</field>
+        <field name="x_marketing_segment">support_recurring</field>
+    </record>
+    <record id="lead_tekno_mobile" model="crm.lead">
+        <field name="name">Tekno Retail Cameroon - Application mobile terrain</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_tekno_retail"/>
+        <field name="contact_name">Maurice BIKOI</field>
+        <field name="email_from">maurice.bikoi@teknoretail.cm</field>
+        <field name="phone">+237690110108</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="stage_demo_planned"/>
+        <field name="source_id" ref="utm_source_event"/>
+        <field name="expected_revenue">9300000</field>
+        <field name="probability">46</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_whatsapp'), ref('crm_tag_marketing'), ref('crm_tag_b2b')])]"/>
+        <field name="x_demo_sector">technology</field>
+        <field name="x_business_need">Equiper les commerciaux terrain d'une application mobile connectee au CRM.</field>
+        <field name="x_geographic_zone">Yaounde</field>
+        <field name="x_entry_channel">event</field>
+        <field name="x_interest_level">hot</field>
+        <field name="x_recommended_solution">Developpement mobile, automatisation des relances et reporting d'adoption.</field>
+        <field name="x_bi_priority">high</field>
+        <field name="x_whatsapp_followup">True</field>
+        <field name="x_demo_score">84</field>
+        <field name="x_expected_demo_value">9300000</field>
+        <field name="x_next_decision_step">Programmer l'atelier UX terrain et valider le perimetre de synchronisation.</field>
+        <field name="x_demo_use_case">Collecte mobile, suivi des visites et synchronisation des opportunites.</field>
+        <field name="x_agrochem_projection">Feuille de route mobile pour la force commerciale et le management terrain.</field>
+        <field name="x_marketing_segment">field_mobility</field>
+    </record>
+    <record id="lead_bluewave_web" model="crm.lead">
+        <field name="name">BlueWave Hospitality - Refonte web &amp; automatisation leads</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_bluewave_hospitality"/>
+        <field name="contact_name">Clarisse KOTTO</field>
+        <field name="email_from">clarisse.kotto@bluewave.cm</field>
+        <field name="phone">+237690110106</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="stage_new_prospect"/>
+        <field name="source_id" ref="utm_source_linkedin"/>
+        <field name="expected_revenue">5100000</field>
+        <field name="probability">18</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_marketing'), ref('crm_tag_whatsapp'), ref('crm_tag_b2b')])]"/>
+        <field name="x_demo_sector">hospitality</field>
+        <field name="x_business_need">Mieux capter les leads, convertir les demandes et suivre les relances via site web et mobile.</field>
+        <field name="x_geographic_zone">Kribi</field>
+        <field name="x_entry_channel">linkedin</field>
+        <field name="x_interest_level">cold</field>
+        <field name="x_recommended_solution">Refonte web, automatisation des formulaires et nurturing multicanal.</field>
+        <field name="x_bi_priority">medium</field>
+        <field name="x_whatsapp_followup">False</field>
+        <field name="x_demo_score">52</field>
+        <field name="x_expected_demo_value">5100000</field>
+        <field name="x_next_decision_step">Qualifer les parcours de conversion prioritaires et le planning de lancement.</field>
+        <field name="x_demo_use_case">Site web connecte au CRM, segmentation et relance des demandes.</field>
+        <field name="x_agrochem_projection">Objectif d'une acquisition digitale plus lisible et mieux mesuree.</field>
+        <field name="x_marketing_segment">field_mobility</field>
+    </record>
+</odoo>

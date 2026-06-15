@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <function model="ir.ui.view" name="_normalize_digiplus_crm_pipeline_views"/>
+</odoo>

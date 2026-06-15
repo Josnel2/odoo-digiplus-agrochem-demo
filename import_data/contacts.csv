@@ -1,0 +1,12 @@
+id,name,company_type,city,email,phone,x_company_sector,x_geographic_zone,x_client_type,x_preferred_channel,x_account_potential,x_priority_level
+partner_vision_retail_group,Vision Retail Group,company,Douala,fatima.ndzi@visionretail.cm,+237690110101,distribution,Douala,prospect,whatsapp,strategic,critical
+partner_nova_manufacturing,Nova Manufacturing Cameroon,company,Yaounde,serge.ekani@nova-mfg.cm,+237690110102,industry,Yaounde,prospect,phone,high,high
+partner_orbit_finance,Orbit Finance Advisory,company,Douala,nadia.mbappe@orbitfinance.cm,+237690110103,services,Douala,client,email,high,high
+partner_horizon_health,Horizon Health Services,company,Douala,dr.mebenga@horizonhealth.cm,+237690110104,health,Douala,prospect,email,high,high
+partner_campus_plus,Campus Plus Academy,company,Bafoussam,julien.tchouta@campusplus.cm,+237690110105,education,Bafoussam,prospect,email,medium,medium
+partner_bluewave_hospitality,BlueWave Hospitality,company,Kribi,clarisse.kotto@bluewave.cm,+237690110106,hospitality,Kribi,prospect,whatsapp,high,high
+partner_greenpath_logistics,GreenPath Logistics,company,Douala,andre.nsom@greenpath.cm,+237690110107,services,Douala,client,phone,high,high
+partner_tekno_retail,Tekno Retail Cameroon,company,Yaounde,maurice.bikoi@teknoretail.cm,+237690110108,technology,Yaounde,prospect,linkedin,high,high
+supplier_meta_business_africa,Meta Business Partner Africa,company,Douala,accounts@metabusiness.africa,+237690210101,technology,Africa centrale,supplier,email,medium,medium
+supplier_cloudbridge_managed,CloudBridge Managed Services,company,Douala,billing@cloudbridge.cm,+237690210102,technology,Douala,supplier,email,medium,medium
+supplier_powerdata_analytics,PowerData Analytics,company,Yaounde,sales@powerdata.cm,+237690210103,technology,Yaounde,supplier,phone,medium,medium

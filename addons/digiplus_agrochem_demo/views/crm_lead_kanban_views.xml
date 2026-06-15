@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_crm_lead_kanban" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.kanban.demo</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="digiplus_crm.view_digiplus_crm_lead_kanban_v2"/>
+        <field name="arch" type="xml">
+            <field name="x_priority_level" position="after">
+                <field name="x_interest_level"/>
+                <field name="x_demo_sector"/>
+                <field name="x_geographic_zone"/>
+                <field name="x_demo_score"/>
+                <field name="x_recommended_solution"/>
+            </field>
+
+            <xpath expr="//div[contains(@class, 'dp_crm_kanban_meta')]" position="inside">
+                <div class="dp_crm_kanban_meta_row">
+                    <span class="dp_crm_kanban_label">Secteur</span>
+                    <span class="dp_crm_kanban_value">
+                        <field name="x_demo_sector"/>
+                    </span>
+                </div>
+                <div class="dp_crm_kanban_meta_row">
+                    <span class="dp_crm_kanban_label">Zone</span>
+                    <span class="dp_crm_kanban_value">
+                        <field name="x_geographic_zone"/>
+                    </span>
+                </div>
+                <div class="dp_crm_kanban_meta_row">
+                    <span class="dp_crm_kanban_label">Score</span>
+                    <span class="dp_crm_kanban_value">
+                        <field name="x_demo_score"/>
+                    </span>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[contains(@class, 'dp_crm_kanban_tags')]" position="inside">
+                <t t-if="record.x_interest_level.raw_value">
+                    <span class="badge rounded-pill text-bg-light">
+                        <field name="x_interest_level"/>
+                    </span>
+                </t>
+            </xpath>
+
+            <xpath expr="//div[contains(@class, 'dp_crm_kanban_alerts')]" position="inside">
+                <t t-if="record.x_recommended_solution.raw_value">
+                    <span class="badge rounded-pill text-bg-info">Solution qualifiée</span>
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>

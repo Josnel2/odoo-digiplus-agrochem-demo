@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="purchase_order_whatsapp_credits" model="purchase.order">
+        <field name="name">DP-PO-2026-001</field>
+        <field name="partner_id" ref="supplier_meta_business_africa"/>
+        <field name="date_order">2026-05-11 08:00:00</field>
+        <field name="state">purchase</field>
+        <field name="x_supplier_region">Afrique centrale</field>
+        <field name="x_restock_priority">high</field>
+        <field name="x_expected_stock_impact">Maintenir une capacite de relance mobile sur les leads a forte priorite.</field>
+        <field name="x_agrochem_purchase_context">Renouvellement des credits WhatsApp utilises pour les campagnes et relances commerciales.</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Credits WhatsApp Business', 'product_id': ref('product_vendor_whatsapp_credits'), 'product_qty': 2, 'price_unit': 240000, 'date_planned': '2026-05-26 12:00:00'})
+        ]"/>
+    </record>
+    <record id="purchase_order_cloud_hosting" model="purchase.order">
+        <field name="name">DP-PO-2026-002</field>
+        <field name="partner_id" ref="supplier_cloudbridge_managed"/>
+        <field name="date_order">2026-05-12 08:00:00</field>
+        <field name="state">draft</field>
+        <field name="x_supplier_region">Douala</field>
+        <field name="x_restock_priority">medium</field>
+        <field name="x_expected_stock_impact">Garantir la disponibilite des environnements clients et des sauvegardes.</field>
+        <field name="x_agrochem_purchase_context">Renouvellement mensuel des ressources cloud liees aux environnements de support et de recette.</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Hebergement cloud manage', 'product_id': ref('product_vendor_cloud_hosting'), 'product_qty': 12, 'price_unit': 85000, 'date_planned': '2026-05-27 12:00:00'})
+        ]"/>
+    </record>
+    <record id="purchase_order_powerbi_licenses" model="purchase.order">
+        <field name="name">DP-PO-2026-003</field>
+        <field name="partner_id" ref="supplier_powerdata_analytics"/>
+        <field name="date_order">2026-05-13 08:00:00</field>
+        <field name="state">purchase</field>
+        <field name="x_supplier_region">Yaounde</field>
+        <field name="x_restock_priority">medium</field>
+        <field name="x_expected_stock_impact">Maintenir la disponibilite des licences analytiques pour les projets BI actifs.</field>
+        <field name="x_agrochem_purchase_context">Renouvellement des licences Power BI et du support analytique associe.</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Licences Power BI Pro', 'product_id': ref('product_vendor_powerbi_licenses'), 'product_qty': 5, 'price_unit': 68000, 'date_planned': '2026-05-28 12:00:00'})
+        ]"/>
+    </record>
+</odoo>

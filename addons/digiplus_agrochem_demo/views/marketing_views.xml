@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_marketing_campaign_tree" model="ir.ui.view">
+        <field name="name">digiplus.marketing.campaign.tree</field>
+        <field name="model">digiplus.marketing.campaign</field>
+        <field name="arch" type="xml">
+            <list string="Campagnes marketing">
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="mailing_list_id"/>
+                <field name="template_id"/>
+                <field name="state"/>
+                <field name="x_target_sector"/>
+                <field name="x_campaign_axis"/>
+                <field name="x_expected_roi"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_digiplus_marketing_campaign_form" model="ir.ui.view">
+        <field name="name">digiplus.marketing.campaign.form</field>
+        <field name="model">digiplus.marketing.campaign</field>
+        <field name="arch" type="xml">
+            <form string="Campagne marketing">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="state"/>
+                        <field name="model_id"/>
+                        <field name="domain"/>
+                        <field name="mailing_list_id"/>
+                        <field name="template_id"/>
+                        <field name="x_target_sector"/>
+                        <field name="x_campaign_axis"/>
+                        <field name="x_expected_roi"/>
+                        <field name="x_demo_projection"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

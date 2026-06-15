@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="product_service_odoo_erp" model="product.product">
+        <field name="name">Implementation Odoo ERP</field>
+        <field name="default_code">DPS-ERP-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">4200000</field>
+        <field name="standard_price">1250000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">erp</field>
+        <field name="x_demo_axis">ERP</field>
+        <field name="x_business_value">Pilotage complet du projet et parametrage metier.</field>
+        <field name="x_target_module">sale_management</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Programme de transformation ERP</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_crm" model="product.product">
+        <field name="name">Structuration CRM &amp; pipeline</field>
+        <field name="default_code">DPS-CRM-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">2200000</field>
+        <field name="standard_price">680000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">crm</field>
+        <field name="x_demo_axis">CRM</field>
+        <field name="x_business_value">Pipeline structure, relances et qualification commerciale.</field>
+        <field name="x_target_module">crm</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Pilotage commercial</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_web" model="product.product">
+        <field name="name">Developpement web metier</field>
+        <field name="default_code">DPS-WEB-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">2800000</field>
+        <field name="standard_price">940000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">web</field>
+        <field name="x_demo_axis">Web</field>
+        <field name="x_business_value">Portail client, parcours de conversion et connecteurs metier.</field>
+        <field name="x_target_module">website</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Experience digitale</field>
+        <field name="x_stock_rotation_category">slow</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_mobile" model="product.product">
+        <field name="name">Developpement mobile terrain</field>
+        <field name="default_code">DPS-MOB-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">3600000</field>
+        <field name="standard_price">1180000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">mobile</field>
+        <field name="x_demo_axis">Mobile</field>
+        <field name="x_business_value">Applications terrain et synchronisation CRM.</field>
+        <field name="x_target_module">crm</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Mobilite commerciale</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_automation" model="product.product">
+        <field name="name">Automatisation des processus</field>
+        <field name="default_code">DPS-AUT-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">1850000</field>
+        <field name="standard_price">540000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">automation</field>
+        <field name="x_demo_axis">Automatisation</field>
+        <field name="x_business_value">Alertes, workflows et gain de temps pour les equipes.</field>
+        <field name="x_target_module">mail</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Flux automatises</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_bi" model="product.product">
+        <field name="name">Tableaux de bord Power BI</field>
+        <field name="default_code">DPS-BI-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">1800000</field>
+        <field name="standard_price">620000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">bi</field>
+        <field name="x_demo_axis">BI</field>
+        <field name="x_business_value">KPI executifs, analyses de marge et lecture de pipeline.</field>
+        <field name="x_target_module">crm</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Reporting de direction</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_training" model="product.product">
+        <field name="name">Formation utilisateurs Odoo</field>
+        <field name="default_code">DPS-TRN-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">650000</field>
+        <field name="standard_price">180000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">training</field>
+        <field name="x_demo_axis">Formation</field>
+        <field name="x_business_value">Adoption, transfert de competences et bonnes pratiques.</field>
+        <field name="x_target_module">crm</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Conduite du changement</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_support" model="product.product">
+        <field name="name">Maintenance et support applicatif</field>
+        <field name="default_code">DPS-SUP-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">950000</field>
+        <field name="standard_price">280000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">support</field>
+        <field name="x_demo_axis">Support</field>
+        <field name="x_business_value">SLA, correctifs et accompagnement post-deploiement.</field>
+        <field name="x_target_module">base</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Support recurrent</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_marketing" model="product.product">
+        <field name="name">Marketing digital &amp; nurturing</field>
+        <field name="default_code">DPS-MKT-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">950000</field>
+        <field name="standard_price">290000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">marketing</field>
+        <field name="x_demo_axis">Marketing</field>
+        <field name="x_business_value">Campagnes ciblees, scoring et conversion lead-to-opportunity.</field>
+        <field name="x_target_module">mass_mailing</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Nurturing et acquisition</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_service_data_quality" model="product.product">
+        <field name="name">Migration et qualite de donnees</field>
+        <field name="default_code">DPS-DAT-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="list_price">1450000</field>
+        <field name="standard_price">460000</field>
+        <field name="categ_id" ref="categ_services_digiplus"/>
+        <field name="x_solution_family">integration</field>
+        <field name="x_demo_axis">Data</field>
+        <field name="x_business_value">Nettoyage, reprise et fiabilisation des donnees metier.</field>
+        <field name="x_target_module">contacts</field>
+        <field name="x_is_demo_service">True</field>
+        <field name="x_agrochem_equivalent">Gouvernance des donnees</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">low</field>
+    </record>
+    <record id="product_vendor_whatsapp_credits" model="product.product">
+        <field name="name">Credits WhatsApp Business</field>
+        <field name="default_code">DPI-WA-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="list_price">0</field>
+        <field name="standard_price">240000</field>
+        <field name="categ_id" ref="categ_internal_supply"/>
+        <field name="x_solution_family">automation</field>
+        <field name="x_demo_axis">Support</field>
+        <field name="x_business_value">Capacite de relance mobile pour leads prioritaires.</field>
+        <field name="x_target_module">mail</field>
+        <field name="x_is_demo_service">False</field>
+        <field name="x_agrochem_equivalent">Consommable messaging</field>
+        <field name="x_stock_rotation_category">fast</field>
+        <field name="x_rupture_risk_level">high</field>
+    </record>
+    <record id="product_vendor_cloud_hosting" model="product.product">
+        <field name="name">Hebergement cloud manage</field>
+        <field name="default_code">DPI-CLD-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="list_price">0</field>
+        <field name="standard_price">85000</field>
+        <field name="categ_id" ref="categ_internal_supply"/>
+        <field name="x_solution_family">support</field>
+        <field name="x_demo_axis">Infrastructure</field>
+        <field name="x_business_value">Disponibilite des environnements clients et sauvegarde.</field>
+        <field name="x_target_module">base</field>
+        <field name="x_is_demo_service">False</field>
+        <field name="x_agrochem_equivalent">Infrastructure cloud</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">medium</field>
+    </record>
+    <record id="product_vendor_powerbi_licenses" model="product.product">
+        <field name="name">Licences Power BI Pro</field>
+        <field name="default_code">DPI-BI-001</field>
+        <field name="type">service</field>
+        <field name="sale_ok">False</field>
+        <field name="purchase_ok">True</field>
+        <field name="list_price">0</field>
+        <field name="standard_price">68000</field>
+        <field name="categ_id" ref="categ_internal_supply"/>
+        <field name="x_solution_family">bi</field>
+        <field name="x_demo_axis">BI</field>
+        <field name="x_business_value">Acces aux tableaux de bord et supervision executive.</field>
+        <field name="x_target_module">crm</field>
+        <field name="x_is_demo_service">False</field>
+        <field name="x_agrochem_equivalent">Licence analytique</field>
+        <field name="x_stock_rotation_category">medium</field>
+        <field name="x_rupture_risk_level">critical</field>
+    </record>
+</odoo>

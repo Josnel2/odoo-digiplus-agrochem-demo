@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="activity_vision_retail_followup" model="mail.activity">
+        <field name="activity_type_id" ref="activity_proposal_followup"/>
+        <field name="res_model_id" ref="crm.model_crm_lead"/>
+        <field name="res_id" ref="lead_vision_retail_erp"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="summary">Validation budget &amp; calendrier</field>
+        <field name="note">Confirmer le comite de validation et le lot CRM / BI du premier jalon.</field>
+        <field name="date_deadline">2026-05-22</field>
+    </record>
+    <record id="activity_nova_priority" model="mail.activity">
+        <field name="activity_type_id" ref="activity_priority_account"/>
+        <field name="res_model_id" ref="crm.model_crm_lead"/>
+        <field name="res_id" ref="lead_nova_automation"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="summary">Cartographie des processus</field>
+        <field name="note">Preparer l'atelier sur les devis, relances et validations commerciales.</field>
+        <field name="date_deadline">2026-05-24</field>
+    </record>
+    <record id="activity_campus_followup" model="mail.activity">
+        <field name="activity_type_id" ref="activity_proposal_followup"/>
+        <field name="res_model_id" ref="crm.model_crm_lead"/>
+        <field name="res_id" ref="lead_campus_marketing"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="summary">Relecture de proposition</field>
+        <field name="note">Valider les lots marketing, CRM admissions et formation avec l'equipe Campus Plus.</field>
+        <field name="date_deadline">2026-05-25</field>
+    </record>
+    <record id="activity_tekno_whatsapp" model="mail.activity">
+        <field name="activity_type_id" ref="activity_whatsapp_preparation"/>
+        <field name="res_model_id" ref="crm.model_crm_lead"/>
+        <field name="res_id" ref="lead_tekno_mobile"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="summary">Message recap atelier mobile</field>
+        <field name="note">Preparer le recapitulatif WhatsApp avec les points UX, offline et synchronisation CRM.</field>
+        <field name="date_deadline">2026-05-23</field>
+    </record>
+</odoo>

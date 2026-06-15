@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_project_form_digiplus" model="ir.ui.view">
+        <field name="name">project.project.form.digiplus</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_view_digiplus_progress_report" type="object" string="Exporter rapport PDF" class="btn btn-secondary"/>
+                <button
+                    name="action_create_project_from_template"
+                    type="object"
+                    string="Creer projet depuis modele"
+                    class="btn btn-primary"
+                    invisible="not digiplus_is_template"
+                />
+                <button name="action_open_digiplus_task_stages" type="object" string="Etapes de taches" class="btn btn-secondary"/>
+            </header>
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_origin_opportunity" icon="fa-briefcase" invisible="not origin_opportunity_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Opportunite</span>
+                    </div>
+                </button>
+                <button class="oe_stat_button" type="object" name="action_view_digiplus_progress_report" icon="fa-line-chart">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="digiplus_completion_rate" nolabel="1"/>
+                        </span>
+                        <span class="o_stat_text">Avancement %</span>
+                    </div>
+                </button>
+            </div>
+            <field name="tag_ids" position="after">
+                <field name="service_requested"/>
+                <field name="digiplus_is_template"/>
+            </field>
+            <xpath expr="//notebook/page[@name='description']" position="after">
+                <page name="digiplus_pilotage" string="Pilotage DigiPlus">
+                    <group>
+                        <group string="Contexte projet">
+                            <field name="partner_id"/>
+                            <field name="service_requested"/>
+                            <field name="origin_opportunity_id" options="{'no_create': True}"/>
+                            <field name="digiplus_is_template"/>
+                        </group>
+                        <group string="Budget et temps">
+                            <field name="allocated_hours" widget="timesheet_uom_no_toggle"/>
+                            <field name="digiplus_effective_hours" widget="timesheet_uom"/>
+                            <field name="digiplus_billable_hours" widget="timesheet_uom"/>
+                            <field name="digiplus_remaining_estimated_hours" widget="timesheet_uom"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Avancement">
+                            <field name="digiplus_completion_rate"/>
+                            <field name="digiplus_total_task_count"/>
+                            <field name="digiplus_completed_task_count"/>
+                        </group>
+                        <group string="Alertes et budget">
+                            <field name="digiplus_overdue_task_count"/>
+                            <field name="digiplus_upcoming_task_count"/>
+                            <field name="digiplus_budget_consumption_rate"/>
+                            <field name="digiplus_budget_variance_hours" widget="timesheet_uom"/>
+                        </group>
+                    </group>
+                </page>
+                <page name="digiplus_stages" string="Etapes de taches">
+                    <group>
+                        <button
+                            name="action_open_digiplus_task_stages"
+                            type="object"
+                            string="Gerer les etapes du projet"
+                            class="btn btn-primary"
+                        />
+                    </group>
+                    <group>
+                        <field name="type_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_project_project_search_digiplus" model="ir.ui.view">
+        <field name="name">project.project.search.digiplus</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="service_requested"/>
+            </field>
+            <filter name="my_projects" position="after">
+                <filter string="Modeles de projet" name="digiplus_templates" domain="[('digiplus_is_template', '=', True)]"/>
+            </filter>
+            <filter name="status" position="after">
+                <filter string="Service" name="groupby_service_requested" context="{'group_by': 'service_requested'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="view_project_project_tree_digiplus" model="ir.ui.view">
+        <field name="name">project.project.tree.digiplus</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="service_requested" optional="hide"/>
+                <field name="digiplus_is_template" optional="hide"/>
+                <field name="digiplus_completion_rate" optional="show"/>
+                <field name="digiplus_overdue_task_count" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

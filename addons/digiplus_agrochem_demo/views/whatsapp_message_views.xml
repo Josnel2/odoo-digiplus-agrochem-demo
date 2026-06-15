@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_whatsapp_tree" model="ir.ui.view">
+        <field name="name">digiplus.whatsapp.message.tree</field>
+        <field name="model">digiplus.whatsapp.message</field>
+        <field name="arch" type="xml">
+            <list string="Suivi WhatsApp">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="crm_lead_id"/>
+                <field name="phone_number"/>
+                <field name="message_type"/>
+                <field name="status"/>
+                <field name="sent_date"/>
+                <field name="api_reference"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_digiplus_whatsapp_form" model="ir.ui.view">
+        <field name="name">digiplus.whatsapp.message.form</field>
+        <field name="model">digiplus.whatsapp.message</field>
+        <field name="arch" type="xml">
+            <form string="Message WhatsApp">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="crm_lead_id"/>
+                            <field name="phone_number"/>
+                        </group>
+                        <group>
+                            <field name="message_type"/>
+                            <field name="status"/>
+                            <field name="sent_date"/>
+                            <field name="response_date"/>
+                            <field name="api_reference"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="message_body"/>
+                        <field name="response_summary"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

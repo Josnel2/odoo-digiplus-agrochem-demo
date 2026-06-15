@@ -1,0 +1,103 @@
+.digiplus-operations-theme,
+body.digiplus-operations-theme {
+    --dp-blue-deep: #0B3D91;
+    --dp-blue-light: #EAF2FF;
+    --dp-green: #1E8E5A;
+    --dp-orange: #F59E0B;
+    --dp-red: #DC2626;
+    --dp-gray: #F5F7FA;
+    --dp-text: #1F2937;
+}
+
+.o_web_client.digiplus-operations-theme,
+body.digiplus-operations-theme {
+    background: linear-gradient(180deg, #ffffff 0%, var(--dp-gray) 100%);
+    color: var(--dp-text);
+}
+
+.dp-badge-hot,
+.dp-badge-warm,
+.dp-badge-cold,
+.dp-badge-bi,
+.dp-badge-crm,
+.dp-badge-whatsapp,
+.dp-badge-rupture,
+.dp-badge-success {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.dp-badge-hot {
+    background: rgba(220, 38, 38, 0.12);
+    color: #991B1B;
+}
+
+.dp-badge-warm {
+    background: rgba(245, 158, 11, 0.18);
+    color: #9A6700;
+}
+
+.dp-badge-cold {
+    background: rgba(11, 61, 145, 0.12);
+    color: var(--dp-blue-deep);
+}
+
+.dp-badge-bi {
+    background: rgba(11, 61, 145, 0.14);
+    color: var(--dp-blue-deep);
+}
+
+.dp-badge-crm {
+    background: rgba(30, 142, 90, 0.14);
+    color: var(--dp-green);
+}
+
+.dp-badge-whatsapp {
+    background: rgba(30, 142, 90, 0.18);
+    color: #11683F;
+}
+
+.dp-badge-rupture {
+    background: rgba(220, 38, 38, 0.14);
+    color: var(--dp-red);
+}
+
+.dp-badge-success {
+    background: rgba(30, 142, 90, 0.12);
+    color: var(--dp-green);
+}
+
+.dp-dashboard-card,
+.dp-kpi-card {
+    border-radius: 16px;
+    border: 1px solid rgba(11, 61, 145, 0.08);
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(11, 61, 145, 0.08);
+}
+
+.dp-dashboard-card {
+    padding: 1rem;
+}
+
+.dp-kpi-card {
+    padding: 1rem 1.2rem;
+    background: linear-gradient(135deg, var(--dp-blue-light) 0%, #ffffff 100%);
+}
+
+.o_form_view .o_form_sheet_bg {
+    background: linear-gradient(180deg, #ffffff 0%, var(--dp-gray) 100%);
+}
+
+.o_form_view .o_notebook_headers .nav-link.active {
+    color: #ffffff;
+    background: var(--dp-blue-deep);
+    border-color: var(--dp-blue-deep);
+}
+
+.o_kanban_view .dp-dashboard-card strong {
+    color: var(--dp-blue-deep);
+}

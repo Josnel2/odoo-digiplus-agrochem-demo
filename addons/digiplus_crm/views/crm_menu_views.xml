@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_digiplus_crm_pipeline" model="ir.actions.act_window">
+        <field name="name">Pipeline DigiPlus</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form,graph,pivot</field>
+        <field name="view_id" ref="view_digiplus_crm_lead_kanban_v2"/>
+        <field name="search_view_id" ref="view_digiplus_crm_lead_search"/>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{'default_type': 'opportunity'}</field>
+    </record>
+
+    <record id="action_digiplus_crm_dashboard_open" model="ir.actions.server">
+        <field name="name">Dashboard commercial</field>
+        <field name="model_id" ref="model_digiplus_crm_dashboard_wizard"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_dashboard()</field>
+    </record>
+
+    <record id="action_digiplus_crm_contact_import" model="ir.actions.act_window">
+        <field name="name">Import contacts</field>
+        <field name="res_model">digiplus.crm.contact.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_digiplus_crm_contact_import_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_digiplus_crm_root"
+        name="DigiPlus CRM"
+        parent="crm.crm_menu_root"
+        action="action_digiplus_crm_pipeline"
+        sequence="80"
+    />
+    <menuitem id="menu_digiplus_crm_pipeline" name="Pipeline commercial" parent="menu_digiplus_crm_root" action="action_digiplus_crm_pipeline" sequence="10"/>
+    <menuitem id="menu_digiplus_crm_dashboard" name="Tableau de bord" parent="menu_digiplus_crm_root" action="action_digiplus_crm_dashboard_open" sequence="20"/>
+    <menuitem id="menu_digiplus_crm_import" name="Import contacts" parent="menu_digiplus_crm_root" action="action_digiplus_crm_contact_import" sequence="30"/>
+</odoo>

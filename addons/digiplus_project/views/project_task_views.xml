@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_task_form_digiplus" model="ir.ui.view">
+        <field name="name">project.task.form.digiplus</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <field name="user_ids" position="after">
+                <field name="digiplus_priority_level"/>
+            </field>
+            <field name="date_deadline" position="after">
+                <field name="digiplus_deadline_status" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_project_task_tree_digiplus" model="ir.ui.view">
+        <field name="name">project.task.tree.digiplus</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_view_tree_main_base"/>
+        <field name="arch" type="xml">
+            <field name="priority" position="after">
+                <field name="digiplus_priority_level" optional="show"/>
+            </field>
+            <field name="date_deadline" position="after">
+                <field name="digiplus_deadline_status" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_project_task_search_digiplus" model="ir.ui.view">
+        <field name="name">project.task.search.digiplus</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"/>
+        <field name="arch" type="xml">
+            <field name="user_ids" position="after">
+                <field name="digiplus_priority_level"/>
+            </field>
+            <filter name="starred_tasks" position="after">
+                <filter string="Priorite basse" name="digiplus_low_priority" domain="[('digiplus_priority_level', '=', 'low')]"/>
+                <filter string="Priorite normale" name="digiplus_normal_priority" domain="[('digiplus_priority_level', '=', 'normal')]"/>
+                <filter string="Priorite urgente" name="digiplus_urgent_priority" domain="[('digiplus_priority_level', '=', 'urgent')]"/>
+                <separator/>
+                <filter string="Echeance sous 48h" name="digiplus_due_soon" domain="[('digiplus_is_due_soon', '=', True)]"/>
+                <filter string="Taches en retard" name="digiplus_overdue" domain="[('digiplus_is_overdue', '=', True)]"/>
+            </filter>
+            <filter name="deadline" position="after">
+                <filter string="Priorite DigiPlus" name="groupby_digiplus_priority" context="{'group_by': 'digiplus_priority_level'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="view_project_task_planning_calendar" model="ir.ui.view">
+        <field name="name">project.task.calendar.digiplus.planning</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <calendar
+                string="Planning des charges"
+                date_start="digiplus_planning_start"
+                date_stop="digiplus_planning_end"
+                color="project_id"
+                mode="week"
+                event_open_popup="true"
+                quick_create="0"
+                scales="day,week,month"
+            >
+                <field name="project_id" filters="1"/>
+                <field name="user_ids" widget="many2many_avatar_user"/>
+                <field name="digiplus_priority_level"/>
+                <field name="allocated_hours"/>
+                <field name="remaining_hours"/>
+                <field name="date_deadline"/>
+                <field name="state" widget="project_task_state_selection"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_digiplus_task_planning" model="ir.actions.act_window">
+        <field name="name">Planning des charges</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">calendar,list,pivot,graph,form</field>
+        <field name="domain">[('project_id', '!=', False), ('display_in_project', '=', True), ('state', 'not in', ['1_done', '1_canceled'])]</field>
+        <field name="context">{'search_default_open_tasks': 1}</field>
+        <field name="search_view_id" ref="project.view_task_search_form"/>
+    </record>
+
+    <record id="action_digiplus_task_planning_calendar_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="view_project_task_planning_calendar"/>
+        <field name="act_window_id" ref="action_digiplus_task_planning"/>
+    </record>
+
+    <record id="action_digiplus_task_planning_list_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="project.open_view_all_tasks_list_view"/>
+        <field name="act_window_id" ref="action_digiplus_task_planning"/>
+    </record>
+</odoo>

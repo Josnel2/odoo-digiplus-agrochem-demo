@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_digiplus_dashboard_executive" model="ir.actions.act_window">
+        <field name="name">Tableau de bord executif</field>
+        <field name="res_model">digiplus.dashboard.metric</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="view_id" ref="view_digiplus_dashboard_metric_graph"/>
+        <field name="search_view_id" ref="view_digiplus_dashboard_metric_search"/>
+    </record>
+
+    <record id="action_digiplus_crm_pipeline" model="ir.actions.act_window">
+        <field name="name">Pipeline Commercial</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form,graph,pivot</field>
+        <field name="view_id" ref="digiplus_crm.view_digiplus_crm_lead_kanban_v2"/>
+        <field name="search_view_id" ref="digiplus_crm.view_digiplus_crm_lead_search"/>
+        <field name="domain">[('type','=','opportunity')]</field>
+    </record>
+
+    <record id="action_digiplus_agrochem_opps" model="ir.actions.act_window">
+        <field name="name">Opportunites prioritaires</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form,graph,pivot</field>
+        <field name="view_id" ref="digiplus_crm.view_digiplus_crm_lead_kanban_v2"/>
+        <field name="search_view_id" ref="digiplus_crm.view_digiplus_crm_lead_search"/>
+        <field name="domain">[('x_interest_level','=','hot')]</field>
+    </record>
+
+    <record id="action_digiplus_contacts" model="ir.actions.act_window">
+        <field name="name">Contacts B2B</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_partner_tree"/>
+        <field name="domain">[('x_client_type','!=',False)]</field>
+    </record>
+
+    <record id="action_digiplus_services" model="ir.actions.act_window">
+        <field name="name">Catalogue DigiPlus</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_product_tree"/>
+        <field name="domain">[('x_is_demo_service','=',True)]</field>
+    </record>
+
+    <record id="action_digiplus_products" model="ir.actions.act_window">
+        <field name="name">Licences et achats partenaires</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_product_tree"/>
+        <field name="domain">[('x_is_demo_service','=',False)]</field>
+    </record>
+
+    <record id="action_digiplus_quotes" model="ir.actions.act_window">
+        <field name="name">Devis et propositions</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_sale_order_tree"/>
+    </record>
+
+    <record id="action_digiplus_stock" model="ir.actions.act_window">
+        <field name="name">Flux logistiques</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_stock_picking_tree"/>
+    </record>
+
+    <record id="action_digiplus_purchase" model="ir.actions.act_window">
+        <field name="name">Achats et approvisionnement</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_purchase_order_tree"/>
+    </record>
+
+    <record id="action_digiplus_invoices" model="ir.actions.act_window">
+        <field name="name">Facturation et Sage Saari</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_account_move_tree"/>
+        <field name="domain">[('move_type','=','out_invoice')]</field>
+    </record>
+
+    <record id="action_digiplus_marketing" model="ir.actions.act_window">
+        <field name="name">Campagnes Marketing</field>
+        <field name="res_model">digiplus.marketing.campaign</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_marketing_campaign_tree"/>
+    </record>
+
+    <record id="action_digiplus_whatsapp" model="ir.actions.act_window">
+        <field name="name">Suivi WhatsApp</field>
+        <field name="res_model">digiplus.whatsapp.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_digiplus_whatsapp_tree"/>
+    </record>
+
+    <record id="action_digiplus_dashboard_crm" model="ir.actions.act_window">
+        <field name="name">Dashboards CRM</field>
+        <field name="res_model">digiplus.dashboard.metric</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="view_id" ref="view_digiplus_dashboard_metric_graph"/>
+        <field name="search_view_id" ref="view_digiplus_dashboard_metric_search"/>
+        <field name="domain">[('metric_type','=','crm')]</field>
+    </record>
+
+    <record id="action_digiplus_dashboard_projection" model="ir.actions.act_window">
+        <field name="name">Reporting &amp; BI</field>
+        <field name="res_model">digiplus.dashboard.metric</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="view_id" ref="view_digiplus_dashboard_metric_graph"/>
+        <field name="search_view_id" ref="view_digiplus_dashboard_metric_search"/>
+        <field name="domain">[('metric_type','=','projection')]</field>
+    </record>
+
+    <menuitem id="menu_digiplus_demo_root" name="DigiPlus Consulting" sequence="10" groups="base.group_user"/>
+    <menuitem id="menu_digiplus_exec" name="Pilotage executif" parent="menu_digiplus_demo_root" action="action_digiplus_dashboard_executive" sequence="10"/>
+    <menuitem id="menu_digiplus_pipeline" name="Pipeline Commercial" parent="menu_digiplus_demo_root" action="action_digiplus_crm_pipeline" sequence="20"/>
+    <menuitem id="menu_digiplus_agrochem" name="Opportunites prioritaires" parent="menu_digiplus_demo_root" action="action_digiplus_agrochem_opps" sequence="30"/>
+    <menuitem id="menu_digiplus_contacts" name="Contacts B2B" parent="menu_digiplus_demo_root" action="action_digiplus_contacts" sequence="40"/>
+    <menuitem id="menu_digiplus_services" name="Catalogue DigiPlus" parent="menu_digiplus_demo_root" action="action_digiplus_services" sequence="50"/>
+    <menuitem id="menu_digiplus_products" name="Licences et achats partenaires" parent="menu_digiplus_demo_root" action="action_digiplus_products" sequence="60"/>
+    <menuitem id="menu_digiplus_quotes" name="Devis et ventes" parent="menu_digiplus_demo_root" action="action_digiplus_quotes" sequence="70"/>
+    <menuitem id="menu_digiplus_stock" name="Logistique interne" parent="menu_digiplus_demo_root" action="action_digiplus_stock" sequence="80"/>
+    <menuitem id="menu_digiplus_purchase" name="Achats &amp; Approvisionnement" parent="menu_digiplus_demo_root" action="action_digiplus_purchase" sequence="90"/>
+    <menuitem id="menu_digiplus_invoices" name="Facturation &amp; Sage Saari" parent="menu_digiplus_demo_root" action="action_digiplus_invoices" sequence="100"/>
+    <menuitem id="menu_digiplus_marketing" name="Campagnes Marketing" parent="menu_digiplus_demo_root" action="action_digiplus_marketing" sequence="110"/>
+    <menuitem id="menu_digiplus_whatsapp" name="Suivi WhatsApp" parent="menu_digiplus_demo_root" action="action_digiplus_whatsapp" sequence="120"/>
+    <menuitem id="menu_digiplus_dashboard_crm" name="Dashboards CRM" parent="menu_digiplus_demo_root" action="action_digiplus_dashboard_crm" sequence="130"/>
+    <menuitem id="menu_digiplus_dashboard_projection" name="Reporting &amp; BI" parent="menu_digiplus_demo_root" action="action_digiplus_dashboard_projection" sequence="140"/>
+</odoo>

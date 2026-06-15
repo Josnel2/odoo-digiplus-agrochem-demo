@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_crm_lead_search" model="ir.ui.view">
+        <field name="name">digiplus.crm.lead.search.demo</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="digiplus_crm.view_digiplus_crm_lead_search"/>
+        <field name="arch" type="xml">
+            <field name="x_business_sector" position="after">
+                <field name="x_demo_sector"/>
+                <field name="x_geographic_zone"/>
+                <field name="x_interest_level"/>
+            </field>
+
+            <filter name="hot_opportunities" position="after">
+                <filter name="filter_hot_interest" string="Interet chaud" domain="[('x_interest_level','=','hot')]"/>
+                <filter name="filter_whatsapp" string="Suivi WhatsApp" domain="[('x_whatsapp_followup','=',True)]"/>
+                <filter
+                    name="filter_reporting"
+                    string="Pilotage &amp; BI"
+                    domain="[('x_marketing_segment','in',['executive_pipeline','data_governance'])]"
+                />
+            </filter>
+
+            <filter name="group_service" position="after">
+                <filter name="group_sector" string="Secteur" context="{'group_by':'x_demo_sector'}"/>
+                <filter name="group_zone" string="Zone" context="{'group_by':'x_geographic_zone'}"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

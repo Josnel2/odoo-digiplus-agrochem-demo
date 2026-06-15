@@ -1,0 +1,5 @@
+order_ref,partner_name,proposal_type,axis,decision_status
+DP-QUO-2026-001,Vision Retail Group,rollout,"ERP, CRM et reporting multisite",sent
+DP-QUO-2026-002,Horizon Health Services,modular,"BI, qualite de donnees et support",approved
+DP-QUO-2026-003,Campus Plus Academy,pilot,"CRM admissions et marketing",in_review
+DP-QUO-2026-004,Orbit Finance Advisory,modular,"Support recurrent et reporting executif",won

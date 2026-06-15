@@ -1,0 +1,7 @@
+product,zone,current_stock,avg_monthly_consumption,days_of_cover,risk_level,reorder_recommendation
+DPI-WA-001,Douala,18,9,20,high,Renouveler le pack credits avant la campagne Q3
+DPI-WA-001,Yaounde,8,6,14,critical,Reallouer les credits restants puis recommander un nouveau lot
+DPI-CLD-001,Douala,45,4,337,low,Surveillance mensuelle du contrat cloud
+DPI-CLD-001,Yaounde,12,2,180,low,Pas de reappro immediat
+DPI-BI-001,Douala,7,5,42,medium,Valider le renouvellement trimestriel des licences
+DPI-BI-001,Yaounde,3,4,23,high,Commander 5 licences supplementaires avant fin de mois

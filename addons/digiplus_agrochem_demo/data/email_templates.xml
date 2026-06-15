@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="email_template_workshop_invitation" model="mail.template">
+            <field name="name">Invitation atelier de cadrage Odoo</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Atelier de cadrage DigiPlus - {{ object.name or 'Prospect' }}</field>
+            <field name="email_from">contact@digiplus.cm</field>
+            <field name="body_html" type="html">
+<div style="margin: 0; padding: 0;">
+    <p style="margin: 0; padding: 0; font-size: 13px;">
+        Bonjour,
+        <br/><br/>
+        Nous vous proposons un atelier de cadrage pour aligner les priorites CRM, ventes, automatisation et reporting.
+        <br/><br/>
+        Cette session permettra de confirmer le perimetre, les jalons et les interlocuteurs a mobiliser.
+    </p>
+</div>
+            </field>
+        </record>
+
+        <record id="email_template_workshop_followup" model="mail.template">
+            <field name="name">Relance apres atelier de cadrage</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Synthese et prochaines etapes DigiPlus</field>
+            <field name="email_from">contact@digiplus.cm</field>
+            <field name="body_html" type="html">
+<div style="margin: 0; padding: 0;">
+    <p style="margin: 0; padding: 0; font-size: 13px;">
+        Bonjour,
+        <br/><br/>
+        Merci pour votre disponibilite. Vous trouverez ci-dessous le recapitulatif des actions retenues et le prochain point de validation.
+        <br/><br/>
+        Nous restons disponibles pour ajuster le plan d'execution avant envoi de la proposition finale.
+    </p>
+</div>
+            </field>
+        </record>
+
+        <record id="email_template_sales_proposal" model="mail.template">
+            <field name="name">Envoi de proposition commerciale</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">Votre proposition DigiPlus - {{ object.name or 'Devis' }}</field>
+            <field name="email_from">sales@digiplus.cm</field>
+            <field name="body_html" type="html">
+<div style="margin: 0; padding: 0;">
+    <p style="margin: 0; padding: 0; font-size: 13px;">
+        Bonjour,
+        <br/><br/>
+        Veuillez trouver ci-joint notre proposition commerciale, structuree par lots et jalons de mise en oeuvre.
+        <br/><br/>
+        Elle couvre les besoins prioritaires identifies sur le CRM, les ventes, l'automatisation, la BI et l'accompagnement.
+    </p>
+</div>
+            </field>
+        </record>
+
+        <record id="email_template_technical_summary" model="mail.template">
+            <field name="name">Synthese reunion technique</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Synthese technique DigiPlus</field>
+            <field name="email_from">delivery@digiplus.cm</field>
+            <field name="body_html" type="html">
+<div style="margin: 0; padding: 0;">
+    <p style="margin: 0; padding: 0; font-size: 13px;">
+        Bonjour,
+        <br/><br/>
+        Vous trouverez la synthese des arbitrages techniques, des dependances d'integration et des points de donnees a fiabiliser.
+        <br/><br/>
+        Nous pouvons ensuite confirmer le planning de realisation et les prerequis d'exploitation.
+    </p>
+</div>
+            </field>
+        </record>
+
+        <record id="email_template_decision_followup" model="mail.template">
+            <field name="name">Relance decision projet</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Point de decision sur votre projet DigiPlus</field>
+            <field name="email_from">sales@digiplus.cm</field>
+            <field name="body_html" type="html">
+<div style="margin: 0; padding: 0;">
+    <p style="margin: 0; padding: 0; font-size: 13px;">
+        Bonjour,
+        <br/><br/>
+        Nous revenons vers vous pour confirmer la decision, les priorites du premier lot et la date de demarrage.
+        <br/><br/>
+        Une validation rapide nous permettra de reserver les ressources projet et de finaliser les achats partenaires necessaires.
+    </p>
+</div>
+            </field>
+        </record>
+
+        <record id="email_template_support_nurturing" model="mail.template">
+            <field name="name">Campagne support &amp; adoption</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="subject">Support applicatif et adoption utilisateurs</field>
+            <field name="email_from">marketing@digiplus.cm</field>
+            <field name="body_html" type="html">
+<div style="margin: 0; padding: 0;">
+    <p style="margin: 0; padding: 0; font-size: 13px;">
+        Bonjour,
+        <br/><br/>
+        DigiPlus accompagne les equipes metier sur le support, la formation et le maintien en condition operationnelle.
+        <br/><br/>
+        Nous pouvons partager un plan d'adoption, les SLA cibles et les tableaux de bord de suivi associes.
+    </p>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

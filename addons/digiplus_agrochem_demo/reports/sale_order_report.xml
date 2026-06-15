@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_sale_order_demo_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Proposition DigiPlus</h2>
+                        <p><strong>Client:</strong> <span t-esc="o.partner_id.display_name"/></p>
+                        <p><strong>Axe:</strong> <span t-esc="o.x_related_demo_axis"/></p>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Ligne</th>
+                                    <th>Quantite</th>
+                                    <th>PU</th>
+                                    <th>Sous-total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.order_line" t-as="l">
+                                    <td><span t-esc="l.name"/></td>
+                                    <td><span t-esc="l.product_uom_qty"/></td>
+                                    <td><span t-field="l.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                    <td><span t-field="l.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_sale_order_demo" model="ir.actions.report">
+        <field name="name">Rapport devis DigiPlus</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">digiplus_agrochem_demo.report_sale_order_demo_document</field>
+        <field name="report_file">digiplus_agrochem_demo.report_sale_order_demo_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

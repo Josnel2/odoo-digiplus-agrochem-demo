@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_stock_demo_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Mouvement logistique</h2>
+                        <p><strong>Reference:</strong> <span t-esc="o.name"/></p>
+                        <p><strong>Commentaire:</strong> <span t-esc="o.x_demo_comment"/></p>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Quantite</th>
+                                    <th>Source</th>
+                                    <th>Destination</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.move_ids_without_package" t-as="m">
+                                    <td><span t-esc="m.product_id.display_name"/></td>
+                                    <td><span t-esc="m.product_uom_qty"/></td>
+                                    <td><span t-esc="m.location_id.display_name"/></td>
+                                    <td><span t-esc="m.location_dest_id.display_name"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_stock_demo" model="ir.actions.report">
+        <field name="name">Rapport stock DigiPlus</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">digiplus_agrochem_demo.report_stock_demo_document</field>
+        <field name="report_file">digiplus_agrochem_demo.report_stock_demo_document</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

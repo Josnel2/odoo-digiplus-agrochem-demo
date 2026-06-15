@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="categ_services_digiplus" model="product.category">
+        <field name="name">Services DigiPlus</field>
+    </record>
+    <record id="categ_internal_supply" model="product.category">
+        <field name="name">Licences et achats partenaires</field>
+    </record>
+</odoo>
