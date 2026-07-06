@@ -5,4 +5,6 @@ from . import test_dashboard_currency
 from . import test_dashboard_report
 from . import test_language_sanitization
 from . import test_pipeline_view_normalization
+from . import test_stage_normalization
+from . import test_utm_source_normalization
 from . import test_won_conversion

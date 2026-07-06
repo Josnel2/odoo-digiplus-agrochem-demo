@@ -99,6 +99,8 @@ class CrmLead(models.Model):
         return self.stage_id.id in closed_stage_ids
 
     def _validate_stage_requirements(self):
+        if self.env.context.get("skip_digiplus_stage_validation"):
+            return
         stage_qualified = self._get_stage_ref("digiplus_crm.stage_qualified")
         stage_proposal = self._get_stage_ref("digiplus_crm.stage_proposal_sent")
         stage_negotiation = self._get_stage_ref("digiplus_crm.stage_negotiation")

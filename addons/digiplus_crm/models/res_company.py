@@ -1,4 +1,5 @@
 from odoo import api, models
+from odoo.exceptions import UserError
 
 
 class ResCompany(models.Model):
@@ -45,14 +46,43 @@ class ResCompany(models.Model):
         return self.env.company.currency_id
 
     @api.model
+    def _set_company_currency_if_possible(self, company, currency):
+        company.write({"currency_id": currency.id})
+        return True
+
+    @api.model
     def _normalize_company_currency_to_xaf(self):
         xaf_currency = self._get_preferred_display_currency()
         if not xaf_currency:
             return True
 
         companies = self.sudo().with_context(active_test=False).search([])
-        companies.filtered(lambda company: company.currency_id != xaf_currency).write({"currency_id": xaf_currency.id})
+        normalized_companies = self.browse()
+        blocked_companies = self.browse()
+        for company in companies.filtered(lambda company: company.currency_id != xaf_currency):
+            try:
+                self._set_company_currency_if_possible(company, xaf_currency)
+            except UserError:
+                # Odoo blocks currency changes once journal items exist.
+                # Skip those companies so upgrades and local test installs stay runnable,
+                # but do not cascade XAF onto shared pricing data if the company stayed unchanged.
+                blocked_companies |= company
+                continue
+            normalized_companies |= company
 
         pricelists = self.env["product.pricelist"].sudo().with_context(active_test=False).search([])
-        pricelists.filtered(lambda pricelist: pricelist.currency_id != xaf_currency).write({"currency_id": xaf_currency.id})
+        if "company_id" in pricelists._fields:
+            pricelists.filtered(
+                lambda pricelist: pricelist.company_id
+                and pricelist.company_id in normalized_companies
+                and pricelist.currency_id != xaf_currency
+            ).write({"currency_id": xaf_currency.id})
+            if not blocked_companies:
+                pricelists.filtered(
+                    lambda pricelist: not pricelist.company_id and pricelist.currency_id != xaf_currency
+                ).write({"currency_id": xaf_currency.id})
+        elif not blocked_companies:
+            pricelists.filtered(lambda pricelist: pricelist.currency_id != xaf_currency).write(
+                {"currency_id": xaf_currency.id}
+            )
         return True

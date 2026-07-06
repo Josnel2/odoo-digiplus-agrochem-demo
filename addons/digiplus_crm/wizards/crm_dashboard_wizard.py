@@ -329,6 +329,11 @@ class CrmDashboardWizard(models.TransientModel):
             return "%s %s" % (formatted_amount, symbol)
         return "%s %s" % (symbol, formatted_amount)
 
+    def _format_percentage(self, value, digits=0):
+        self.ensure_one()
+        precision = max(0, int(digits or 0))
+        return f"{value:.{precision}f}%"
+
     def _format_date(self, value):
         if not value:
             return "-"
@@ -388,7 +393,7 @@ class CrmDashboardWizard(models.TransientModel):
             },
             {
                 "label": _("Taux de conversion"),
-                "value": "%s%%" % f"{self.conversion_rate:.0f}",
+                "value": self._format_percentage(self.conversion_rate),
                 "hint": _("%s opportunites") % self.opportunity_count,
                 "tone": "success",
             },
@@ -599,7 +604,7 @@ class CrmDashboardWizard(models.TransientModel):
             },
             {
                 "label": _("Taux de conversion"),
-                "value": "%s%%" % round(summary["conversion_rate"]),
+                "value": self._format_percentage(summary["conversion_rate"]),
                 "hint": _("%s opportunites") % summary["opportunity_count"],
                 "delta": self._format_delta(summary["conversion_rate"], previous_summary["conversion_rate"], mode="rate"),
                 "delta_mode": "default",

@@ -40,7 +40,7 @@
                                 </tr>
                                 <tr>
                                     <td>Taux de conversion</td>
-                                    <td><span t-esc="'%.0f%%' % payload['summary']['conversion_rate']"/></td>
+                                    <td><span t-esc="o._format_percentage(payload['summary']['conversion_rate'])"/></td>
                                 </tr>
                                 <tr>
                                     <td>Relances en retard</td>

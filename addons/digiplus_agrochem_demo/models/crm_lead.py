@@ -117,7 +117,7 @@ class CrmLead(models.Model):
             )
 
     def _ensure_sent_proposal_followup(self):
-        sent_stage = self.env.ref("digiplus_agrochem_demo.stage_proposal_sent", raise_if_not_found=False)
+        sent_stage = self.env.ref("digiplus_crm.stage_proposal_sent", raise_if_not_found=False)
         if not sent_stage:
             return
         leads = self.filtered(lambda lead: lead.stage_id == sent_stage)

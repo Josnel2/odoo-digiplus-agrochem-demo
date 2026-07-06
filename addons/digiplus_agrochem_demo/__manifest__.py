@@ -21,7 +21,7 @@
     "data": [
         "security/record_rules.xml",
         "security/ir.model.access.csv",
-        "data/crm_stages.xml",
+        "data/utm_source_normalization_data.xml",
         "data/crm_tags.xml",
         "data/activity_types.xml",
         "data/service_categories.xml",
@@ -37,6 +37,7 @@
         "data/marketing_campaigns.xml",
         "data/dashboard_metrics.xml",
         "data/automated_actions.xml",
+        "data/crm_stage_normalization_data.xml",
         "views/crm_lead_views.xml",
         "views/crm_lead_kanban_views.xml",
         "views/crm_lead_search_views.xml",

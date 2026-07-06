@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import fields
 from odoo.tests.common import TransactionCase
+from lxml import etree
 
 
 class TestDigiplusProject(TransactionCase):
@@ -69,3 +70,10 @@ class TestDigiplusProject(TransactionCase):
         self.env["project.task"].cron_digiplus_task_deadline_alerts()
         self.assertTrue(task.digiplus_upcoming_alert_deadline)
         self.assertTrue(task.activity_ids)
+
+    def test_project_form_stage_tags_do_not_request_missing_color_field(self):
+        view = self.env.ref("digiplus_project.view_project_project_form_digiplus")
+        root = etree.fromstring(view.arch_db.encode("utf-8"))
+        stage_field = root.xpath("//field[@name='type_ids']")[0]
+        self.assertEqual(stage_field.get("widget"), "many2many_tags")
+        self.assertNotIn("color_field", stage_field.get("options", ""))

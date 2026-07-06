@@ -8,7 +8,7 @@
         <field name="email_from">fatima.ndzi@visionretail.cm</field>
         <field name="phone">+237690110101</field>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="stage_id" ref="stage_proposal_sent"/>
+        <field name="stage_id" ref="digiplus_crm.stage_proposal_sent"/>
         <field name="source_id" ref="utm_source_visit"/>
         <field name="expected_revenue">14500000</field>
         <field name="probability">72</field>
@@ -39,7 +39,7 @@
         <field name="email_from">serge.ekani@nova-mfg.cm</field>
         <field name="phone">+237690110102</field>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="stage_id" ref="stage_qualified_need"/>
+        <field name="stage_id" ref="digiplus_crm.stage_qualified"/>
         <field name="source_id" ref="utm_source_linkedin"/>
         <field name="expected_revenue">8200000</field>
         <field name="probability">38</field>
@@ -70,7 +70,7 @@
         <field name="email_from">dr.mebenga@horizonhealth.cm</field>
         <field name="phone">+237690110104</field>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="stage_id" ref="stage_negotiation"/>
+        <field name="stage_id" ref="digiplus_crm.stage_negotiation"/>
         <field name="source_id" ref="utm_source_referral"/>
         <field name="expected_revenue">6900000</field>
         <field name="probability">82</field>
@@ -101,7 +101,7 @@
         <field name="email_from">julien.tchouta@campusplus.cm</field>
         <field name="phone">+237690110105</field>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="stage_id" ref="stage_proposal_prepare"/>
+        <field name="stage_id" ref="digiplus_crm.stage_qualified"/>
         <field name="source_id" ref="utm_source_email"/>
         <field name="expected_revenue">4200000</field>
         <field name="probability">55</field>
@@ -129,7 +129,7 @@
         <field name="email_from">andre.nsom@greenpath.cm</field>
         <field name="phone">+237690110107</field>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="stage_id" ref="stage_won"/>
+        <field name="stage_id" ref="digiplus_crm.stage_won"/>
         <field name="source_id" ref="utm_source_inbound"/>
         <field name="expected_revenue">3600000</field>
         <field name="probability">100</field>
@@ -158,7 +158,7 @@
         <field name="email_from">maurice.bikoi@teknoretail.cm</field>
         <field name="phone">+237690110108</field>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="stage_id" ref="stage_demo_planned"/>
+        <field name="stage_id" ref="digiplus_crm.stage_qualified"/>
         <field name="source_id" ref="utm_source_event"/>
         <field name="expected_revenue">9300000</field>
         <field name="probability">46</field>
@@ -186,7 +186,7 @@
         <field name="email_from">clarisse.kotto@bluewave.cm</field>
         <field name="phone">+237690110106</field>
         <field name="user_id" ref="base.user_admin"/>
-        <field name="stage_id" ref="stage_new_prospect"/>
+        <field name="stage_id" ref="digiplus_crm.stage_prospect"/>
         <field name="source_id" ref="utm_source_linkedin"/>
         <field name="expected_revenue">5100000</field>
         <field name="probability">18</field>

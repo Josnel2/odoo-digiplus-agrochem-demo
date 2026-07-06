@@ -8,7 +8,7 @@ class TestStockFlow(TransactionCase):
                 "name": "Produit Rupture Test",
                 "type": "consu",
                 "list_price": 2500.0,
-                "x_solution_family": "stock",
+                "x_solution_family": "support",
                 "x_rupture_risk_level": "high",
             }
         )

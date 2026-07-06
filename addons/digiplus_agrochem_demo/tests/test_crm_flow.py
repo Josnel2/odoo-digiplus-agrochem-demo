@@ -5,7 +5,7 @@ class TestCrmFlow(TransactionCase):
     def setUp(self):
         super().setUp()
         self.partner = self.env["res.partner"].create({"name": "Test CRM Partner", "company_type": "company"})
-        self.stage_sent = self.env.ref("digiplus_agrochem_demo.stage_proposal_sent")
+        self.stage_sent = self.env.ref("digiplus_crm.stage_proposal_sent")
 
     def test_create_opportunity(self):
         lead = self.env["crm.lead"].create(

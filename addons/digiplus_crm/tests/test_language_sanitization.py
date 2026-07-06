@@ -11,8 +11,9 @@ class TestDigiplusCrmLanguageSanitization(TransactionCase):
                 "lang": "en_US",
             }
         )
-        self.env.cr.execute("UPDATE res_users SET lang = %s WHERE id = %s", ("zz_ZZ", user.id))
-        self.env["res.users"].invalidate_model(["lang"])
+        self.env.cr.execute("UPDATE res_partner SET lang = %s WHERE id = %s", ("zz_ZZ", user.partner_id.id))
+        self.env["res.partner"].invalidate_model(["lang"])
+        user.invalidate_recordset(["lang"])
 
         self.env["res.users"]._sanitize_invalid_user_languages()
 

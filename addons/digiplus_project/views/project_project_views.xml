@@ -75,7 +75,7 @@
                         />
                     </group>
                     <group>
-                        <field name="type_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="type_ids" widget="many2many_tags"/>
                     </group>
                 </page>
             </xpath>

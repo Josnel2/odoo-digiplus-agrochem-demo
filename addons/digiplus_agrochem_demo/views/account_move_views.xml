@@ -4,14 +4,14 @@
         <field name="name">digiplus.account.move.tree</field>
         <field name="model">account.move</field>
         <field name="arch" type="xml">
-            <list string="Facturation et Sage Saari">
+            <list string="Facturation clients Odoo">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="invoice_date"/>
                 <field name="amount_total" sum="Total"/>
                 <field name="state"/>
-                <field name="x_sage_saari_export_status"/>
-                <field name="x_sage_saari_reference"/>
+                <field name="x_sage_saari_export_status" string="Export externe"/>
+                <field name="x_sage_saari_reference" string="Reference externe"/>
             </list>
         </field>
     </record>
@@ -48,11 +48,11 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Sage Saari">
+                        <page string="Export comptable externe">
                             <group>
-                                <field name="x_sage_saari_export_status"/>
-                                <field name="x_sage_saari_reference"/>
-                                <field name="x_integration_comment"/>
+                                <field name="x_sage_saari_export_status" string="Statut export externe"/>
+                                <field name="x_sage_saari_reference" string="Reference externe"/>
+                                <field name="x_integration_comment" string="Commentaire export / integration"/>
                             </group>
                         </page>
                     </notebook>

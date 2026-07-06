@@ -6,8 +6,20 @@
                 <t t-call="web.external_layout">
                     <div class="page">
                         <h2>Facture client DigiPlus</h2>
+                        <p><strong>Numero:</strong> <span t-esc="o.name or '-'"/></p>
                         <p><strong>Client:</strong> <span t-esc="o.partner_id.display_name"/></p>
-                        <p><strong>Statut export Sage:</strong> <span t-esc="o.x_sage_saari_export_status"/></p>
+                        <p><strong>Date de facture:</strong> <span t-field="o.invoice_date"/></p>
+                        <p><strong>Echeance:</strong> <span t-field="o.invoice_date_due"/></p>
+                        <p><strong>Journal:</strong> <span t-esc="o.journal_id.display_name"/></p>
+                        <t t-if="o.invoice_origin">
+                            <p><strong>Origine:</strong> <span t-esc="o.invoice_origin"/></p>
+                        </t>
+                        <t t-if="o.x_sage_saari_export_status and o.x_sage_saari_export_status != 'not_concerned'">
+                            <p><strong>Statut export externe:</strong> <span t-esc="o.x_sage_saari_export_status"/></p>
+                            <t t-if="o.x_sage_saari_reference">
+                                <p><strong>Reference export:</strong> <span t-esc="o.x_sage_saari_reference"/></p>
+                            </t>
+                        </t>
                         <table class="table table-sm table-striped">
                             <thead>
                                 <tr>
@@ -25,6 +37,24 @@
                                     <td><span t-field="l.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3"><strong>Montant HT</strong></td>
+                                    <td><span t-field="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><strong>Taxes</strong></td>
+                                    <td><span t-field="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><strong>Total TTC</strong></td>
+                                    <td><span t-field="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><strong>Reste a payer</strong></td>
+                                    <td><span t-field="o.amount_residual" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </t>

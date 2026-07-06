@@ -6,6 +6,5 @@
 
     <record id="base.main_company" model="res.company">
         <field name="name">DigiPlus Consulting</field>
-        <field name="currency_id" search="[('name', '=', 'XAF')]" />
     </record>
 </odoo>
