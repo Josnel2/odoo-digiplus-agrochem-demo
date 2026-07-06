@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="dp_crm_kanban_meta_row">
                                     <span class="dp_crm_kanban_label">Échéance</span>
-                                    <span t-att-class="'dp_crm_kanban_value text-danger' if record.activity_state.raw_value == 'overdue' else 'dp_crm_kanban_value'">
+                                    <span t-att-class="record.activity_state.raw_value === 'overdue' ? 'dp_crm_kanban_value text-danger' : 'dp_crm_kanban_value'">
                                         <field name="x_next_action_date"/>
                                     </span>
                                 </div>
