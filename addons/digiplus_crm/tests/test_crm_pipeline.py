@@ -94,3 +94,19 @@ class TestDigiplusCrmPipeline(TransactionCase):
 
         lead.write({"stage_id": self.stage_lost.id})
         self.assertEqual(lead.probability, 0)
+
+    def test_action_delete_from_pipeline_unlinks_opportunity(self):
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Suppression CRM",
+                "type": "opportunity",
+                "partner_id": self.partner.id,
+                "stage_id": self.stage_prospect.id,
+                "user_id": self.env.user.id,
+            }
+        )
+
+        action = lead.action_delete_from_pipeline()
+
+        self.assertFalse(self.env["crm.lead"].search([("id", "=", lead.id)]))
+        self.assertEqual(action, {"type": "ir.actions.client", "tag": "reload"})

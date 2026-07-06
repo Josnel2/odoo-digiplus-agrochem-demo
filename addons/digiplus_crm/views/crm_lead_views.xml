@@ -48,6 +48,17 @@
                 <templates>
                     <t t-name="card">
                         <div class="oe_kanban_global_click o_kanban_record dp_crm_kanban_card">
+                            <button
+                                t-if="widget.deletable"
+                                name="action_delete_from_pipeline"
+                                type="object"
+                                class="btn btn-link text-danger dp_crm_kanban_delete o_no_open"
+                                confirm="Supprimer definitivement cette opportunite ?"
+                                title="Supprimer l'opportunite"
+                                aria-label="Supprimer l'opportunite"
+                            >
+                                <i class="fa fa-trash" aria-hidden="true"/>
+                            </button>
                             <div class="dp_crm_kanban_header">
                                 <div class="dp_crm_kanban_title_block">
                                     <strong class="dp_crm_kanban_title">

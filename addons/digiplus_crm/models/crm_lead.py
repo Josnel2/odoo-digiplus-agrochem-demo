@@ -268,6 +268,14 @@ class CrmLead(models.Model):
             }
         return True
 
+    def action_delete_from_pipeline(self):
+        self.ensure_one()
+        self.unlink()
+        return {
+            "type": "ir.actions.client",
+            "tag": "reload",
+        }
+
     @api.model_create_multi
     def create(self, vals_list):
         probability_map = self._get_stage_probability_map()

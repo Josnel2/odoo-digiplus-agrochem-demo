@@ -33,3 +33,9 @@ class TestDigiplusCrmPipelineViewNormalization(TransactionCase):
         target_view = self.env.ref("digiplus_crm.view_digiplus_crm_lead_kanban_v2")
         self.assertNotIn("<progressbar", old_view.arch_db)
         self.assertEqual(action.view_id, target_view)
+
+    def test_pipeline_view_exposes_delete_action(self):
+        target_view = self.env.ref("digiplus_crm.view_digiplus_crm_lead_kanban_v2")
+
+        self.assertIn("action_delete_from_pipeline", target_view.arch_db)
+        self.assertIn("dp_crm_kanban_delete", target_view.arch_db)

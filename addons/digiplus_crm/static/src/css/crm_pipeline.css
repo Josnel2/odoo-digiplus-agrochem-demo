@@ -16,11 +16,33 @@
 }
 
 .o_kanban_view.dp_crm_pipeline_kanban .dp_crm_kanban_card {
+    position: relative;
     border: 1px solid rgba(148, 163, 184, 0.18);
     border-radius: 18px;
     background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     padding: 1rem;
+}
+
+.o_kanban_view.dp_crm_pipeline_kanban .dp_crm_kanban_delete {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.o_kanban_view.dp_crm_pipeline_kanban .dp_crm_kanban_delete:hover,
+.o_kanban_view.dp_crm_pipeline_kanban .dp_crm_kanban_delete:focus {
+    background: rgba(220, 38, 38, 0.08);
+    color: #b91c1c;
 }
 
 .o_kanban_view.dp_crm_pipeline_kanban .dp_crm_kanban_header {
@@ -29,6 +51,7 @@
     gap: 1rem;
     align-items: flex-start;
     margin-bottom: 0.9rem;
+    padding-right: 2rem;
 }
 
 .o_kanban_view.dp_crm_pipeline_kanban .dp_crm_kanban_title {
