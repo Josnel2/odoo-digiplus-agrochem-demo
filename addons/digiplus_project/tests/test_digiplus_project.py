@@ -121,3 +121,9 @@ class TestDigiplusProject(TransactionCase):
         stage_field = root.xpath("//field[@name='type_ids']")[0]
         self.assertEqual(stage_field.get("widget"), "many2many_tags")
         self.assertNotIn("color_field", stage_field.get("options", ""))
+
+    def test_task_form_keeps_standard_deadline_field_anchor(self):
+        view = self.env.ref("digiplus_project.view_project_task_form_digiplus")
+        root = etree.fromstring(view.arch_db.encode("utf-8"))
+        self.assertTrue(root.xpath("//field[@name='date_deadline']"))
+        self.assertTrue(root.xpath("//field[@name='digiplus_date_start']"))

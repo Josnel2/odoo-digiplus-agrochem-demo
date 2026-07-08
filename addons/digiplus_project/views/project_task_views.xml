@@ -9,8 +9,10 @@
                 <field name="digiplus_priority_level"/>
                 <field name="digiplus_date_start"/>
             </field>
-            <field name="date_deadline" position="replace">
-                <field name="digiplus_date_end"/>
+            <field name="date_deadline" position="attributes">
+                <attribute name="string">Date de fin</attribute>
+            </field>
+            <field name="date_deadline" position="after">
                 <field name="digiplus_deadline_status" readonly="1"/>
                 <field name="digiplus_is_overdue" readonly="1"/>
             </field>
@@ -26,8 +28,10 @@
                 <field name="digiplus_priority_level" optional="show"/>
                 <field name="digiplus_date_start" optional="hide"/>
             </field>
-            <field name="date_deadline" position="replace">
-                <field name="digiplus_date_end" optional="show"/>
+            <field name="date_deadline" position="attributes">
+                <attribute name="string">Date de fin</attribute>
+            </field>
+            <field name="date_deadline" position="after">
                 <field name="digiplus_deadline_status" optional="show"/>
                 <field name="digiplus_is_overdue" optional="show"/>
             </field>
