@@ -13,6 +13,8 @@ class ProjectTask(models.Model):
 
     digiplus_date_start = fields.Datetime(string="Date de debut", tracking=True)
     digiplus_date_end = fields.Datetime(string="Date de fin", tracking=True)
+    digiplus_is_blocked = fields.Boolean(string="Bloquee", tracking=True)
+    digiplus_blocking_reason = fields.Text(string="Raison du blocage", tracking=True)
     digiplus_priority_level = fields.Selection(
         [
             ("low", "Basse"),
@@ -42,6 +44,18 @@ class ProjectTask(models.Model):
         ],
         string="Statut echeance",
         compute="_compute_digiplus_deadline_flags",
+    )
+    digiplus_work_state = fields.Selection(
+        [
+            ("todo", "A faire"),
+            ("in_progress", "En cours"),
+            ("review", "En revue"),
+            ("blocked", "Bloquee"),
+            ("done", "Terminee"),
+        ],
+        string="Etat de travail",
+        compute="_compute_digiplus_work_state",
+        store=True,
     )
     digiplus_planning_start = fields.Datetime(
         string="Debut planning DigiPlus",
@@ -101,6 +115,17 @@ class ProjectTask(models.Model):
                 task.digiplus_deadline_status = "due_soon"
             else:
                 task.digiplus_deadline_status = "on_track"
+
+    @api.depends("state", "stage_id", "digiplus_is_blocked")
+    def _compute_digiplus_work_state(self):
+        for task in self:
+            if task.state in CLOSED_TASK_STATES:
+                task.digiplus_work_state = "done"
+                continue
+            if task.digiplus_is_blocked:
+                task.digiplus_work_state = "blocked"
+                continue
+            task.digiplus_work_state = task._get_digiplus_stage_work_state()
 
     @api.model
     def _search_digiplus_is_due_soon(self, operator, value):
@@ -187,6 +212,18 @@ class ProjectTask(models.Model):
             return "-"
         localized = fields.Datetime.context_timestamp(self, deadline)
         return localized.strftime("%d/%m/%Y %H:%M")
+
+    def _get_digiplus_stage_work_state(self):
+        self.ensure_one()
+        normalized_stage = (self.stage_id.name or "").strip().lower()
+        if any(token in normalized_stage for token in ("review", "revision", "revue", "validation", "qa")):
+            return "review"
+        if any(
+            token in normalized_stage
+            for token in ("cours", "progress", "doing", "develop", "build", "production", "execution")
+        ):
+            return "in_progress"
+        return "todo"
 
     def _get_digiplus_assignee_names(self):
         self.ensure_one()

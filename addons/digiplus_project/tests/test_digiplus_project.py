@@ -127,3 +127,42 @@ class TestDigiplusProject(TransactionCase):
         root = etree.fromstring(view.arch_db.encode("utf-8"))
         self.assertTrue(root.xpath("//field[@name='date_deadline']"))
         self.assertTrue(root.xpath("//field[@name='digiplus_date_start']"))
+
+    def test_project_deliverable_updates_project_counter(self):
+        deliverable = self.env["project.deliverable"].create(
+            {
+                "name": "Spec fonctionnelle",
+                "project_id": self.project.id,
+                "responsible_id": self.env.user.id,
+                "status": "in_progress",
+                "planned_date": fields.Date.today(),
+            }
+        )
+        self.assertEqual(deliverable.project_id, self.project)
+        self.assertEqual(self.project.digiplus_deliverable_count, 1)
+
+    def test_dashboard_wizard_builds_metrics_and_action(self):
+        backlog_stage = self.project.type_ids.sorted(lambda stage: (stage.sequence, stage.id))[0]
+        self.env["project.task"].create(
+            {
+                "name": "Tache dashboard",
+                "project_id": self.project.id,
+                "stage_id": backlog_stage.id,
+                "digiplus_is_blocked": True,
+                "date_deadline": fields.Datetime.to_string(fields.Datetime.now() - timedelta(hours=3)),
+            }
+        )
+        self.env["project.deliverable"].create(
+            {
+                "name": "Livrable dashboard",
+                "project_id": self.project.id,
+                "status": "blocked",
+                "planned_date": fields.Date.today(),
+            }
+        )
+        wizard = self.env["digiplus.project.dashboard.wizard"].create({"project_id": self.project.id})
+        self.assertEqual(wizard.total_project_count, 1)
+        self.assertGreaterEqual(wizard.blocked_task_count, 1)
+        self.assertIn("Dashboard Projet", wizard.dashboard_html)
+        action = wizard.action_open_projects()
+        self.assertEqual(action["res_model"], "project.project")

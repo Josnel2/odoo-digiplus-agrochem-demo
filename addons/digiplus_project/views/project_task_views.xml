@@ -8,6 +8,7 @@
             <field name="user_ids" position="after">
                 <field name="digiplus_priority_level"/>
                 <field name="digiplus_date_start"/>
+                <field name="digiplus_is_blocked"/>
             </field>
             <field name="date_deadline" position="attributes">
                 <attribute name="string">Date de fin</attribute>
@@ -15,6 +16,8 @@
             <field name="date_deadline" position="after">
                 <field name="digiplus_deadline_status" readonly="1"/>
                 <field name="digiplus_is_overdue" readonly="1"/>
+                <field name="digiplus_work_state" readonly="1"/>
+                <field name="digiplus_blocking_reason" invisible="not digiplus_is_blocked"/>
             </field>
         </field>
     </record>
@@ -27,6 +30,7 @@
             <field name="priority" position="after">
                 <field name="digiplus_priority_level" optional="show"/>
                 <field name="digiplus_date_start" optional="hide"/>
+                <field name="digiplus_is_blocked" optional="show"/>
             </field>
             <field name="date_deadline" position="attributes">
                 <attribute name="string">Date de fin</attribute>
@@ -34,6 +38,7 @@
             <field name="date_deadline" position="after">
                 <field name="digiplus_deadline_status" optional="show"/>
                 <field name="digiplus_is_overdue" optional="show"/>
+                <field name="digiplus_work_state" optional="show"/>
             </field>
         </field>
     </record>
@@ -47,6 +52,7 @@
                 <field name="digiplus_priority_level"/>
                 <field name="digiplus_date_start"/>
                 <field name="digiplus_date_end"/>
+                <field name="digiplus_is_blocked"/>
             </field>
             <filter name="starred_tasks" position="after">
                 <filter string="Priorite basse" name="digiplus_low_priority" domain="[('digiplus_priority_level', '=', 'low')]"/>
@@ -55,9 +61,12 @@
                 <separator/>
                 <filter string="Echeance sous 48h" name="digiplus_due_soon" domain="[('digiplus_is_due_soon', '=', True)]"/>
                 <filter string="Taches en retard" name="digiplus_overdue" domain="[('digiplus_is_overdue', '=', True)]"/>
+                <filter string="Taches bloquees" name="digiplus_blocked" domain="[('digiplus_is_blocked', '=', True)]"/>
+                <filter string="Sans responsable" name="digiplus_unassigned" domain="[('user_ids', '=', False)]"/>
             </filter>
             <filter name="deadline" position="after">
                 <filter string="Priorite DigiPlus" name="groupby_digiplus_priority" context="{'group_by': 'digiplus_priority_level'}"/>
+                <filter string="Etat de travail" name="groupby_digiplus_work_state" context="{'group_by': 'digiplus_work_state'}"/>
             </filter>
         </field>
     </record>

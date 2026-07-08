@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_deliverable_tree" model="ir.ui.view">
+        <field name="name">project.deliverable.tree</field>
+        <field name="model">project.deliverable</field>
+        <field name="arch" type="xml">
+            <list string="Livrables projet" default_order="planned_date asc">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="partner_id" optional="hide"/>
+                <field name="responsible_id"/>
+                <field name="status"/>
+                <field name="planned_date"/>
+                <field name="delivered_date"/>
+                <field name="is_late" optional="show"/>
+                <field name="is_due_soon" optional="show"/>
+                <field name="days_remaining" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_project_deliverable_form" model="ir.ui.view">
+        <field name="name">project.deliverable.form</field>
+        <field name="model">project.deliverable</field>
+        <field name="arch" type="xml">
+            <form string="Livrable projet">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="project_id"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="responsible_id"/>
+                        </group>
+                        <group>
+                            <field name="status"/>
+                            <field name="planned_date"/>
+                            <field name="delivered_date"/>
+                            <field name="is_late" readonly="1"/>
+                            <field name="is_due_soon" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Commentaire">
+                            <field name="description"/>
+                        </page>
+                        <page string="Pieces jointes">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_project_deliverable_search" model="ir.ui.view">
+        <field name="name">project.deliverable.search</field>
+        <field name="model">project.deliverable</field>
+        <field name="arch" type="xml">
+            <search string="Recherche livrables">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="partner_id"/>
+                <field name="responsible_id"/>
+                <field name="status"/>
+                <filter string="En retard" name="deliverable_late" domain="[('is_late', '=', True)]"/>
+                <filter string="Echeance proche" name="deliverable_due_soon" domain="[('is_due_soon', '=', True)]"/>
+                <filter string="Bloques" name="deliverable_blocked" domain="[('status', '=', 'blocked')]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Projet" name="groupby_project" context="{'group_by': 'project_id'}"/>
+                    <filter string="Responsable" name="groupby_responsible" context="{'group_by': 'responsible_id'}"/>
+                    <filter string="Statut" name="groupby_status" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_digiplus_project_deliverables" model="ir.actions.act_window">
+        <field name="name">Livrables projet</field>
+        <field name="res_model">project.deliverable</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_project_deliverable_tree"/>
+        <field name="search_view_id" ref="view_project_deliverable_search"/>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="view_project_project_form_deliverables_digiplus" model="ir.ui.view">
+        <field name="name">project.project.form.deliverables.digiplus</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="digiplus_project.view_project_project_form_digiplus"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='digiplus_stages']" position="after">
+                <page name="digiplus_deliverables" string="Livrables">
+                    <group>
+                        <button
+                            name="action_open_digiplus_deliverables"
+                            type="object"
+                            string="Ouvrir les livrables du projet"
+                            class="btn btn-primary"
+                        />
+                    </group>
+                    <field name="digiplus_deliverable_ids" context="{'default_project_id': id}">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="responsible_id"/>
+                            <field name="status"/>
+                            <field name="planned_date"/>
+                            <field name="delivered_date"/>
+                            <field name="is_late" readonly="1"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

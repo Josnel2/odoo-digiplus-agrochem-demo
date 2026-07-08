@@ -30,10 +30,14 @@
                         <span class="o_stat_text">Avancement %</span>
                     </div>
                 </button>
+                <button class="oe_stat_button" type="object" name="action_open_digiplus_deliverables" icon="fa-flag-checkered">
+                    <field name="digiplus_deliverable_count" widget="statinfo" string="Livrables"/>
+                </button>
             </div>
             <field name="tag_ids" position="after">
                 <field name="digiplus_date_start"/>
                 <field name="digiplus_date_end"/>
+                <field name="digiplus_priority_level"/>
                 <field name="service_requested"/>
                 <field name="digiplus_is_template"/>
             </field>
@@ -44,6 +48,7 @@
                             <field name="partner_id"/>
                             <field name="digiplus_date_start"/>
                             <field name="digiplus_date_end"/>
+                            <field name="digiplus_priority_level"/>
                             <field name="service_requested"/>
                             <field name="origin_opportunity_id" options="{'no_create': True}"/>
                             <field name="digiplus_is_template"/>
@@ -58,10 +63,16 @@
                     <group>
                         <group string="Avancement">
                             <field name="digiplus_completion_rate"/>
+                            <field name="digiplus_project_status"/>
+                            <field name="digiplus_global_state"/>
+                            <field name="digiplus_risk_level"/>
                             <field name="digiplus_total_task_count"/>
                             <field name="digiplus_completed_task_count"/>
                         </group>
                         <group string="Alertes et budget">
+                            <field name="digiplus_is_late"/>
+                            <field name="digiplus_is_blocked"/>
+                            <field name="digiplus_last_activity_date"/>
                             <field name="digiplus_overdue_task_count"/>
                             <field name="digiplus_upcoming_task_count"/>
                             <field name="digiplus_budget_consumption_rate"/>
@@ -93,12 +104,20 @@
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
                 <field name="service_requested"/>
+                <field name="digiplus_priority_level"/>
+                <field name="digiplus_project_status"/>
+                <field name="digiplus_risk_level"/>
             </field>
             <filter name="my_projects" position="after">
                 <filter string="Modeles de projet" name="digiplus_templates" domain="[('digiplus_is_template', '=', True)]"/>
+                <filter string="Projets en retard" name="digiplus_late_projects" domain="[('digiplus_is_late', '=', True)]"/>
+                <filter string="Projets bloques" name="digiplus_blocked_projects" domain="[('digiplus_is_blocked', '=', True)]"/>
+                <filter string="Projets a risque" name="digiplus_risk_projects" domain="[('digiplus_risk_level', 'in', ['high', 'critical'])]"/>
             </filter>
             <filter name="status" position="after">
                 <filter string="Service" name="groupby_service_requested" context="{'group_by': 'service_requested'}"/>
+                <filter string="Responsable" name="groupby_project_manager" context="{'group_by': 'user_id'}"/>
+                <filter string="Statut projet" name="groupby_project_status" context="{'group_by': 'digiplus_project_status'}"/>
             </filter>
         </field>
     </record>
@@ -111,6 +130,9 @@
             <field name="partner_id" position="after">
                 <field name="digiplus_date_start" optional="hide"/>
                 <field name="digiplus_date_end" optional="hide"/>
+                <field name="digiplus_priority_level" optional="show"/>
+                <field name="digiplus_project_status" optional="show"/>
+                <field name="digiplus_risk_level" optional="show"/>
                 <field name="service_requested" optional="hide"/>
                 <field name="digiplus_is_template" optional="hide"/>
                 <field name="digiplus_completion_rate" optional="show"/>

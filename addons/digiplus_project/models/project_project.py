@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -11,9 +13,67 @@ class ProjectProject(models.Model):
 
     digiplus_date_start = fields.Date(string="Date de debut", tracking=True, copy=False)
     digiplus_date_end = fields.Date(string="Date de fin", tracking=True, copy=False)
+    digiplus_priority_level = fields.Selection(
+        [
+            ("low", "Basse"),
+            ("normal", "Normale"),
+            ("urgent", "Urgente"),
+        ],
+        string="Priorite projet",
+        default="normal",
+        tracking=True,
+    )
     digiplus_is_template = fields.Boolean(string="Modele de projet", default=False, tracking=True, copy=False)
     origin_opportunity_id = fields.Many2one("crm.lead", string="Opportunite source", tracking=True, copy=False)
     service_requested = fields.Selection(SERVICE_SELECTION, string="Service demande", tracking=True)
+    digiplus_project_status = fields.Selection(
+        [
+            ("planning", "En attente"),
+            ("active", "Actif"),
+            ("done", "Termine"),
+            ("late", "En retard"),
+            ("blocked", "Bloque"),
+        ],
+        string="Statut projet",
+        compute="_compute_digiplus_operational_status",
+        store=True,
+    )
+    digiplus_risk_level = fields.Selection(
+        [
+            ("normal", "Normal"),
+            ("watch", "A surveiller"),
+            ("high", "A risque"),
+            ("critical", "Critique"),
+        ],
+        string="Niveau de risque",
+        compute="_compute_digiplus_operational_status",
+        store=True,
+    )
+    digiplus_global_state = fields.Selection(
+        [
+            ("normal", "Normal"),
+            ("watch", "A surveiller"),
+            ("late", "En retard"),
+            ("blocked", "Bloque"),
+            ("done", "Termine"),
+        ],
+        string="Etat global",
+        compute="_compute_digiplus_operational_status",
+        store=True,
+    )
+    digiplus_last_activity_date = fields.Datetime(
+        string="Derniere activite",
+        compute="_compute_digiplus_operational_status",
+        store=True,
+    )
+    digiplus_is_late = fields.Boolean(string="Projet en retard", compute="_compute_digiplus_operational_status", store=True)
+    digiplus_is_blocked = fields.Boolean(
+        string="Projet bloque",
+        compute="_compute_digiplus_operational_status",
+        store=True,
+    )
+    digiplus_deliverable_ids = fields.One2many("project.deliverable", "project_id", string="Livrables")
+    digiplus_deliverable_count = fields.Integer(string="Livrables", compute="_compute_digiplus_deliverable_count")
     digiplus_total_task_count = fields.Integer(string="Taches total", compute="_compute_digiplus_metrics")
     digiplus_completed_task_count = fields.Integer(string="Taches terminees", compute="_compute_digiplus_metrics")
     digiplus_overdue_task_count = fields.Integer(string="Taches en retard", compute="_compute_digiplus_metrics")
@@ -64,6 +124,11 @@ class ProjectProject(models.Model):
                 and project.digiplus_date_start > project.digiplus_date_end
             ):
                 raise ValidationError(_("La date de debut du projet ne peut pas etre posterieure a la date de fin."))
+
+    @api.depends("digiplus_deliverable_ids")
+    def _compute_digiplus_deliverable_count(self):
+        for project in self:
+            project.digiplus_deliverable_count = len(project.digiplus_deliverable_ids)
 
     def _get_digiplus_default_stage_blueprint(self):
         return [
@@ -153,6 +218,67 @@ class ProjectProject(models.Model):
             project.digiplus_remaining_estimated_hours = remaining_hours
             project.digiplus_budget_variance_hours = variance_hours
             project.digiplus_budget_consumption_rate = consumption_rate
+
+    @api.depends(
+        "active",
+        "digiplus_date_start",
+        "digiplus_date_end",
+        "digiplus_completion_rate",
+        "digiplus_overdue_task_count",
+        "digiplus_upcoming_task_count",
+        "digiplus_budget_consumption_rate",
+        "tasks.state",
+        "tasks.digiplus_is_blocked",
+        "tasks.write_date",
+        "digiplus_deliverable_ids.status",
+        "digiplus_deliverable_ids.write_date",
+        "write_date",
+    )
+    def _compute_digiplus_operational_status(self):
+        today = fields.Date.context_today(self)
+        recent_limit = fields.Datetime.now() - timedelta(days=7)
+        for project in self:
+            open_tasks = project.tasks.filtered(
+                lambda task: task.display_in_project and task.state not in CLOSED_TASK_STATES
+            )
+            blocked_tasks = open_tasks.filtered("digiplus_is_blocked")
+            blocked_deliverables = project.digiplus_deliverable_ids.filtered(lambda deliverable: deliverable.status == "blocked")
+            latest_candidates = [value for value in [project.write_date] + open_tasks.mapped("write_date") + project.digiplus_deliverable_ids.mapped("write_date") if value]
+            project.digiplus_last_activity_date = max(latest_candidates) if latest_candidates else False
+            project.digiplus_is_blocked = bool(blocked_tasks or blocked_deliverables)
+            late_by_date = (
+                bool(project.digiplus_date_end and project.digiplus_date_end < today and project.digiplus_completion_rate < 100.0)
+            )
+            project.digiplus_is_late = bool(project.digiplus_overdue_task_count or late_by_date)
+            if project.digiplus_completion_rate >= 100.0 and project.digiplus_total_task_count:
+                project.digiplus_project_status = "done"
+            elif project.digiplus_is_blocked:
+                project.digiplus_project_status = "blocked"
+            elif project.digiplus_is_late:
+                project.digiplus_project_status = "late"
+            elif project.active:
+                project.digiplus_project_status = "active"
+            else:
+                project.digiplus_project_status = "planning"
+            stale_project = bool(project.digiplus_last_activity_date and project.digiplus_last_activity_date < recent_limit)
+            if project.digiplus_is_blocked or (project.digiplus_is_late and project.digiplus_overdue_task_count >= 3):
+                project.digiplus_risk_level = "critical"
+            elif project.digiplus_is_late or project.digiplus_budget_consumption_rate >= 95.0:
+                project.digiplus_risk_level = "high"
+            elif project.digiplus_upcoming_task_count or stale_project or project.digiplus_budget_consumption_rate >= 75.0:
+                project.digiplus_risk_level = "watch"
+            else:
+                project.digiplus_risk_level = "normal"
+            if project.digiplus_project_status == "done":
+                project.digiplus_global_state = "done"
+            elif project.digiplus_is_blocked:
+                project.digiplus_global_state = "blocked"
+            elif project.digiplus_is_late:
+                project.digiplus_global_state = "late"
+            elif project.digiplus_risk_level in ("watch", "high", "critical"):
+                project.digiplus_global_state = "watch"
+            else:
+                project.digiplus_global_state = "normal"
 
     def _format_digiplus_datetime(self, value):
         self.ensure_one()
@@ -254,5 +380,15 @@ class ProjectProject(models.Model):
         action["context"] = {
             "project_id": self.id,
             "default_project_id": self.id,
+        }
+        return action
+
+    def action_open_digiplus_deliverables(self):
+        self.ensure_one()
+        action = self.env["ir.actions.act_window"]._for_xml_id("digiplus_project.action_digiplus_project_deliverables")
+        action["domain"] = [("project_id", "=", self.id)]
+        action["context"] = {
+            "default_project_id": self.id,
+            "default_responsible_id": self.user_id.id or self.env.user.id,
         }
         return action

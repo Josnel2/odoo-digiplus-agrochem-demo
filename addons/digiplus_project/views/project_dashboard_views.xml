@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_digiplus_project_dashboard_form" model="ir.ui.view">
+        <field name="name">digiplus.project.dashboard.form</field>
+        <field name="model">digiplus.project.dashboard.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard Projet" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="dp-project-dashboard-toolbar" style="display:flex;flex-direction:column;gap:14px;">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+                            <div>
+                                <div style="font-size:26px;font-weight:800;color:#10353e;">Dashboard Projet</div>
+                                <div style="margin-top:4px;color:#64748b;font-size:14px;">Pilotage des projets, taches, blocages, livrables et budget existant.</div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                                <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;color:#475569;font-size:13px;font-weight:700;">
+                                    Mise a jour :
+                                    <field name="updated_at_display" readonly="1" nolabel="1"/>
+                                </div>
+                                <button name="action_refresh_dashboard" type="object" class="btn btn-primary">
+                                    <i class="fa fa-refresh" aria-hidden="true"/> Actualiser
+                                </button>
+                                <button name="action_print_project_report" type="object" class="btn btn-secondary">
+                                    <i class="fa fa-file-pdf-o" aria-hidden="true"/> Rapport projet
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Periode</span>
+                                <field name="period_filter" nolabel="1"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Projet</span>
+                                <field name="project_id" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Client</span>
+                                <field name="partner_id" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Responsable</span>
+                                <field name="manager_id" nolabel="1" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Statut</span>
+                                <field name="status_filter" nolabel="1"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Priorite</span>
+                                <field name="priority_filter" nolabel="1"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <field name="overdue_only" nolabel="1"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <field name="blocked_only" nolabel="1"/>
+                            </div>
+                        </div>
+
+                        <div invisible="period_filter != 'custom'" style="display:flex;gap:12px;flex-wrap:wrap;">
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Du</span>
+                                <field name="date_from" nolabel="1"/>
+                            </div>
+                            <div style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:14px;background:#ffffff;">
+                                <span style="font-size:12px;font-weight:700;color:#64748b;">Au</span>
+                                <field name="date_to" nolabel="1"/>
+                            </div>
+                        </div>
+
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                            <button name="action_open_projects" type="object" class="btn btn-secondary">
+                                <i class="fa fa-folder-open-o" aria-hidden="true"/> Ouvrir projets
+                            </button>
+                            <button name="action_open_overdue_tasks" type="object" class="btn btn-secondary">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"/> Taches en retard
+                            </button>
+                            <button name="action_open_blocked_tasks" type="object" class="btn btn-secondary">
+                                <i class="fa fa-ban" aria-hidden="true"/> Taches bloquees
+                            </button>
+                            <button name="action_open_unassigned_tasks" type="object" class="btn btn-secondary">
+                                <i class="fa fa-user-times" aria-hidden="true"/> Taches sans responsable
+                            </button>
+                            <button name="action_open_deliverables" type="object" class="btn btn-secondary">
+                                <i class="fa fa-flag-checkered" aria-hidden="true"/> Livrables
+                            </button>
+                            <button name="action_create_task" type="object" class="btn btn-secondary">
+                                <i class="fa fa-plus" aria-hidden="true"/> Creer tache
+                            </button>
+                            <button name="action_create_deliverable" type="object" class="btn btn-secondary">
+                                <i class="fa fa-plus-square-o" aria-hidden="true"/> Creer livrable
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:18px;">
+                        <field name="dashboard_html" widget="html" nolabel="1" readonly="1"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_digiplus_project_dashboard_open" model="ir.actions.server">
+        <field name="name">Dashboard Projet</field>
+        <field name="model_id" ref="model_digiplus_project_dashboard_wizard"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_dashboard()</field>
+    </record>
+</odoo>

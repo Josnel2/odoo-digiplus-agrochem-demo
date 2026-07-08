@@ -10,7 +10,10 @@
         "sale_timesheet",
     ],
     "data": [
+        "security/ir.model.access.csv",
         "data/project_cron_data.xml",
+        "views/project_dashboard_views.xml",
+        "views/project_deliverable_views.xml",
         "views/project_project_views.xml",
         "views/project_task_views.xml",
         "views/res_partner_views.xml",

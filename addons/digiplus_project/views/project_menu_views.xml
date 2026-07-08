@@ -32,10 +32,26 @@
     />
 
     <menuitem
+        id="menu_digiplus_project_dashboard"
+        name="Dashboard Projet"
+        parent="project.menu_project_management"
+        action="action_digiplus_project_dashboard_open"
+        sequence="2"
+    />
+
+    <menuitem
         id="menu_digiplus_project_planning"
         name="Planning des charges"
         parent="project.menu_project_management"
         action="action_digiplus_task_planning"
         sequence="3"
+    />
+
+    <menuitem
+        id="menu_digiplus_project_deliverables"
+        name="Livrables"
+        parent="project.menu_project_management"
+        action="action_digiplus_project_deliverables"
+        sequence="4"
     />
 </odoo>
