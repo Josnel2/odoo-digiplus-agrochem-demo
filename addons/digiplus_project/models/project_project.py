@@ -1,4 +1,5 @@
 from odoo import Command, _, api, fields, models
+from odoo.exceptions import ValidationError
 
 from odoo.addons.digiplus_crm.models.selections import SERVICE_SELECTION
 
@@ -8,6 +9,8 @@ from .project_task import CLOSED_TASK_STATES
 class ProjectProject(models.Model):
     _inherit = "project.project"
 
+    digiplus_date_start = fields.Date(string="Date de debut", tracking=True, copy=False)
+    digiplus_date_end = fields.Date(string="Date de fin", tracking=True, copy=False)
     digiplus_is_template = fields.Boolean(string="Modele de projet", default=False, tracking=True, copy=False)
     origin_opportunity_id = fields.Many2one("crm.lead", string="Opportunite source", tracking=True, copy=False)
     service_requested = fields.Selection(SERVICE_SELECTION, string="Service demande", tracking=True)
@@ -51,6 +54,16 @@ class ProjectProject(models.Model):
                 )
                 tasks_to_update.write({"partner_id": project.partner_id.id or False})
         return result
+
+    @api.constrains("digiplus_date_start", "digiplus_date_end")
+    def _check_digiplus_project_dates(self):
+        for project in self:
+            if (
+                project.digiplus_date_start
+                and project.digiplus_date_end
+                and project.digiplus_date_start > project.digiplus_date_end
+            ):
+                raise ValidationError(_("La date de debut du projet ne peut pas etre posterieure a la date de fin."))
 
     def _get_digiplus_default_stage_blueprint(self):
         return [

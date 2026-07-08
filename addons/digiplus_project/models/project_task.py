@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.osv import expression
 
 
@@ -10,6 +11,8 @@ CLOSED_TASK_STATES = ("1_done", "1_canceled")
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
+    digiplus_date_start = fields.Datetime(string="Date de debut", tracking=True)
+    digiplus_date_end = fields.Datetime(string="Date de fin", tracking=True)
     digiplus_priority_level = fields.Selection(
         [
             ("low", "Basse"),
@@ -53,35 +56,45 @@ class ProjectTask(models.Model):
     digiplus_upcoming_alert_deadline = fields.Datetime(copy=False)
     digiplus_overdue_alert_deadline = fields.Datetime(copy=False)
 
-    @api.depends("date_deadline", "date_assign", "create_date", "allocated_hours")
+    @api.depends("digiplus_date_start", "digiplus_date_end", "date_deadline", "date_assign", "create_date", "allocated_hours")
     def _compute_digiplus_planning_window(self):
         for task in self:
             duration_hours = task.allocated_hours or 1.0
+            duration_delta = timedelta(hours=duration_hours)
             fallback_start = task.date_assign or task.create_date or fields.Datetime.now()
-            if task.date_deadline:
-                task.digiplus_planning_end = task.date_deadline
-                task.digiplus_planning_start = task.date_deadline - timedelta(hours=duration_hours)
+            planning_start = task.digiplus_date_start
+            planning_end = task.digiplus_date_end or task.date_deadline
+            if planning_start and planning_end:
+                task.digiplus_planning_start = planning_start
+                task.digiplus_planning_end = planning_end
+            elif planning_start:
+                task.digiplus_planning_start = planning_start
+                task.digiplus_planning_end = planning_start + duration_delta
+            elif planning_end:
+                task.digiplus_planning_end = planning_end
+                task.digiplus_planning_start = planning_end - duration_delta
             else:
                 task.digiplus_planning_start = fallback_start
-                task.digiplus_planning_end = fallback_start + timedelta(hours=duration_hours)
+                task.digiplus_planning_end = fallback_start + duration_delta
 
-    @api.depends("date_deadline", "state")
+    @api.depends("digiplus_date_end", "date_deadline", "state")
     def _compute_digiplus_deadline_flags(self):
         now = fields.Datetime.now()
         due_soon_limit = now + timedelta(hours=48)
         for task in self:
+            deadline = task.digiplus_date_end or task.date_deadline
             if task.state in CLOSED_TASK_STATES:
                 task.digiplus_is_due_soon = False
                 task.digiplus_is_overdue = False
                 task.digiplus_deadline_status = "done"
                 continue
-            if not task.date_deadline:
+            if not deadline:
                 task.digiplus_is_due_soon = False
                 task.digiplus_is_overdue = False
                 task.digiplus_deadline_status = "on_track"
                 continue
-            task.digiplus_is_overdue = task.date_deadline < now
-            task.digiplus_is_due_soon = not task.digiplus_is_overdue and task.date_deadline <= due_soon_limit
+            task.digiplus_is_overdue = deadline < now
+            task.digiplus_is_due_soon = not task.digiplus_is_overdue and deadline <= due_soon_limit
             if task.digiplus_is_overdue:
                 task.digiplus_deadline_status = "overdue"
             elif task.digiplus_is_due_soon:
@@ -130,11 +143,11 @@ class ProjectTask(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        prepared_vals_list = [self._prepare_digiplus_priority_vals(vals) for vals in vals_list]
+        prepared_vals_list = [self._prepare_digiplus_task_vals(vals) for vals in vals_list]
         return super().create(prepared_vals_list)
 
     def write(self, vals):
-        vals = self._prepare_digiplus_priority_vals(vals)
+        vals = self._prepare_digiplus_task_vals(vals)
         if "date_deadline" in vals:
             vals["digiplus_upcoming_alert_deadline"] = False
             vals["digiplus_overdue_alert_deadline"] = False
@@ -142,6 +155,15 @@ class ProjectTask(models.Model):
             vals["digiplus_upcoming_alert_deadline"] = False
             vals["digiplus_overdue_alert_deadline"] = False
         return super().write(vals)
+
+    @api.model
+    def _prepare_digiplus_task_vals(self, vals):
+        prepared_vals = self._prepare_digiplus_priority_vals(vals)
+        if "digiplus_date_end" in prepared_vals and "date_deadline" not in prepared_vals:
+            prepared_vals["date_deadline"] = prepared_vals["digiplus_date_end"]
+        elif "date_deadline" in prepared_vals and "digiplus_date_end" not in prepared_vals:
+            prepared_vals["digiplus_date_end"] = prepared_vals["date_deadline"]
+        return prepared_vals
 
     @api.model
     def _prepare_digiplus_priority_vals(self, vals):
@@ -152,11 +174,18 @@ class ProjectTask(models.Model):
             prepared_vals["digiplus_priority_level"] = "urgent" if prepared_vals["priority"] == "1" else "normal"
         return prepared_vals
 
+    @api.constrains("digiplus_date_start", "digiplus_date_end")
+    def _check_digiplus_task_dates(self):
+        for task in self:
+            if task.digiplus_date_start and task.digiplus_date_end and task.digiplus_date_start > task.digiplus_date_end:
+                raise ValidationError(_("La date de debut de la tache ne peut pas etre posterieure a la date de fin."))
+
     def _format_digiplus_deadline(self):
         self.ensure_one()
-        if not self.date_deadline:
+        deadline = self.digiplus_date_end or self.date_deadline
+        if not deadline:
             return "-"
-        localized = fields.Datetime.context_timestamp(self, self.date_deadline)
+        localized = fields.Datetime.context_timestamp(self, deadline)
         return localized.strftime("%d/%m/%Y %H:%M")
 
     def _get_digiplus_assignee_names(self):

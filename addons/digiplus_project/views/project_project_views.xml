@@ -32,6 +32,8 @@
                 </button>
             </div>
             <field name="tag_ids" position="after">
+                <field name="digiplus_date_start"/>
+                <field name="digiplus_date_end"/>
                 <field name="service_requested"/>
                 <field name="digiplus_is_template"/>
             </field>
@@ -40,6 +42,8 @@
                     <group>
                         <group string="Contexte projet">
                             <field name="partner_id"/>
+                            <field name="digiplus_date_start"/>
+                            <field name="digiplus_date_end"/>
                             <field name="service_requested"/>
                             <field name="origin_opportunity_id" options="{'no_create': True}"/>
                             <field name="digiplus_is_template"/>
@@ -105,6 +109,8 @@
         <field name="inherit_id" ref="project.view_project"/>
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
+                <field name="digiplus_date_start" optional="hide"/>
+                <field name="digiplus_date_end" optional="hide"/>
                 <field name="service_requested" optional="hide"/>
                 <field name="digiplus_is_template" optional="hide"/>
                 <field name="digiplus_completion_rate" optional="show"/>

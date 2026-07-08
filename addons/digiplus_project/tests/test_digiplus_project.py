@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import fields
+from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
 from lxml import etree
 
@@ -70,6 +71,49 @@ class TestDigiplusProject(TransactionCase):
         self.env["project.task"].cron_digiplus_task_deadline_alerts()
         self.assertTrue(task.digiplus_upcoming_alert_deadline)
         self.assertTrue(task.activity_ids)
+
+    def test_project_dates_are_validated(self):
+        with self.assertRaises(ValidationError):
+            self.project.write(
+                {
+                    "digiplus_date_start": fields.Date.to_string(fields.Date.today()),
+                    "digiplus_date_end": fields.Date.to_string(fields.Date.today() - timedelta(days=1)),
+                }
+            )
+
+    def test_task_end_date_drives_overdue_status(self):
+        backlog_stage = self.project.type_ids.sorted(lambda stage: (stage.sequence, stage.id))[0]
+        task_start = fields.Datetime.now() - timedelta(days=2)
+        task_end = fields.Datetime.now() - timedelta(hours=2)
+        task = self.env["project.task"].create(
+            {
+                "name": "Tache en retard",
+                "project_id": self.project.id,
+                "stage_id": backlog_stage.id,
+                "user_ids": [(6, 0, [self.env.user.id])],
+                "digiplus_date_start": fields.Datetime.to_string(task_start),
+                "digiplus_date_end": fields.Datetime.to_string(task_end),
+                "allocated_hours": 6.0,
+            }
+        )
+        self.assertEqual(task.date_deadline, task.digiplus_date_end)
+        self.assertEqual(task.digiplus_planning_start, task.digiplus_date_start)
+        self.assertEqual(task.digiplus_planning_end, task.digiplus_date_end)
+        self.assertTrue(task.digiplus_is_overdue)
+        self.assertEqual(task.digiplus_deadline_status, "overdue")
+
+    def test_task_dates_are_validated(self):
+        backlog_stage = self.project.type_ids.sorted(lambda stage: (stage.sequence, stage.id))[0]
+        with self.assertRaises(ValidationError):
+            self.env["project.task"].create(
+                {
+                    "name": "Tache dates invalides",
+                    "project_id": self.project.id,
+                    "stage_id": backlog_stage.id,
+                    "digiplus_date_start": fields.Datetime.to_string(fields.Datetime.now()),
+                    "digiplus_date_end": fields.Datetime.to_string(fields.Datetime.now() - timedelta(hours=1)),
+                }
+            )
 
     def test_project_form_stage_tags_do_not_request_missing_color_field(self):
         view = self.env.ref("digiplus_project.view_project_project_form_digiplus")
