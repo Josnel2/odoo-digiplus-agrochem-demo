@@ -48,4 +48,35 @@ class IrUiView(models.Model):
                 actions |= action
         if actions:
             actions.write({"view_id": target_view.id})
+
+        target_search_view = self.env.ref("digiplus_crm.view_digiplus_crm_lead_search", raise_if_not_found=False)
+        legacy_search_views = self.sudo().with_context(active_test=False).search(
+            [
+                ("model", "=", "crm.lead"),
+                ("type", "=", "search"),
+                ("arch_db", "ilike", "digiplus_priority_level"),
+            ]
+        )
+        for view in legacy_search_views:
+            view.write({"arch_db": view.arch_db.replace("digiplus_priority_level", "x_priority_level")})
+
+        if target_search_view:
+            search_actions = action_model.search([("res_model", "=", "crm.lead")])
+            stale_search_actions = search_actions.filtered(
+                lambda action: action.search_view_id
+                and (
+                    action.search_view_id.model != "crm.lead"
+                    or "digiplus_priority_level" in (action.search_view_id.arch_db or "")
+                )
+            )
+            for xmlid in (
+                "digiplus_crm.action_digiplus_crm_pipeline",
+                "digiplus_agrochem_demo.action_digiplus_crm_pipeline",
+                "digiplus_agrochem_demo.action_digiplus_agrochem_opps",
+            ):
+                action = self.env.ref(xmlid, raise_if_not_found=False)
+                if action:
+                    stale_search_actions |= action
+            if stale_search_actions:
+                stale_search_actions.write({"search_view_id": target_search_view.id})
         return True

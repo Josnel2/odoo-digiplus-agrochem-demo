@@ -51,7 +51,7 @@
     </record>
 
     <record id="action_digiplus_quotes" model="ir.actions.act_window">
-        <field name="name">Devis et propositions</field>
+        <field name="name">Devis, ventes et facturation</field>
         <field name="res_model">sale.order</field>
         <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_digiplus_sale_order_tree"/>
@@ -72,7 +72,7 @@
     </record>
 
     <record id="action_digiplus_invoices" model="ir.actions.act_window">
-        <field name="name">Facturation et Sage Saari</field>
+        <field name="name">Facturation et comptabilite</field>
         <field name="res_model">account.move</field>
         <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_digiplus_account_move_tree"/>
@@ -118,10 +118,10 @@
     <menuitem id="menu_digiplus_contacts" name="Contacts B2B" parent="menu_digiplus_demo_root" action="action_digiplus_contacts" sequence="40"/>
     <menuitem id="menu_digiplus_services" name="Catalogue DigiPlus" parent="menu_digiplus_demo_root" action="action_digiplus_services" sequence="50"/>
     <menuitem id="menu_digiplus_products" name="Licences et achats partenaires" parent="menu_digiplus_demo_root" action="action_digiplus_products" sequence="60"/>
-    <menuitem id="menu_digiplus_quotes" name="Devis et ventes" parent="menu_digiplus_demo_root" action="action_digiplus_quotes" sequence="70"/>
+    <menuitem id="menu_digiplus_quotes" name="Devis, ventes et facturation" parent="menu_digiplus_demo_root" action="action_digiplus_quotes" sequence="70"/>
     <menuitem id="menu_digiplus_stock" name="Logistique interne" parent="menu_digiplus_demo_root" action="action_digiplus_stock" sequence="80"/>
     <menuitem id="menu_digiplus_purchase" name="Achats &amp; Approvisionnement" parent="menu_digiplus_demo_root" action="action_digiplus_purchase" sequence="90"/>
-    <menuitem id="menu_digiplus_invoices" name="Facturation &amp; Sage Saari" parent="menu_digiplus_demo_root" action="action_digiplus_invoices" sequence="100"/>
+    <menuitem id="menu_digiplus_invoices" name="Facturation &amp; comptabilite" parent="menu_digiplus_demo_root" action="action_digiplus_invoices" sequence="100"/>
     <menuitem id="menu_digiplus_marketing" name="Campagnes Marketing" parent="menu_digiplus_demo_root" action="action_digiplus_marketing" sequence="110"/>
     <menuitem id="menu_digiplus_whatsapp" name="Suivi WhatsApp" parent="menu_digiplus_demo_root" action="action_digiplus_whatsapp" sequence="120"/>
     <menuitem id="menu_digiplus_dashboard_crm" name="Dashboards CRM" parent="menu_digiplus_demo_root" action="action_digiplus_dashboard_crm" sequence="130"/>

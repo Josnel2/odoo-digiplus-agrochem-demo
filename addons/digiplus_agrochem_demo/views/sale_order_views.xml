@@ -7,11 +7,15 @@
             <list string="Devis et propositions">
                 <field name="name"/>
                 <field name="partner_id"/>
+                <field name="opportunity_id"/>
                 <field name="user_id"/>
                 <field name="amount_total" sum="Total"/>
                 <field name="state"/>
+                <field name="invoice_status"/>
                 <field name="x_demo_proposal_type"/>
                 <field name="x_decision_status"/>
+                <field name="x_accounting_flow_status"/>
+                <field name="x_accounting_export_status"/>
             </list>
         </field>
     </record>
@@ -21,10 +25,36 @@
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <form string="Devis DigiPlus">
+                <header>
+                    <button
+                        name="action_confirm_digiplus_workflow"
+                        type="object"
+                        string="Confirmer le devis"
+                        class="btn-primary"
+                        invisible="state not in ('draft', 'sent')"
+                    />
+                    <button
+                        name="action_create_workflow_invoice"
+                        type="object"
+                        string="Creer la facture"
+                        class="btn-secondary"
+                        invisible="state not in ('draft', 'sent', 'sale', 'done')"
+                    />
+                    <button
+                        name="action_open_workflow_invoices"
+                        type="object"
+                        string="Voir les factures"
+                        class="btn-secondary"
+                        invisible="x_workflow_invoice_count == 0"
+                    />
+                    <field name="state" widget="statusbar"/>
+                    <field name="x_workflow_invoice_count" invisible="1"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="opportunity_id"/>
                             <field name="partner_id"/>
                             <field name="partner_invoice_id"/>
                             <field name="partner_shipping_id"/>
@@ -33,12 +63,30 @@
                         <group>
                             <field name="date_order"/>
                             <field name="validity_date"/>
-                            <field name="state" readonly="1"/>
+                            <field name="invoice_status" readonly="1"/>
+                            <field name="x_accounting_flow_status" readonly="1"/>
+                            <field name="x_accounting_export_status" readonly="1"/>
+                            <field name="x_last_invoice_id" readonly="1"/>
+                            <field name="x_service_requested"/>
                             <field name="x_demo_proposal_type"/>
                             <field name="x_decision_status"/>
                         </group>
                     </group>
                     <notebook>
+                        <page string="Workflow CRM -> compta">
+                            <group>
+                                <group>
+                                    <field name="opportunity_id" readonly="1"/>
+                                    <field name="invoice_status" readonly="1"/>
+                                    <field name="x_accounting_flow_status" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="x_accounting_export_status" readonly="1"/>
+                                    <field name="x_last_invoice_id" readonly="1"/>
+                                    <field name="x_workflow_invoice_ids" readonly="1" widget="many2many_tags"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="Positionnement commercial">
                             <group>
                                 <field name="x_related_demo_axis"/>

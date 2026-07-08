@@ -19,6 +19,13 @@ class CrmLead(models.Model):
     x_service_requested = fields.Selection(SERVICE_SELECTION, string="Service demande")
     x_business_sector = fields.Selection(BUSINESS_SECTOR_SELECTION, string="Secteur d'activite")
     x_priority_level = fields.Selection(PRIORITY_SELECTION, string="Niveau de priorite", default="medium")
+    digiplus_priority_level = fields.Selection(
+        PRIORITY_SELECTION,
+        string="Niveau de priorite DigiPlus",
+        related="x_priority_level",
+        readonly=False,
+        store=True,
+    )
     x_next_action_date = fields.Date(
         string="Date de prochaine action",
         compute="_compute_next_action_data",

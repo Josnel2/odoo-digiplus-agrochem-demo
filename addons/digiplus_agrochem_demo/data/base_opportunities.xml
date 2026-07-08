@@ -121,6 +121,35 @@
         <field name="x_agrochem_projection">Vision cible sur la conversion des demandes et l'automatisation des relances.</field>
         <field name="x_marketing_segment">executive_pipeline</field>
     </record>
+    <record id="lead_orbit_finance_support" model="crm.lead">
+        <field name="name">Orbit Finance - Support recurrent &amp; reporting executif</field>
+        <field name="type">opportunity</field>
+        <field name="partner_id" ref="partner_orbit_finance"/>
+        <field name="contact_name">Mireille ESSOMBA</field>
+        <field name="email_from">mireille.essomba@orbitfinance.cm</field>
+        <field name="phone">+237690110109</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="stage_id" ref="digiplus_crm.stage_won"/>
+        <field name="source_id" ref="utm_source_referral"/>
+        <field name="expected_revenue">15050000</field>
+        <field name="probability">100</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_support'), ref('crm_tag_bi'), ref('crm_tag_b2b')])]"/>
+        <field name="x_demo_sector">services</field>
+        <field name="x_business_need">Structurer un support recurrent, piloter les tableaux de bord de direction et tracer les factures associees.</field>
+        <field name="x_geographic_zone">Douala</field>
+        <field name="x_entry_channel">referral</field>
+        <field name="x_interest_level">hot</field>
+        <field name="x_recommended_solution">Contrat de support, indicateurs de direction, automatisation des relances et suivi d'export comptable.</field>
+        <field name="x_sage_saari_context">La finance veut suivre les devis, les factures et l'etat de preparation comptable dans le meme flux.</field>
+        <field name="x_bi_priority">high</field>
+        <field name="x_whatsapp_followup">False</field>
+        <field name="x_demo_score">93</field>
+        <field name="x_expected_demo_value">15050000</field>
+        <field name="x_next_decision_step">Suivre le contrat recurrent, la premiere facture et la gouvernance de reporting.</field>
+        <field name="x_demo_use_case">Flux continu depuis l'opportunite, le devis signe, la facture recurrente et le suivi comptable.</field>
+        <field name="x_agrochem_projection">Objectif d'une lecture unifiee entre le pipeline commercial, les contrats et la facturation recurrente.</field>
+        <field name="x_marketing_segment">support_recurring</field>
+    </record>
     <record id="lead_greenpath_support" model="crm.lead">
         <field name="name">GreenPath Logistics - Contrat de support &amp; SLA</field>
         <field name="type">opportunity</field>

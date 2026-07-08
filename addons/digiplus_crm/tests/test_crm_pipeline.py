@@ -94,3 +94,21 @@ class TestDigiplusCrmPipeline(TransactionCase):
 
         lead.write({"stage_id": self.stage_lost.id})
         self.assertEqual(lead.probability, 0)
+
+    def test_legacy_priority_alias_stays_in_sync(self):
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Priorite legacy",
+                "type": "opportunity",
+                "partner_id": self.partner.id,
+                "stage_id": self.stage_prospect.id,
+                "user_id": self.env.user.id,
+                "x_priority_level": "high",
+            }
+        )
+
+        self.assertEqual(lead.digiplus_priority_level, "high")
+
+        lead.write({"digiplus_priority_level": "critical"})
+
+        self.assertEqual(lead.x_priority_level, "critical")
