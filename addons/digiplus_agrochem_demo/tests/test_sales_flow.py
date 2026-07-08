@@ -34,3 +34,28 @@ class TestSalesFlow(TransactionCase):
         )
         self.assertEqual(order.x_demo_proposal_type, "modular")
         self.assertEqual(len(order.order_line), 1)
+
+    def test_demo_sale_order_reflects_exported_invoice_status(self):
+        order = self.env.ref("digiplus_agrochem_demo.sale_order_greenpath_support")
+
+        self.assertEqual(order.x_workflow_invoice_count, 1)
+        self.assertEqual(order.x_last_invoice_id, self.env.ref("digiplus_agrochem_demo.invoice_greenpath_support"))
+        self.assertEqual(order.x_accounting_export_status, "exported")
+        self.assertEqual(order.x_accounting_flow_status, "exported")
+
+    def test_demo_sale_order_reflects_ready_invoice_status(self):
+        order = self.env.ref("digiplus_agrochem_demo.sale_order_orbit_finance")
+
+        self.assertEqual(order.x_workflow_invoice_count, 1)
+        self.assertEqual(order.x_last_invoice_id, self.env.ref("digiplus_agrochem_demo.invoice_orbit_finance"))
+        self.assertEqual(order.x_accounting_export_status, "ready")
+        self.assertEqual(order.x_accounting_flow_status, "ready_for_export")
+
+    def test_open_workflow_invoices_returns_invoice_form_action(self):
+        order = self.env.ref("digiplus_agrochem_demo.sale_order_greenpath_support")
+
+        action = order.action_open_workflow_invoices()
+
+        self.assertEqual(action["res_model"], "account.move")
+        self.assertEqual(action["view_mode"], "form")
+        self.assertEqual(action["res_id"], self.env.ref("digiplus_agrochem_demo.invoice_greenpath_support").id)

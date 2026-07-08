@@ -3,6 +3,7 @@
     <record id="sale_order_vision_retail" model="sale.order">
         <field name="name">DP-QUO-2026-001</field>
         <field name="partner_id" ref="partner_vision_retail_group"/>
+        <field name="opportunity_id" ref="lead_vision_retail_erp"/>
         <field name="partner_invoice_id" ref="partner_vision_retail_group"/>
         <field name="partner_shipping_id" ref="partner_vision_retail_group"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -23,6 +24,7 @@
     <record id="sale_order_horizon_health" model="sale.order">
         <field name="name">DP-QUO-2026-002</field>
         <field name="partner_id" ref="partner_horizon_health"/>
+        <field name="opportunity_id" ref="lead_horizon_bi"/>
         <field name="partner_invoice_id" ref="partner_horizon_health"/>
         <field name="partner_shipping_id" ref="partner_horizon_health"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -42,6 +44,7 @@
     <record id="sale_order_campus_plus" model="sale.order">
         <field name="name">DP-QUO-2026-003</field>
         <field name="partner_id" ref="partner_campus_plus"/>
+        <field name="opportunity_id" ref="lead_campus_marketing"/>
         <field name="partner_invoice_id" ref="partner_campus_plus"/>
         <field name="partner_shipping_id" ref="partner_campus_plus"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -61,6 +64,7 @@
     <record id="sale_order_orbit_finance" model="sale.order">
         <field name="name">DP-QUO-2026-004</field>
         <field name="partner_id" ref="partner_orbit_finance"/>
+        <field name="opportunity_id" ref="lead_orbit_finance_support"/>
         <field name="partner_invoice_id" ref="partner_orbit_finance"/>
         <field name="partner_shipping_id" ref="partner_orbit_finance"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -74,6 +78,25 @@
         <field name="order_line" eval="[
             (0, 0, {'name': 'Maintenance et support applicatif', 'product_id': ref('product_service_support'), 'product_uom_qty': 12, 'price_unit': 950000}),
             (0, 0, {'name': 'Tableaux de bord Power BI', 'product_id': ref('product_service_bi'), 'product_uom_qty': 1, 'price_unit': 1800000}),
+            (0, 0, {'name': 'Automatisation des processus', 'product_id': ref('product_service_automation'), 'product_uom_qty': 1, 'price_unit': 1850000})
+        ]"/>
+    </record>
+    <record id="sale_order_greenpath_support" model="sale.order">
+        <field name="name">CONTRAT-SUP-2026-001</field>
+        <field name="partner_id" ref="partner_greenpath_logistics"/>
+        <field name="opportunity_id" ref="lead_greenpath_support"/>
+        <field name="partner_invoice_id" ref="partner_greenpath_logistics"/>
+        <field name="partner_shipping_id" ref="partner_greenpath_logistics"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="date_order">2026-05-19 10:00:00</field>
+        <field name="validity_date">2026-06-19</field>
+        <field name="state">sale</field>
+        <field name="x_demo_proposal_type">modular</field>
+        <field name="x_related_demo_axis">Support recurrent, SLA et pilotage financier</field>
+        <field name="x_agrochem_projection">Contrat recurrent centre sur la supervision, la qualite de service et la facturation recurrente reliee au pipeline CRM.</field>
+        <field name="x_decision_status">won</field>
+        <field name="order_line" eval="[
+            (0, 0, {'name': 'Maintenance et support applicatif', 'product_id': ref('product_service_support'), 'product_uom_qty': 1, 'price_unit': 950000}),
             (0, 0, {'name': 'Automatisation des processus', 'product_id': ref('product_service_automation'), 'product_uom_qty': 1, 'price_unit': 1850000})
         ]"/>
     </record>
