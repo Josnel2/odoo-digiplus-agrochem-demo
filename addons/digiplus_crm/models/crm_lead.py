@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 from .selections import (
     BUSINESS_SECTOR_SELECTION,
@@ -19,6 +19,13 @@ class CrmLead(models.Model):
     x_service_requested = fields.Selection(SERVICE_SELECTION, string="Service demande")
     x_business_sector = fields.Selection(BUSINESS_SECTOR_SELECTION, string="Secteur d'activite")
     x_priority_level = fields.Selection(PRIORITY_SELECTION, string="Niveau de priorite", default="medium")
+    digiplus_priority_level = fields.Selection(
+        PRIORITY_SELECTION,
+        string="Niveau de priorite DigiPlus",
+        related="x_priority_level",
+        readonly=False,
+        store=True,
+    )
     x_next_action_date = fields.Date(
         string="Date de prochaine action",
         compute="_compute_next_action_data",
@@ -268,8 +275,56 @@ class CrmLead(models.Model):
             }
         return True
 
+    def _get_digiplus_delete_blockers(self):
+        self.ensure_one()
+        blockers = []
+
+        sale_orders = self.env["sale.order"].search_count(
+            [
+                ("opportunity_id", "=", self.id),
+                ("state", "!=", "cancel"),
+            ]
+        )
+        if sale_orders:
+            blockers.append(_("devis ou commandes"))
+
+        try:
+            account_move_model = self.env["account.move"]
+        except KeyError:
+            account_move_model = False
+        if account_move_model and "x_related_opportunity_id" in account_move_model._fields:
+            account_moves = account_move_model.search_count(
+                [
+                    ("x_related_opportunity_id", "=", self.id),
+                    ("state", "!=", "cancel"),
+                ]
+            )
+        else:
+            account_moves = 0
+        if account_moves:
+            blockers.append(_("factures"))
+
+        try:
+            project_model = self.env["project.project"]
+        except KeyError:
+            project_model = False
+        if project_model and "origin_opportunity_id" in project_model._fields:
+            projects = project_model.search_count([("origin_opportunity_id", "=", self.id)])
+        else:
+            projects = 0
+        if projects:
+            blockers.append(_("projets"))
+
+        return blockers
+
     def action_delete_from_pipeline(self):
         self.ensure_one()
+        blockers = self._get_digiplus_delete_blockers()
+        if blockers:
+            raise UserError(
+                _("Suppression impossible : cette opportunite est encore liee a %s.")
+                % ", ".join(blockers)
+            )
         self.unlink()
         return {
             "type": "ir.actions.client",

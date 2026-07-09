@@ -1,4 +1,4 @@
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase
 
 
@@ -110,3 +110,45 @@ class TestDigiplusCrmPipeline(TransactionCase):
 
         self.assertFalse(self.env["crm.lead"].search([("id", "=", lead.id)]))
         self.assertEqual(action, {"type": "ir.actions.client", "tag": "reload"})
+
+    def test_action_delete_from_pipeline_blocks_linked_sale_order(self):
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Suppression protegee",
+                "type": "opportunity",
+                "partner_id": self.partner.id,
+                "stage_id": self.stage_prospect.id,
+                "user_id": self.env.user.id,
+            }
+        )
+        self.env["sale.order"].create(
+            {
+                "partner_id": self.partner.id,
+                "partner_invoice_id": self.partner.id,
+                "partner_shipping_id": self.partner.id,
+                "opportunity_id": lead.id,
+            }
+        )
+
+        with self.assertRaises(UserError):
+            lead.action_delete_from_pipeline()
+
+        self.assertTrue(self.env["crm.lead"].browse(lead.id).exists())
+
+    def test_legacy_priority_alias_stays_in_sync(self):
+        lead = self.env["crm.lead"].create(
+            {
+                "name": "Priorite legacy",
+                "type": "opportunity",
+                "partner_id": self.partner.id,
+                "stage_id": self.stage_prospect.id,
+                "user_id": self.env.user.id,
+                "x_priority_level": "high",
+            }
+        )
+
+        self.assertEqual(lead.digiplus_priority_level, "high")
+
+        lead.write({"digiplus_priority_level": "critical"})
+
+        self.assertEqual(lead.x_priority_level, "critical")

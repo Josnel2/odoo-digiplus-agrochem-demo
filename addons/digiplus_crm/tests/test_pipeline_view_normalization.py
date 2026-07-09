@@ -39,3 +39,59 @@ class TestDigiplusCrmPipelineViewNormalization(TransactionCase):
 
         self.assertIn("action_delete_from_pipeline", target_view.arch_db)
         self.assertIn("dp_crm_kanban_delete", target_view.arch_db)
+
+    def test_pipeline_view_normalization_updates_legacy_search_views(self):
+        legacy_search_view = self.env["ir.ui.view"].create(
+            {
+                "name": "digiplus.crm.lead.search legacy",
+                "model": "crm.lead",
+                "type": "search",
+                "arch_db": """
+                    <search>
+                        <field name="name"/>
+                        <field name="digiplus_priority_level"/>
+                        <filter
+                            name="legacy_priority"
+                            string="Priorite legacy"
+                            domain="[('digiplus_priority_level', '=', 'high')]"
+                        />
+                    </search>
+                """,
+            }
+        )
+        wrong_search_view = self.env["ir.ui.view"].create(
+            {
+                "name": "crm.lead.search wrong model",
+                "model": "res.partner",
+                "type": "search",
+                "arch_db": """
+                    <search>
+                        <field name="name"/>
+                    </search>
+                """,
+            }
+        )
+        legacy_action = self.env["ir.actions.act_window"].create(
+            {
+                "name": "Legacy pipeline search",
+                "res_model": "crm.lead",
+                "view_mode": "kanban,list,form",
+                "search_view_id": legacy_search_view.id,
+            }
+        )
+        wrong_action = self.env["ir.actions.act_window"].create(
+            {
+                "name": "Wrong pipeline search",
+                "res_model": "crm.lead",
+                "view_mode": "kanban,list,form",
+                "search_view_id": wrong_search_view.id,
+            }
+        )
+
+        self.env["ir.ui.view"]._normalize_digiplus_crm_pipeline_views()
+
+        target_search_view = self.env.ref("digiplus_crm.view_digiplus_crm_lead_search")
+        self.assertNotIn("digiplus_priority_level", legacy_search_view.arch_db)
+        self.assertIn("x_priority_level", legacy_search_view.arch_db)
+        self.assertEqual(legacy_action.search_view_id, target_search_view)
+        self.assertEqual(wrong_action.search_view_id, target_search_view)
