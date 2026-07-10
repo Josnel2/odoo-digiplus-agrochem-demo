@@ -11,6 +11,7 @@
         <field name="stage_id" ref="digiplus_crm.stage_proposal_sent"/>
         <field name="source_id" ref="utm_source_visit"/>
         <field name="expected_revenue">14500000</field>
+        <field name="activity_date_deadline">2026-05-16</field>
         <field name="probability">72</field>
         <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_strategic_account'), ref('crm_tag_odoo_crm'), ref('crm_tag_bi'), ref('crm_tag_b2b')])]"/>
         <field name="x_demo_sector">distribution</field>
@@ -73,6 +74,7 @@
         <field name="stage_id" ref="digiplus_crm.stage_negotiation"/>
         <field name="source_id" ref="utm_source_referral"/>
         <field name="expected_revenue">6900000</field>
+        <field name="activity_date_deadline">2026-05-22</field>
         <field name="probability">82</field>
         <field name="tag_ids" eval="[(6, 0, [ref('crm_tag_bi'), ref('crm_tag_sage'), ref('crm_tag_b2b')])]"/>
         <field name="x_demo_sector">health</field>
