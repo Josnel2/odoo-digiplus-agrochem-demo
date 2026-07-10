@@ -166,3 +166,20 @@ class TestDigiplusProject(TransactionCase):
         self.assertIn("Dashboard Projet", wizard.dashboard_html)
         action = wizard.action_open_projects()
         self.assertEqual(action["res_model"], "project.project")
+
+    def test_legacy_sprint_compatibility_fields_and_action(self):
+        sprint = self.env["digiplus.project.sprint"].create(
+            {
+                "name": "Sprint compatibilite",
+                "project_id": self.project.id,
+            }
+        )
+
+        self.assertEqual(self.project.digiplus_sprint_count, 1)
+        self.assertFalse(self.project.digiplus_active_sprint_id)
+
+        action = self.project.action_open_digiplus_sprints()
+
+        self.assertEqual(action["res_model"], "digiplus.project.sprint")
+        self.assertEqual(action["domain"], [("project_id", "=", self.project.id)])
+        self.assertEqual(sprint.project_id, self.project)

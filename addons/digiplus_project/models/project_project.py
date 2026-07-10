@@ -88,6 +88,21 @@ class ProjectProject(models.Model):
     digiplus_budget_consumption_rate = fields.Float(
         string="Consommation budget (%)", compute="_compute_digiplus_metrics"
     )
+    digiplus_sprint_ids = fields.One2many(
+        "digiplus.project.sprint",
+        "project_id",
+        string="Sprints DigiPlus",
+        copy=True,
+    )
+    digiplus_sprint_count = fields.Integer(
+        string="Nombre de sprints",
+        compute="_compute_digiplus_sprint_metrics",
+    )
+    digiplus_active_sprint_id = fields.Many2one(
+        "digiplus.project.sprint",
+        string="Sprint actif",
+        compute="_compute_digiplus_sprint_metrics",
+    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -176,6 +191,13 @@ class ProjectProject(models.Model):
             tasks_to_update = new_project.tasks.filtered(lambda task: task.stage_id.id in stage_mapping)
             for task in tasks_to_update:
                 task.stage_id = stage_mapping[task.stage_id.id]
+
+    @api.depends("digiplus_sprint_ids", "digiplus_sprint_ids.state", "digiplus_sprint_ids.sequence")
+    def _compute_digiplus_sprint_metrics(self):
+        for project in self:
+            active_sprint = project.digiplus_sprint_ids.filtered(lambda sprint: sprint.state == "active")[:1]
+            project.digiplus_sprint_count = len(project.digiplus_sprint_ids)
+            project.digiplus_active_sprint_id = active_sprint
 
     @api.depends(
         "tasks.state",
@@ -392,3 +414,16 @@ class ProjectProject(models.Model):
             "default_responsible_id": self.user_id.id or self.env.user.id,
         }
         return action
+
+    def action_open_digiplus_sprints(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Sprints du projet"),
+            "res_model": "digiplus.project.sprint",
+            "view_mode": "list,form",
+            "domain": [("project_id", "=", self.id)],
+            "context": {
+                "default_project_id": self.id,
+            },
+        }

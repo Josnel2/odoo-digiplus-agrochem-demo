@@ -6,7 +6,7 @@ set -a
 source ./.env
 set +a
 MODULE_NAME="digiplus_agrochem_demo"
-CUSTOM_MODULES="digiplus_crm,${MODULE_NAME}"
+CUSTOM_MODULES="digiplus_crm,digiplus_project,${MODULE_NAME}"
 BASE_MODULES="crm,sale_management,contacts,mail,mass_mailing,stock,purchase,account,product,sale_stock,${MODULE_NAME}"
 
 docker compose up -d db

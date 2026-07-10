@@ -6,6 +6,12 @@ from odoo.osv import expression
 
 
 CLOSED_TASK_STATES = ("1_done", "1_canceled")
+MOSCOW_SELECTION = [
+    ("must", "Must"),
+    ("should", "Should"),
+    ("could", "Could"),
+    ("wont", "Wont"),
+]
 
 
 class ProjectTask(models.Model):
@@ -24,6 +30,45 @@ class ProjectTask(models.Model):
         string="Priorite DigiPlus",
         default="normal",
         tracking=True,
+    )
+    digiplus_moscow_priority = fields.Selection(
+        MOSCOW_SELECTION,
+        string="Priorite MoSCoW",
+        default="should",
+        tracking=True,
+    )
+    digiplus_sprint_id = fields.Many2one(
+        "digiplus.project.sprint",
+        string="Sprint",
+        copy=False,
+        index=True,
+        tracking=True,
+    )
+    digiplus_dependency_ids = fields.Many2many(
+        "project.task",
+        "digiplus_task_dependency_rel",
+        "task_id",
+        "dependency_id",
+        string="Dependances",
+        copy=False,
+    )
+    digiplus_blocking_task_ids = fields.Many2many(
+        "project.task",
+        "digiplus_task_dependency_rel",
+        "dependency_id",
+        "task_id",
+        string="Bloque d'autres taches",
+        readonly=True,
+    )
+    digiplus_open_dependency_count = fields.Integer(
+        string="Dependances ouvertes",
+        compute="_compute_digiplus_dependency_state",
+        store=True,
+    )
+    digiplus_is_blocked_by_dependencies = fields.Boolean(
+        string="Bloquee par dependances",
+        compute="_compute_digiplus_dependency_state",
+        store=True,
     )
     digiplus_is_due_soon = fields.Boolean(
         string="Echeance sous 48h",
@@ -69,6 +114,15 @@ class ProjectTask(models.Model):
     )
     digiplus_upcoming_alert_deadline = fields.Datetime(copy=False)
     digiplus_overdue_alert_deadline = fields.Datetime(copy=False)
+
+    @api.depends("digiplus_dependency_ids", "digiplus_dependency_ids.state")
+    def _compute_digiplus_dependency_state(self):
+        for task in self:
+            open_dependencies = task.digiplus_dependency_ids.filtered(
+                lambda dependency: dependency.state not in CLOSED_TASK_STATES
+            )
+            task.digiplus_open_dependency_count = len(open_dependencies)
+            task.digiplus_is_blocked_by_dependencies = bool(open_dependencies)
 
     @api.depends("digiplus_date_start", "digiplus_date_end", "date_deadline", "date_assign", "create_date", "allocated_hours")
     def _compute_digiplus_planning_window(self):
@@ -116,13 +170,13 @@ class ProjectTask(models.Model):
             else:
                 task.digiplus_deadline_status = "on_track"
 
-    @api.depends("state", "stage_id", "digiplus_is_blocked")
+    @api.depends("state", "stage_id", "digiplus_is_blocked", "digiplus_is_blocked_by_dependencies")
     def _compute_digiplus_work_state(self):
         for task in self:
             if task.state in CLOSED_TASK_STATES:
                 task.digiplus_work_state = "done"
                 continue
-            if task.digiplus_is_blocked:
+            if task.digiplus_is_blocked or task.digiplus_is_blocked_by_dependencies:
                 task.digiplus_work_state = "blocked"
                 continue
             task.digiplus_work_state = task._get_digiplus_stage_work_state()
@@ -205,6 +259,33 @@ class ProjectTask(models.Model):
             if task.digiplus_date_start and task.digiplus_date_end and task.digiplus_date_start > task.digiplus_date_end:
                 raise ValidationError(_("La date de debut de la tache ne peut pas etre posterieure a la date de fin."))
 
+    @api.constrains("project_id", "digiplus_sprint_id", "digiplus_dependency_ids")
+    def _check_digiplus_task_relations(self):
+        for task in self:
+            if task.digiplus_sprint_id and task.digiplus_sprint_id.project_id != task.project_id:
+                raise ValidationError(_("Le sprint choisi doit appartenir au meme projet que la tache."))
+            if task in task.digiplus_dependency_ids:
+                raise ValidationError(_("Une tache ne peut pas dependre d'elle-meme."))
+            cross_project_dependencies = task.digiplus_dependency_ids.filtered(
+                lambda dependency: dependency.project_id != task.project_id
+            )
+            if cross_project_dependencies:
+                raise ValidationError(_("Les dependances doivent appartenir au meme projet que la tache."))
+            if task._has_digiplus_dependency_cycle():
+                raise ValidationError(_("Une boucle de dependances a ete detectee entre les taches du projet."))
+
+    def _has_digiplus_dependency_cycle(self):
+        self.ensure_one()
+
+        def visit(task, path):
+            if task.id in path:
+                return True
+            next_path = set(path)
+            next_path.add(task.id)
+            return any(visit(dependency, next_path) for dependency in task.digiplus_dependency_ids)
+
+        return any(visit(dependency, {self.id}) for dependency in self.digiplus_dependency_ids)
+
     def _format_digiplus_deadline(self):
         self.ensure_one()
         deadline = self.digiplus_date_end or self.date_deadline
@@ -281,9 +362,7 @@ class ProjectTask(models.Model):
             user_id=user.id,
             summary=summary,
             date_deadline=fields.Date.context_today(self),
-            note=_(
-                "Tache : %s\nResponsable : %s\nEcheance : %s"
-            )
+            note=_("Tache : %s\nResponsable : %s\nEcheance : %s")
             % (self.display_name, user.name, self._format_digiplus_deadline()),
         )
 
@@ -309,9 +388,7 @@ class ProjectTask(models.Model):
                 task._schedule_digiplus_activity(alert_kind, user)
                 task._send_digiplus_deadline_email(alert_kind, user)
             task.message_post(
-                body=_(
-                    "Alerte DigiPlus envoyee (%s) pour l'echeance du %s."
-                )
+                body=_("Alerte DigiPlus envoyee (%s) pour l'echeance du %s.")
                 % (
                     _("retard") if alert_kind == "overdue" else _("48 heures"),
                     task._format_digiplus_deadline(),
