@@ -15,9 +15,9 @@
                             <p><strong>Origine:</strong> <span t-esc="o.invoice_origin"/></p>
                         </t>
                         <t t-if="o.x_sage_saari_export_status and o.x_sage_saari_export_status != 'not_concerned'">
-                            <p><strong>Statut export externe:</strong> <span t-esc="o.x_sage_saari_export_status"/></p>
+                            <p><strong>Statut export Sage:</strong> <span t-esc="o.x_sage_saari_export_status"/></p>
                             <t t-if="o.x_sage_saari_reference">
-                                <p><strong>Reference export:</strong> <span t-esc="o.x_sage_saari_reference"/></p>
+                                <p><strong>Reference Sage:</strong> <span t-esc="o.x_sage_saari_reference"/></p>
                             </t>
                         </t>
                         <table class="table table-sm table-striped">

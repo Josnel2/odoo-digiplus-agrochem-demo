@@ -3,10 +3,10 @@ from odoo.exceptions import UserError
 
 
 EXPORT_SELECTION = [
-    ("not_concerned", "Non concerne par export externe"),
-    ("not_exported", "Non exporte"),
-    ("ready", "Pret pour export externe"),
-    ("exported", "Exporte"),
+    ("not_concerned", "Non concerne par export Sage"),
+    ("not_exported", "Non exporte vers Sage"),
+    ("ready", "Pret pour export Sage"),
+    ("exported", "Exporte vers Sage"),
     ("error", "Erreur export"),
 ]
 
@@ -43,10 +43,10 @@ class AccountMove(models.Model):
         store=True,
     )
     x_sage_saari_export_status = fields.Selection(
-        EXPORT_SELECTION, string="Statut export externe", default="not_concerned"
+        EXPORT_SELECTION, string="Statut export Sage", default="not_concerned"
     )
-    x_sage_saari_reference = fields.Char(string="Reference export externe")
-    x_integration_comment = fields.Text(string="Commentaire export / integration")
+    x_sage_saari_reference = fields.Char(string="Reference Sage Saari")
+    x_integration_comment = fields.Text(string="Commentaire integration")
 
     @api.depends(
         "invoice_origin",

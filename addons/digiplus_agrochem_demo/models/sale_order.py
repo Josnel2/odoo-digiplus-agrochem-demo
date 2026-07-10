@@ -27,10 +27,10 @@ ACCOUNTING_FLOW_SELECTION = [
 ]
 
 EXPORT_SELECTION = [
-    ("not_concerned", "Non concerne par export externe"),
-    ("not_exported", "Non exporte"),
-    ("ready", "Pret pour export externe"),
-    ("exported", "Exporte"),
+    ("not_concerned", "Non concerne par export Sage"),
+    ("not_exported", "Non exporte vers Sage"),
+    ("ready", "Pret pour export Sage"),
+    ("exported", "Exporte vers Sage"),
     ("error", "Erreur export"),
 ]
 

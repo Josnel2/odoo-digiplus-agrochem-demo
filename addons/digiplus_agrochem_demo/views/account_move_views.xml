@@ -4,7 +4,7 @@
         <field name="name">digiplus.account.move.tree</field>
         <field name="model">account.move</field>
         <field name="arch" type="xml">
-            <list string="Facturation clients Odoo">
+            <list string="Facturation et comptabilite">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="x_related_sale_order_id"/>
@@ -13,8 +13,8 @@
                 <field name="amount_total" sum="Total"/>
                 <field name="state"/>
                 <field name="x_workflow_origin"/>
-                <field name="x_sage_saari_export_status" string="Export externe"/>
-                <field name="x_sage_saari_reference" string="Reference externe"/>
+                <field name="x_sage_saari_export_status"/>
+                <field name="x_sage_saari_reference"/>
             </list>
         </field>
     </record>
@@ -77,8 +77,8 @@
                             <field name="payment_state" readonly="1"/>
                             <field name="invoice_origin"/>
                             <field name="x_workflow_origin" readonly="1"/>
-                            <field name="x_sage_saari_export_status" string="Statut export externe"/>
-                            <field name="x_sage_saari_reference" string="Reference externe"/>
+                            <field name="x_sage_saari_export_status"/>
+                            <field name="x_sage_saari_reference"/>
                         </group>
                     </group>
                     <notebook>
@@ -107,11 +107,11 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Export comptable externe">
+                        <page string="Sage Saari">
                             <group>
-                                <field name="x_sage_saari_export_status" string="Statut export externe"/>
-                                <field name="x_sage_saari_reference" string="Reference externe"/>
-                                <field name="x_integration_comment" string="Commentaire export / integration"/>
+                                <field name="x_sage_saari_export_status"/>
+                                <field name="x_sage_saari_reference"/>
+                                <field name="x_integration_comment"/>
                             </group>
                         </page>
                     </notebook>

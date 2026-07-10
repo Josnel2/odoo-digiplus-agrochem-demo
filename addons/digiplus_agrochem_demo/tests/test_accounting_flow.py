@@ -2,9 +2,34 @@ from odoo.tests.common import TransactionCase
 
 
 class TestAccountingFlow(TransactionCase):
-    def test_export_status_selection_includes_not_concerned(self):
+    def test_export_status_selection_preserves_compatibility(self):
         selection = dict(self.env["account.move"]._fields["x_sage_saari_export_status"].selection)
         self.assertIn("not_concerned", selection)
+        self.assertIn("not_exported", selection)
+
+    def test_customer_invoice_defaults_to_not_exported(self):
+        demo_invoice = self.env.ref("digiplus_agrochem_demo.invoice_orbit_finance")
+        invoice = self.env["account.move"].create(
+            {
+                "move_type": "out_invoice",
+                "partner_id": demo_invoice.partner_id.id,
+                "journal_id": demo_invoice.journal_id.id,
+                "invoice_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "Facture test Sage",
+                            "product_id": self.env.ref("digiplus_agrochem_demo.product_service_support").id,
+                            "quantity": 1,
+                            "price_unit": 1000,
+                        },
+                    )
+                ],
+            }
+        )
+
+        self.assertEqual(invoice.x_sage_saari_export_status, "not_exported")
 
     def test_mark_ready_for_export_does_not_change_invoice_state(self):
         invoice = self.env.ref("digiplus_agrochem_demo.invoice_orbit_finance")
