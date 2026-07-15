@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="digiplus_ai_assistant.AiChat">
+        <div class="o_digiplus_ai_chat d-flex flex-column h-100">
+            <header class="o_ai_chat_header d-flex align-items-center justify-content-between">
+                <div>
+                    <h2 class="mb-1">Assistant IA DigiPlus</h2>
+                    <p class="mb-0">Décrivez un projet, l’IA prépare son brouillon structuré.</p>
+                </div>
+                <button class="btn btn-outline-primary" t-on-click="newConversation" t-att-disabled="state.sending">
+                    <i class="fa fa-plus me-1"/> Nouvelle conversation
+                </button>
+            </header>
+
+            <main class="o_ai_chat_messages flex-grow-1" t-ref="messages">
+                <div t-if="state.loading" class="o_ai_chat_loading text-center text-muted">
+                    <i class="fa fa-spinner fa-spin me-2"/>Chargement…
+                </div>
+                <t t-else="">
+                    <div t-foreach="state.messages" t-as="message" t-key="message.id"
+                         t-att-class="'o_ai_chat_row ' + (message.role === 'user' ? 'o_ai_chat_user' : 'o_ai_chat_assistant')">
+                        <div class="o_ai_chat_avatar">
+                            <i t-att-class="message.role === 'user' ? 'fa fa-user' : 'fa fa-magic'"/>
+                        </div>
+                        <div class="o_ai_chat_bubble">
+                            <div class="o_ai_chat_role" t-esc="message.role === 'user' ? 'Vous' : 'Assistant DigiPlus'"/>
+                            <div class="o_ai_chat_content" t-esc="message.content"/>
+                            <button t-if="message.draft_id" class="btn btn-sm btn-primary mt-3"
+                                    t-on-click="() => this.openDraft(message)">
+                                <i class="fa fa-folder-open me-1"/> Ouvrir le brouillon
+                            </button>
+                        </div>
+                    </div>
+                    <div t-if="state.sending" class="o_ai_chat_row o_ai_chat_assistant">
+                        <div class="o_ai_chat_avatar"><i class="fa fa-magic"/></div>
+                        <div class="o_ai_chat_bubble o_ai_chat_typing">
+                            <span/><span/><span/>
+                        </div>
+                    </div>
+                </t>
+            </main>
+
+            <footer class="o_ai_chat_composer">
+                <div class="o_ai_chat_input_wrap">
+                    <textarea t-ref="messageInput" t-model="state.input" t-on-keydown="onKeydown"
+                              class="form-control" rows="2" maxlength="10000"
+                              placeholder="Exemple : Prépare un projet de déploiement Odoo pour le client Connect237…"
+                              t-att-disabled="state.sending or state.loading"/>
+                    <button class="btn btn-primary o_ai_chat_send" t-on-click="sendMessage"
+                            t-att-disabled="state.sending or state.loading or !state.input.trim()">
+                        <i t-att-class="state.sending ? 'fa fa-spinner fa-spin' : 'fa fa-paper-plane'"/>
+                        <span class="ms-2">Envoyer</span>
+                    </button>
+                </div>
+                <small>L’IA prépare uniquement un brouillon. Une validation humaine reste obligatoire.</small>
+            </footer>
+        </div>
+    </t>
+</templates>
