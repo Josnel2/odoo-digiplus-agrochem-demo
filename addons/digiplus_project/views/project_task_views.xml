@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="project.action_view_my_task" model="ir.actions.act_window">
+        <field name="context">{
+            'search_default_open_tasks': 1,
+            'all_task': 0,
+            'default_user_ids': [(4, uid)],
+            'group_by': 'stage_id',
+            'digiplus_expand_project_stages': True
+        }</field>
+    </record>
+
     <record id="view_project_task_form_digiplus" model="ir.ui.view">
         <field name="name">project.task.form.digiplus</field>
         <field name="model">project.task</field>

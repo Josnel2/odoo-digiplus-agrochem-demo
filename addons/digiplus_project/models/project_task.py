@@ -236,8 +236,32 @@ class ProjectTask(models.Model):
         return super().write(vals)
 
     @api.model
+    def _read_group_stage_ids(self, stages, domain):
+        if not self.env.context.get("digiplus_expand_project_stages"):
+            return super()._read_group_stage_ids(stages, domain)
+        visible_tasks = self.search(domain)
+        project_ids = visible_tasks.project_id.ids
+        if not project_ids:
+            return stages
+        return self.env["project.task.type"].search(
+            [
+                ("project_ids", "in", project_ids),
+                ("user_id", "=", False),
+            ],
+            order="sequence, id",
+        )
+
+    @api.model
     def _prepare_digiplus_task_vals(self, vals):
         prepared_vals = self._prepare_digiplus_priority_vals(vals)
+        if prepared_vals.get("stage_id") and "state" not in prepared_vals:
+            stage = self.env["project.task.type"].browse(prepared_vals["stage_id"])
+            normalized_name = (stage.name or "").strip().lower()
+            is_delivered = stage.fold or any(
+                token in normalized_name
+                for token in ("livre", "livré", "termine", "terminé", "done", "closed")
+            )
+            prepared_vals["state"] = "1_done" if is_delivered else "01_in_progress"
         if "digiplus_date_end" in prepared_vals and "date_deadline" not in prepared_vals:
             prepared_vals["date_deadline"] = prepared_vals["digiplus_date_end"]
         elif "date_deadline" in prepared_vals and "digiplus_date_end" not in prepared_vals:

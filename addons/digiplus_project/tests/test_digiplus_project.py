@@ -27,6 +27,43 @@ class TestDigiplusProject(TransactionCase):
             ["Backlog", "En cours", "En revision", "Livre"],
         )
 
+    def test_my_tasks_uses_shared_project_stages(self):
+        action = self.env.ref("project.action_view_my_task")
+        self.assertIn("'group_by': 'stage_id'", action.context)
+        self.assertIn("'search_default_open_tasks': 1", action.context)
+        self.assertIn("'digiplus_expand_project_stages': True", action.context)
+
+    def test_my_tasks_expands_all_stages_of_visible_projects(self):
+        task = self.env["project.task"].create(
+            {
+                "name": "Tache visible dans Mes taches",
+                "project_id": self.project.id,
+                "user_ids": [(6, 0, [self.env.user.id])],
+            }
+        )
+        stages = self.env["project.task"].with_context(
+            digiplus_expand_project_stages=True
+        )._read_group_stage_ids(
+            task.stage_id,
+            [("id", "=", task.id)],
+        )
+        self.assertEqual(stages, self.project.type_ids.sorted("sequence"))
+
+    def test_moving_task_to_delivered_stage_synchronizes_state(self):
+        stages = self.project.type_ids.sorted("sequence")
+        task = self.env["project.task"].create(
+            {
+                "name": "Tache a livrer",
+                "project_id": self.project.id,
+                "stage_id": stages[0].id,
+            }
+        )
+        task.stage_id = stages[-1]
+        self.assertEqual(task.state, "1_done")
+
+        task.stage_id = stages[1]
+        self.assertEqual(task.state, "01_in_progress")
+
     def test_template_duplication_creates_project_specific_stages(self):
         self.project.digiplus_is_template = True
         copied_project = self.project.copy({"name": "Projet Copie DigiPlus"})
