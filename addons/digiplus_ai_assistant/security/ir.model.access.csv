@@ -1,10 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-draft_user,ai.project.draft.user,model_ai_project_draft,digiplus_ai_assistant.group_ai_user,1,1,1,0
-task_user,ai.project.draft.task.user,model_ai_project_draft_task,digiplus_ai_assistant.group_ai_user,1,1,1,0
-deliverable_user,ai.project.draft.deliverable.user,model_ai_project_draft_deliverable,digiplus_ai_assistant.group_ai_user,1,1,1,0
-wizard_user,ai.project.generate.wizard.user,model_ai_project_generate_wizard,digiplus_ai_assistant.group_ai_user,1,1,1,1
+draft_user,ai.project.draft.user,model_ai_project_draft,base.group_user,1,1,1,0
+task_user,ai.project.draft.task.user,model_ai_project_draft_task,base.group_user,1,1,1,0
+deliverable_user,ai.project.draft.deliverable.user,model_ai_project_draft_deliverable,base.group_user,1,1,1,0
+wizard_user,ai.project.generate.wizard.user,model_ai_project_generate_wizard,base.group_user,1,1,1,1
 draft_manager,ai.project.draft.manager,model_ai_project_draft,digiplus_ai_assistant.group_ai_validator,1,1,1,1
 task_manager,ai.project.draft.task.manager,model_ai_project_draft_task,digiplus_ai_assistant.group_ai_validator,1,1,1,1
 deliverable_manager,ai.project.draft.deliverable.manager,model_ai_project_draft_deliverable,digiplus_ai_assistant.group_ai_validator,1,1,1,1
-chat_session_user,ai.chat.session.user,model_ai_chat_session,digiplus_ai_assistant.group_ai_user,1,1,1,1
-chat_message_user,ai.chat.message.user,model_ai_chat_message,digiplus_ai_assistant.group_ai_user,1,1,1,1
+chat_session_user,ai.chat.session.user,model_ai_chat_session,base.group_user,1,1,1,1
+chat_message_user,ai.chat.message.user,model_ai_chat_message,base.group_user,1,1,1,1

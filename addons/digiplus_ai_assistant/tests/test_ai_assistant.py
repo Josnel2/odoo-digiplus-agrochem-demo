@@ -195,3 +195,19 @@ class TestAiAssistant(TransactionCase):
         session = self.env["ai.chat.session"].create({"name": "Test vide"})
         with self.assertRaises(UserError):
             session.send_message("   ")
+
+    def test_internal_user_can_access_chat_without_ai_group(self):
+        internal_group = self.env.ref("base.group_user")
+        user = self.env["res.users"].with_context(no_reset_password=True).create(
+            {
+                "name": "Utilisateur interne IA",
+                "login": "internal-ai-test@example.com",
+                "groups_id": [Command.set([internal_group.id])],
+            }
+        )
+        self.assertFalse(user.has_group("digiplus_ai_assistant.group_ai_user"))
+
+        session_id = self.env["ai.chat.session"].with_user(user).get_or_create_session()
+        session = self.env["ai.chat.session"].with_user(user).browse(session_id)
+        self.assertEqual(session.user_id, user)
+        self.assertEqual(len(session.message_ids), 1)
