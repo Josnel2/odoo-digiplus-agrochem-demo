@@ -335,6 +335,17 @@ class ProjectProject(models.Model):
         open_tasks = self.tasks.filtered(lambda task: task.display_in_project and task.state not in CLOSED_TASK_STATES)
         task_rows = []
         for task in open_tasks.sorted(key=lambda task: task.date_deadline or fields.Datetime.now()):
+            if task.state in CLOSED_TASK_STATES:
+                task_progress = 100.0
+            elif "progress" in task._fields:
+                task_progress = round(task.progress or 0.0, 2)
+            else:
+                task_progress = {
+                    "todo": 0.0,
+                    "in_progress": 50.0,
+                    "review": 80.0,
+                    "blocked": 25.0,
+                }.get(task.digiplus_work_state, 0.0)
             task_rows.append(
                 {
                     "name": task.display_name,
@@ -348,6 +359,7 @@ class ProjectProject(models.Model):
                     ),
                     "allocated_hours": self._format_digiplus_hours(task.allocated_hours or 0.0),
                     "remaining_hours": self._format_digiplus_hours(getattr(task, "remaining_hours", 0.0)),
+                    "progress": task_progress,
                 }
             )
         return {
@@ -375,8 +387,9 @@ class ProjectProject(models.Model):
         report = self.env.ref("digiplus_project.action_report_digiplus_project_progress")
         return report.report_action(self)
 
-    def _build_digiplus_progress_email_body(self):
+    def _build_digiplus_progress_email_body(self, recipient=None):
         self.ensure_one()
+        recipient = recipient or self.user_id
         return """
             <p>Bonjour %s,</p>
             <p>Veuillez trouver en pièce jointe le rapport hebdomadaire du projet
@@ -391,7 +404,7 @@ class ProjectProject(models.Model):
             </ul>
             <p>Ce message a été généré automatiquement par Odoo DigiPlus.</p>
         """ % (
-            self.user_id.name,
+            recipient.name,
             self.display_name,
             self.partner_id.display_name or "-",
             self.digiplus_completion_rate,
@@ -411,10 +424,17 @@ class ProjectProject(models.Model):
         sender_email = self.env.company.email or params.get_param("mail.default.from_filter")
         return formataddr((sender_name, sender_email)) if sender_email else False
 
+    @api.model
+    def _get_digiplus_progress_report_recipients(self):
+        project_admin_group = self.env.ref("project.group_project_manager")
+        return project_admin_group.users.filtered(
+            lambda user: user.active and not user.share and user.partner_id.email
+        )
+
     def _send_digiplus_progress_report_email(self):
         self.ensure_one()
-        manager = self.user_id
-        if not manager or not manager.active or not manager.partner_id.email:
+        recipients = self._get_digiplus_progress_report_recipients()
+        if not recipients:
             return False
         report = self.env.ref("digiplus_project.action_report_digiplus_project_progress")
         pdf_content, _content_type = report._render_qweb_pdf(
@@ -432,24 +452,26 @@ class ProjectProject(models.Model):
                 "res_id": self.id,
             }
         )
-        mail = self.env["mail.mail"].sudo().create(
-            {
-                "subject": _("Rapport hebdomadaire - %s") % self.display_name,
-                "body_html": self._build_digiplus_progress_email_body(),
-                "email_from": self._get_digiplus_email_from(),
-                "email_to": manager.partner_id.email,
-                "recipient_ids": [(6, 0, manager.partner_id.ids)],
-                "author_id": self.env.company.partner_id.id,
-                "model": self._name,
-                "res_id": self.id,
-                "attachment_ids": [(6, 0, attachment.ids)],
-                "auto_delete": True,
-            }
-        )
-        mail.send(raise_exception=False)
+        for recipient in recipients:
+            mail = self.env["mail.mail"].sudo().create(
+                {
+                    "subject": _("Rapport hebdomadaire - %s") % self.display_name,
+                    "body_html": self._build_digiplus_progress_email_body(recipient),
+                    "email_from": self._get_digiplus_email_from(),
+                    "email_to": recipient.partner_id.email,
+                    "recipient_ids": [(6, 0, recipient.partner_id.ids)],
+                    "author_id": self.env.company.partner_id.id,
+                    "model": self._name,
+                    "res_id": self.id,
+                    "attachment_ids": [(6, 0, attachment.ids)],
+                    "auto_delete": True,
+                }
+            )
+            mail.send(raise_exception=False)
         self.digiplus_last_report_sent_at = fields.Datetime.now()
         self.message_post(
-            body=_("Rapport hebdomadaire envoyé à %s.") % manager.partner_id.email,
+            body=_("Rapport hebdomadaire envoyé aux administrateurs Projet : %s.")
+            % ", ".join(recipients.mapped("partner_id.email")),
             subtype_xmlid="mail.mt_note",
         )
         return True
@@ -462,7 +484,6 @@ class ProjectProject(models.Model):
                 ("active", "=", True),
                 ("digiplus_is_template", "=", False),
                 ("digiplus_email_reports_enabled", "=", True),
-                ("user_id", "!=", False),
                 "|",
                 ("digiplus_last_report_sent_at", "=", False),
                 ("digiplus_last_report_sent_at", "<", cutoff),

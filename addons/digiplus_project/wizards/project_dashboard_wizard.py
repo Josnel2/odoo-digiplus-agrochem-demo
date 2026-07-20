@@ -24,7 +24,7 @@ class ProjectDashboardWizard(models.TransientModel):
             ("all", "Toutes periodes"),
         ],
         string="Periode",
-        default="30",
+        default="all",
         required=True,
     )
     date_from = fields.Date(string="Date de debut")
@@ -74,7 +74,7 @@ class ProjectDashboardWizard(models.TransientModel):
     @api.model
     def default_get(self, fields_list):
         values = super().default_get(fields_list)
-        start_date, end_date = self._get_range_for_period("30")
+        start_date, end_date = self._get_range_for_period("all")
         values.setdefault("date_from", start_date)
         values.setdefault("date_to", end_date)
         return values

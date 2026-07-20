@@ -1,7 +1,7 @@
 from datetime import timedelta
 from unittest.mock import patch
 
-from odoo import fields
+from odoo import Command, fields
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
 from lxml import etree
@@ -211,6 +211,44 @@ class TestDigiplusProject(TransactionCase):
 
         send_report.assert_not_called()
 
+    def test_progress_report_contains_task_progress(self):
+        task = self.env["project.task"].create(
+            {
+                "name": "Tâche avec avancement",
+                "project_id": self.project.id,
+                "stage_id": self.project.type_ids.sorted("sequence")[1].id,
+            }
+        )
+        payload = self.project._get_digiplus_progress_report_payload()
+        row = next(item for item in payload["task_rows"] if item["name"] == task.display_name)
+
+        self.assertIn("progress", row)
+        self.assertGreaterEqual(row["progress"], 0.0)
+        self.assertLessEqual(row["progress"], 100.0)
+
+    def test_progress_report_recipients_are_project_administrators(self):
+        project_admin_group = self.env.ref("project.group_project_manager")
+        project_admin = self.env["res.users"].with_context(no_reset_password=True).create(
+            {
+                "name": "Administrateur destinataire rapport",
+                "login": "project-report-admin@example.com",
+                "email": "project-report-admin@example.com",
+                "groups_id": [Command.link(project_admin_group.id)],
+            }
+        )
+        simple_user = self.env["res.users"].with_context(no_reset_password=True).create(
+            {
+                "name": "Utilisateur non destinataire rapport",
+                "login": "project-report-user@example.com",
+                "email": "project-report-user@example.com",
+            }
+        )
+
+        recipients = self.env["project.project"]._get_digiplus_progress_report_recipients()
+
+        self.assertIn(project_admin, recipients)
+        self.assertNotIn(simple_user, recipients)
+
     def test_project_dates_are_validated(self):
         with self.assertRaises(ValidationError):
             self.project.write(
@@ -305,6 +343,24 @@ class TestDigiplusProject(TransactionCase):
         self.assertIn("Dashboard Projet", wizard.dashboard_html)
         action = wizard.action_open_projects()
         self.assertEqual(action["res_model"], "project.project")
+
+    def test_dashboard_defaults_to_all_periods_and_loads_old_tasks(self):
+        backlog_stage = self.project.type_ids.sorted(lambda stage: (stage.sequence, stage.id))[0]
+        old_task = self.env["project.task"].create(
+            {
+                "name": "Tache ancienne dashboard",
+                "project_id": self.project.id,
+                "stage_id": backlog_stage.id,
+                "date_deadline": fields.Datetime.to_string(fields.Datetime.now() - timedelta(days=120)),
+            }
+        )
+
+        wizard = self.env["digiplus.project.dashboard.wizard"].create({"project_id": self.project.id})
+
+        self.assertEqual(wizard.period_filter, "all")
+        self.assertFalse(wizard.date_from)
+        self.assertFalse(wizard.date_to)
+        self.assertIn(old_task, wizard._get_filtered_tasks(wizard._get_filtered_projects()))
 
     def test_legacy_sprint_compatibility_fields_and_action(self):
         sprint = self.env["digiplus.project.sprint"].create(

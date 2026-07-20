@@ -105,6 +105,7 @@
                                     <th>Echeance</th>
                                     <th>Priorite</th>
                                     <th>Statut</th>
+                                    <th>Avancement</th>
                                     <th>Charge prevue</th>
                                     <th>Charge restante</th>
                                 </tr>
@@ -116,11 +117,12 @@
                                     <td><span t-esc="row['deadline']"/></td>
                                     <td><span t-esc="row['priority']"/></td>
                                     <td><span t-esc="row['status']"/></td>
+                                    <td><span t-esc="row['progress']"/>%</td>
                                     <td><span t-esc="row['allocated_hours']"/></td>
                                     <td><span t-esc="row['remaining_hours']"/></td>
                                 </tr>
                                 <tr t-if="not payload['task_rows']">
-                                    <td colspan="7">Aucune tache ouverte a piloter.</td>
+                                    <td colspan="8">Aucune tache ouverte a piloter.</td>
                                 </tr>
                             </tbody>
                         </table>
