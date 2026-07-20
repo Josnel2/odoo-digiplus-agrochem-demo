@@ -120,6 +120,7 @@ if company_email:
     Company.email = company_email
 
 test_result = server.test_smtp_connection()
+env.cr.commit()
 
 print('mail_server_id:', server.id)
 print('mail_server_name:', server.name)
