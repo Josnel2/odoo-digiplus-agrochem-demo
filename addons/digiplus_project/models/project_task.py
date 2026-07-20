@@ -227,13 +227,17 @@ class ProjectTask(models.Model):
 
     def write(self, vals):
         vals = self._prepare_digiplus_task_vals(vals)
+        previously_open = self.filtered(lambda task: task.state not in CLOSED_TASK_STATES)
         if "date_deadline" in vals:
             vals["digiplus_upcoming_alert_deadline"] = False
             vals["digiplus_overdue_alert_deadline"] = False
         if vals.get("state") in CLOSED_TASK_STATES:
             vals["digiplus_upcoming_alert_deadline"] = False
             vals["digiplus_overdue_alert_deadline"] = False
-        return super().write(vals)
+        result = super().write(vals)
+        newly_completed = previously_open.filtered(lambda task: task.state == "1_done")
+        newly_completed._notify_digiplus_task_completed()
+        return result
 
     @api.model
     def _read_group_stage_ids(self, stages, domain):
@@ -404,11 +408,59 @@ class ProjectTask(models.Model):
             "res_id": self.id,
             "auto_delete": True,
         }
-        self.env["mail.mail"].sudo().create(mail_values)
+        mail = self.env["mail.mail"].sudo().create(mail_values)
+        mail.send(raise_exception=False)
+
+    def _get_digiplus_deadline_recipients(self):
+        self.ensure_one()
+        recipients = self.user_ids
+        if self.project_id.user_id:
+            recipients |= self.project_id.user_id
+        return recipients.filtered(lambda user: user.active and user.partner_id.email)
+
+    def _notify_digiplus_task_completed(self):
+        for task in self:
+            manager = task.project_id.user_id
+            if not manager or not manager.active or not manager.partner_id.email:
+                continue
+            body_html = """
+                <p>Bonjour %s,</p>
+                <p>La tâche <strong>%s</strong> vient d'être terminée.</p>
+                <ul>
+                    <li><strong>Projet :</strong> %s</li>
+                    <li><strong>Responsable(s) :</strong> %s</li>
+                    <li><strong>Échéance :</strong> %s</li>
+                </ul>
+                <p>Vous pouvez consulter le projet dans Odoo DigiPlus.</p>
+            """ % (
+                manager.name,
+                task.display_name,
+                task.project_id.display_name,
+                task._get_digiplus_assignee_names(),
+                task._format_digiplus_deadline(),
+            )
+            mail = self.env["mail.mail"].sudo().create(
+                {
+                    "subject": _("Tâche terminée - %s") % task.display_name,
+                    "body_html": body_html,
+                    "email_to": manager.partner_id.email,
+                    "recipient_ids": [(6, 0, manager.partner_id.ids)],
+                    "author_id": self.env.company.partner_id.id,
+                    "model": task._name,
+                    "res_id": task.id,
+                    "auto_delete": True,
+                }
+            )
+            mail.send(raise_exception=False)
+            task.message_post(
+                body=_("Notification de fin de tâche envoyée à %s.")
+                % manager.partner_id.email,
+                subtype_xmlid="mail.mt_note",
+            )
 
     def _trigger_digiplus_deadline_alert(self, alert_kind):
         for task in self:
-            for user in task.user_ids:
+            for user in task._get_digiplus_deadline_recipients():
                 task._schedule_digiplus_activity(alert_kind, user)
                 task._send_digiplus_deadline_email(alert_kind, user)
             task.message_post(

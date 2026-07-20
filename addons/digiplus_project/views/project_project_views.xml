@@ -52,6 +52,8 @@
                             <field name="service_requested"/>
                             <field name="origin_opportunity_id" options="{'no_create': True}"/>
                             <field name="digiplus_is_template"/>
+                            <field name="digiplus_email_reports_enabled"/>
+                            <field name="digiplus_last_report_sent_at" readonly="1" invisible="not digiplus_email_reports_enabled"/>
                         </group>
                         <group string="Budget et temps">
                             <field name="allocated_hours" widget="timesheet_uom_no_toggle"/>

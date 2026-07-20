@@ -1,3 +1,4 @@
+import base64
 from datetime import timedelta
 
 from odoo import Command, _, api, fields, models
@@ -102,6 +103,16 @@ class ProjectProject(models.Model):
         "digiplus.project.sprint",
         string="Sprint actif",
         compute="_compute_digiplus_sprint_metrics",
+    )
+    digiplus_email_reports_enabled = fields.Boolean(
+        string="Rapport hebdomadaire par e-mail",
+        default=True,
+        tracking=True,
+    )
+    digiplus_last_report_sent_at = fields.Datetime(
+        string="Dernier rapport envoyé",
+        copy=False,
+        readonly=True,
     )
 
     @api.model_create_multi
@@ -362,6 +373,95 @@ class ProjectProject(models.Model):
         self.ensure_one()
         report = self.env.ref("digiplus_project.action_report_digiplus_project_progress")
         return report.report_action(self)
+
+    def _build_digiplus_progress_email_body(self):
+        self.ensure_one()
+        return """
+            <p>Bonjour %s,</p>
+            <p>Veuillez trouver en pièce jointe le rapport hebdomadaire du projet
+            <strong>%s</strong>.</p>
+            <ul>
+                <li><strong>Client :</strong> %s</li>
+                <li><strong>Avancement :</strong> %.2f%%</li>
+                <li><strong>Tâches terminées :</strong> %s / %s</li>
+                <li><strong>Tâches en retard :</strong> %s</li>
+                <li><strong>Tâches arrivant à échéance sous 48 h :</strong> %s</li>
+                <li><strong>État global :</strong> %s</li>
+            </ul>
+            <p>Ce message a été généré automatiquement par Odoo DigiPlus.</p>
+        """ % (
+            self.user_id.name,
+            self.display_name,
+            self.partner_id.display_name or "-",
+            self.digiplus_completion_rate,
+            self.digiplus_completed_task_count,
+            self.digiplus_total_task_count,
+            self.digiplus_overdue_task_count,
+            self.digiplus_upcoming_task_count,
+            dict(self._fields["digiplus_global_state"].selection).get(
+                self.digiplus_global_state, "-"
+            ),
+        )
+
+    def _send_digiplus_progress_report_email(self):
+        self.ensure_one()
+        manager = self.user_id
+        if not manager or not manager.active or not manager.partner_id.email:
+            return False
+        report = self.env.ref("digiplus_project.action_report_digiplus_project_progress")
+        pdf_content, _content_type = report._render_qweb_pdf(
+            report.report_name,
+            res_ids=self.ids,
+        )
+        filename = "Rapport_Projet_DigiPlus_%s.pdf" % self.display_name.replace("/", "-")
+        attachment = self.env["ir.attachment"].sudo().create(
+            {
+                "name": filename,
+                "type": "binary",
+                "datas": base64.b64encode(pdf_content),
+                "mimetype": "application/pdf",
+                "res_model": self._name,
+                "res_id": self.id,
+            }
+        )
+        mail = self.env["mail.mail"].sudo().create(
+            {
+                "subject": _("Rapport hebdomadaire - %s") % self.display_name,
+                "body_html": self._build_digiplus_progress_email_body(),
+                "email_to": manager.partner_id.email,
+                "recipient_ids": [(6, 0, manager.partner_id.ids)],
+                "author_id": self.env.company.partner_id.id,
+                "model": self._name,
+                "res_id": self.id,
+                "attachment_ids": [(6, 0, attachment.ids)],
+                "auto_delete": True,
+            }
+        )
+        mail.send(raise_exception=False)
+        self.digiplus_last_report_sent_at = fields.Datetime.now()
+        self.message_post(
+            body=_("Rapport hebdomadaire envoyé à %s.") % manager.partner_id.email,
+            subtype_xmlid="mail.mt_note",
+        )
+        return True
+
+    @api.model
+    def cron_digiplus_weekly_project_reports(self):
+        cutoff = fields.Datetime.now() - timedelta(days=6)
+        projects = self.search(
+            [
+                ("active", "=", True),
+                ("digiplus_is_template", "=", False),
+                ("digiplus_email_reports_enabled", "=", True),
+                ("user_id", "!=", False),
+                "|",
+                ("digiplus_last_report_sent_at", "=", False),
+                ("digiplus_last_report_sent_at", "<", cutoff),
+            ]
+        )
+        for project in projects:
+            project._send_digiplus_progress_report_email()
+        return True
 
     def action_create_project_from_template(self):
         self.ensure_one()

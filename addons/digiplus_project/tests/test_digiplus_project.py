@@ -1,4 +1,5 @@
 from datetime import timedelta
+from unittest.mock import patch
 
 from odoo import fields
 from odoo.exceptions import ValidationError
@@ -58,11 +59,41 @@ class TestDigiplusProject(TransactionCase):
                 "stage_id": stages[0].id,
             }
         )
-        task.stage_id = stages[-1]
-        self.assertEqual(task.state, "1_done")
+        with patch.object(type(self.env["mail.mail"]), "send", return_value=True):
+            task.stage_id = stages[-1]
+            self.assertEqual(task.state, "1_done")
 
-        task.stage_id = stages[1]
-        self.assertEqual(task.state, "01_in_progress")
+            task.stage_id = stages[1]
+            self.assertEqual(task.state, "01_in_progress")
+
+    def test_completing_task_emails_project_manager_only_on_transition(self):
+        self.env.user.partner_id.email = "manager-completion@example.com"
+        self.project.user_id = self.env.user
+        stages = self.project.type_ids.sorted("sequence")
+        task = self.env["project.task"].create(
+            {
+                "name": "Tâche notification terminée",
+                "project_id": self.project.id,
+                "stage_id": stages[0].id,
+            }
+        )
+        Mail = type(self.env["mail.mail"])
+        with patch.object(Mail, "send", return_value=True) as send_mail:
+            task.stage_id = stages[-1]
+            self.assertEqual(send_mail.call_count, 1)
+            completion_mail = self.env["mail.mail"].search(
+                [("model", "=", "project.task"), ("res_id", "=", task.id)],
+                order="id desc",
+                limit=1,
+            )
+            self.assertEqual(completion_mail.email_to, "manager-completion@example.com")
+
+            task.write({"name": "Tâche terminée renommée"})
+            self.assertEqual(send_mail.call_count, 1)
+
+            task.stage_id = stages[1]
+            task.stage_id = stages[-1]
+            self.assertEqual(send_mail.call_count, 2)
 
     def test_template_duplication_creates_project_specific_stages(self):
         self.project.digiplus_is_template = True
@@ -105,9 +136,75 @@ class TestDigiplusProject(TransactionCase):
                 "digiplus_priority_level": "urgent",
             }
         )
-        self.env["project.task"].cron_digiplus_task_deadline_alerts()
+        with patch.object(type(self.env["mail.mail"]), "send", return_value=True):
+            self.env["project.task"].cron_digiplus_task_deadline_alerts()
         self.assertTrue(task.digiplus_upcoming_alert_deadline)
         self.assertTrue(task.activity_ids)
+
+    def test_deadline_alert_recipients_include_project_manager(self):
+        manager = self.env["res.users"].with_context(no_reset_password=True).create(
+            {
+                "name": "Chef de projet alertes",
+                "login": "project-manager-alerts@example.com",
+                "email": "project-manager-alerts@example.com",
+            }
+        )
+        assignee = self.env["res.users"].with_context(no_reset_password=True).create(
+            {
+                "name": "Responsable tâche",
+                "login": "task-assignee@example.com",
+                "email": "task-assignee@example.com",
+            }
+        )
+        self.project.user_id = manager
+        task = self.env["project.task"].create(
+            {
+                "name": "Tâche avec notification manager",
+                "project_id": self.project.id,
+                "user_ids": [(6, 0, assignee.ids)],
+                "date_deadline": fields.Datetime.now() + timedelta(hours=24),
+            }
+        )
+
+        self.assertEqual(
+            set(task._get_digiplus_deadline_recipients().ids),
+            {manager.id, assignee.id},
+        )
+
+    def test_weekly_report_cron_selects_manager_project_once(self):
+        self.env["project.project"].search(
+            [("id", "!=", self.project.id)]
+        ).write({"digiplus_email_reports_enabled": False})
+        self.env.user.partner_id.email = "manager@example.com"
+        self.project.write(
+            {
+                "user_id": self.env.user.id,
+                "digiplus_email_reports_enabled": True,
+                "digiplus_last_report_sent_at": False,
+            }
+        )
+        Project = type(self.env["project.project"])
+        with patch.object(
+            Project,
+            "_send_digiplus_progress_report_email",
+            autospec=True,
+            return_value=True,
+        ) as send_report:
+            self.env["project.project"].cron_digiplus_weekly_project_reports()
+
+        self.assertEqual(send_report.call_count, 1)
+        self.assertEqual(send_report.call_args.args[0], self.project)
+
+        self.project.digiplus_last_report_sent_at = fields.Datetime.now()
+        with patch.object(
+            Project,
+            "_send_digiplus_progress_report_email",
+            autospec=True,
+            return_value=True,
+        ) as send_report:
+            self.env["project.project"].cron_digiplus_weekly_project_reports()
+
+        send_report.assert_not_called()
 
     def test_project_dates_are_validated(self):
         with self.assertRaises(ValidationError):
