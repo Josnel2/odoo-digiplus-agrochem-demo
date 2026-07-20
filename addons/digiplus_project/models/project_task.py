@@ -1,4 +1,5 @@
 from datetime import timedelta
+from email.utils import formataddr
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -338,6 +339,13 @@ class ProjectTask(models.Model):
         self.ensure_one()
         return ", ".join(self.user_ids.mapped("name")) or _("Non assigne")
 
+    @api.model
+    def _get_digiplus_email_from(self):
+        params = self.env["ir.config_parameter"].sudo()
+        sender_name = params.get_param("digiplus.mail.from_name", "Odoo DigiPlus")
+        sender_email = self.env.company.email or params.get_param("mail.default.from_filter")
+        return formataddr((sender_name, sender_email)) if sender_email else False
+
     def _build_digiplus_alert_subject(self, alert_kind):
         self.ensure_one()
         if alert_kind == "overdue":
@@ -401,6 +409,7 @@ class ProjectTask(models.Model):
         mail_values = {
             "subject": self._build_digiplus_alert_subject(alert_kind),
             "body_html": self._build_digiplus_alert_body(alert_kind, user),
+            "email_from": self._get_digiplus_email_from(),
             "email_to": user.partner_id.email,
             "recipient_ids": [(6, 0, user.partner_id.ids)],
             "author_id": self.env.user.partner_id.id,
@@ -443,6 +452,7 @@ class ProjectTask(models.Model):
                 {
                     "subject": _("Tâche terminée - %s") % task.display_name,
                     "body_html": body_html,
+                    "email_from": task._get_digiplus_email_from(),
                     "email_to": manager.partner_id.email,
                     "recipient_ids": [(6, 0, manager.partner_id.ids)],
                     "author_id": self.env.company.partner_id.id,

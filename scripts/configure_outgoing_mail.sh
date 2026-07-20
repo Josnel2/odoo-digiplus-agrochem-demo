@@ -10,6 +10,7 @@ set +a
 
 DB_NAME="${1:-${ODOO_DB_NAME:-}}"
 SMTP_NAME="${DIGIPLUS_SMTP_NAME:-DigiPlus SMTP}"
+SMTP_FROM_NAME="${DIGIPLUS_SMTP_FROM_NAME:-Odoo DigiPlus}"
 SMTP_HOST="${DIGIPLUS_SMTP_HOST:-}"
 SMTP_PORT="${DIGIPLUS_SMTP_PORT:-587}"
 SMTP_USER="${DIGIPLUS_SMTP_USER:-}"
@@ -59,6 +60,7 @@ fi
 
 docker compose exec -T \
     -e DIGIPLUS_SMTP_NAME="$SMTP_NAME" \
+    -e DIGIPLUS_SMTP_FROM_NAME="$SMTP_FROM_NAME" \
     -e DIGIPLUS_SMTP_HOST="$SMTP_HOST" \
     -e DIGIPLUS_SMTP_PORT="$SMTP_PORT" \
     -e DIGIPLUS_SMTP_USER="$SMTP_USER" \
@@ -78,6 +80,7 @@ MailServer = env['ir.mail_server'].sudo()
 Company = env.company.sudo()
 
 smtp_name = os.environ['DIGIPLUS_SMTP_NAME'].strip()
+smtp_from_name = os.environ['DIGIPLUS_SMTP_FROM_NAME'].strip() or 'Odoo DigiPlus'
 smtp_host = os.environ['DIGIPLUS_SMTP_HOST'].strip()
 smtp_port = int(os.environ['DIGIPLUS_SMTP_PORT'])
 smtp_user = os.environ['DIGIPLUS_SMTP_USER'].strip()
@@ -110,6 +113,7 @@ else:
     server = MailServer.create(vals)
 
 Params.set_param('mail.default.from_filter', smtp_from_filter)
+Params.set_param('digiplus.mail.from_name', smtp_from_name)
 if alias_domain:
     Params.set_param('mail.catchall.domain', alias_domain)
     Params.set_param('mail.default.from', default_from_alias)
@@ -130,6 +134,7 @@ print('mail_server_port:', server.smtp_port)
 print('mail_server_encryption:', server.smtp_encryption)
 print('smtp_test:', test_result['params']['message'])
 print('mail_default_from_filter:', Params.get_param('mail.default.from_filter'))
+print('mail_from_name:', Params.get_param('digiplus.mail.from_name'))
 if alias_domain:
     print('notification_address:', f'{default_from_alias}@{alias_domain}')
 print('company_email:', Company.email or '')

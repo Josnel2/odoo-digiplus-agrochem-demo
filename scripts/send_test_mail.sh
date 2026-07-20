@@ -48,6 +48,7 @@ docker compose exec -T \
     -e DIGIPLUS_TEST_EMAIL_FROM="$FORCED_FROM" \
     odoo bash -lc "odoo shell -c /etc/odoo/odoo.conf -d ${DB_NAME} <<'PY'
 import os
+from email.utils import formataddr
 
 to_email = os.environ['DIGIPLUS_TEST_TO'].strip()
 subject = os.environ['DIGIPLUS_TEST_SUBJECT'].strip()
@@ -61,6 +62,9 @@ if not email_from and alias_domain:
     email_from = f'{default_from_alias}@{alias_domain}'
 if not email_from:
     raise ValueError('Unable to determine email_from. Set DIGIPLUS_COMPANY_EMAIL or DIGIPLUS_ALIAS_DOMAIN.')
+if '<' not in email_from:
+    sender_name = env['ir.config_parameter'].sudo().get_param('digiplus.mail.from_name', 'Odoo DigiPlus')
+    email_from = formataddr((sender_name, email_from))
 
 mail = env['mail.mail'].sudo().create({
     'subject': subject,

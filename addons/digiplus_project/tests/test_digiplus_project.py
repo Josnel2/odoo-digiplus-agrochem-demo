@@ -68,6 +68,7 @@ class TestDigiplusProject(TransactionCase):
 
     def test_completing_task_emails_project_manager_only_on_transition(self):
         self.env.user.partner_id.email = "manager-completion@example.com"
+        self.env.company.email = "notifications@example.com"
         self.project.user_id = self.env.user
         stages = self.project.type_ids.sorted("sequence")
         task = self.env["project.task"].create(
@@ -87,6 +88,10 @@ class TestDigiplusProject(TransactionCase):
                 limit=1,
             )
             self.assertEqual(completion_mail.email_to, "manager-completion@example.com")
+            self.assertEqual(
+                completion_mail.email_from,
+                "Odoo DigiPlus <notifications@example.com>",
+            )
 
             task.write({"name": "Tâche terminée renommée"})
             self.assertEqual(send_mail.call_count, 1)

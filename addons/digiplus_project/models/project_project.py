@@ -1,5 +1,6 @@
 import base64
 from datetime import timedelta
+from email.utils import formataddr
 
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -403,6 +404,13 @@ class ProjectProject(models.Model):
             ),
         )
 
+    @api.model
+    def _get_digiplus_email_from(self):
+        params = self.env["ir.config_parameter"].sudo()
+        sender_name = params.get_param("digiplus.mail.from_name", "Odoo DigiPlus")
+        sender_email = self.env.company.email or params.get_param("mail.default.from_filter")
+        return formataddr((sender_name, sender_email)) if sender_email else False
+
     def _send_digiplus_progress_report_email(self):
         self.ensure_one()
         manager = self.user_id
@@ -428,6 +436,7 @@ class ProjectProject(models.Model):
             {
                 "subject": _("Rapport hebdomadaire - %s") % self.display_name,
                 "body_html": self._build_digiplus_progress_email_body(),
+                "email_from": self._get_digiplus_email_from(),
                 "email_to": manager.partner_id.email,
                 "recipient_ids": [(6, 0, manager.partner_id.ids)],
                 "author_id": self.env.company.partner_id.id,
