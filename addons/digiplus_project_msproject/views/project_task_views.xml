@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue Liste (Grid WBS) imitant MS Project Premium 2024 -->
+    <record id="view_task_tree2_msproject" model="ir.ui.view">
+        <field name="name">project.task.tree.msproject</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <tree position="attributes">
+                <attribute name="decoration-muted">is_milestone == True</attribute>
+                <attribute name="decoration-bf">parent_id == False</attribute>
+            </tree>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="wbs_code" string="WBS" width="0.5"/>
+                <field name="is_milestone" widget="boolean_toggle" string="Jalon" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="msproject_schedule_mode" string="Mode" optional="show" widget="badge" 
+                       decoration-info="msproject_schedule_mode == 'auto'" 
+                       decoration-warning="msproject_schedule_mode == 'manual'"/>
+                <field name="msproject_duration" string="Durée" sum="Total Duree"/>
+                <field name="msproject_start_date" string="Début" widget="date"/>
+                <field name="msproject_finish_date" string="Fin" widget="date"/>
+                <field name="predecessor_ids" string="Prédécesseurs" widget="many2many_tags" optional="show"/>
+                <field name="assignment_ids" string="Ressources" widget="many2many_tags" optional="show"/>
+                <field name="msproject_work" string="Travail" sum="Total Travail" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vue Formulaire enrichie pour MS Project -->
+    <record id="view_task_form2_msproject" model="ir.ui.view">
+        <field name="name">project.task.form.msproject</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="recalculate_schedule" string="Recalculer Planning" type="object" class="oe_highlight" invisible="msproject_schedule_mode == 'manual'"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <group string="Planification MS Project" name="msproject_planning">
+                    <field name="wbs_code" readonly="1"/>
+                    <field name="parent_id" string="Tâche Récapitulative"/>
+                    <field name="msproject_schedule_mode" widget="radio" options="{'horizontal': true}"/>
+                    <field name="is_milestone"/>
+                    <field name="msproject_duration"/>
+                    <field name="msproject_work"/>
+                    <field name="msproject_start_date"/>
+                    <field name="msproject_finish_date"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Dépendances" name="dependencies">
+                    <group>
+                        <group string="Prédécesseurs (Tâches dont celle-ci dépend)">
+                            <field name="predecessor_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="predecessor_id"/>
+                                    <field name="dependency_type"/>
+                                    <field name="lag_time"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Successeurs">
+                            <field name="successor_ids" nolabel="1" readonly="1">
+                                <tree>
+                                    <field name="successor_id"/>
+                                    <field name="dependency_type"/>
+                                    <field name="lag_time"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </page>
+                <page string="Ressources (Assignments)" name="assignments">
+                    <field name="assignment_ids">
+                        <tree editable="bottom">
+                            <field name="resource_id"/>
+                            <field name="units" widget="percentage"/>
+                            <field name="work"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

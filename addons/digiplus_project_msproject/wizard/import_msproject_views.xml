@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_import_msproject_wizard" model="ir.ui.view">
+        <field name="name">import.msproject.wizard.form</field>
+        <field name="model">import.msproject.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Importer MS Project">
+                <div class="alert alert-info" role="alert">
+                    Veuillez charger un fichier XML exporté depuis Microsoft Project pour créer un nouveau projet dans Odoo avec son WBS, ses ressources et ses dépendances.
+                </div>
+                <group>
+                    <field name="project_name"/>
+                    <field name="msproject_file" filename="file_name"/>
+                    <field name="file_name" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_import" string="Importer" type="object" class="oe_highlight" icon="fa-upload"/>
+                    <button string="Annuler" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_import_msproject" model="ir.actions.act_window">
+        <field name="name">Importer MS Project (XML)</field>
+        <field name="res_model">import.msproject.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <!-- Menuitem pour accéder au wizard -->
+    <menuitem id="menu_import_msproject" 
+              name="Import MS Project" 
+              parent="project.menu_project_management" 
+              action="action_import_msproject" 
+              sequence="100"/>
+</odoo>
